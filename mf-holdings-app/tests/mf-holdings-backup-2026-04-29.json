@@ -1,0 +1,3898 @@
+{
+  "version": 1,
+  "exportedAt": "2026-04-29T07:21:44.148Z",
+  "holdings": [
+    {
+      "amcName": "Aditya Birla Sun Life Mutual Fund",
+      "schemeName": "Aditya Birla Sun Life Dividend Yield Fund - IDCW-Regular Plan",
+      "units": 9676.765,
+      "investedValue": 90000.98000000001,
+      "currentValueXls": 250144.38,
+      "id": 139
+    },
+    {
+      "amcName": "Aditya Birla Sun Life Mutual Fund",
+      "schemeName": "Aditya Birla Sun Life Flexi Cap Fund - Growth-Regular Plan",
+      "units": 685.715,
+      "investedValue": 150000,
+      "currentValueXls": 1254851.59,
+      "id": 140
+    },
+    {
+      "amcName": "Aditya Birla Sun Life Mutual Fund",
+      "schemeName": "Aditya Birla Sun Life Large Cap Fund -Growth-Regular Plan(formerly known as Aditya Birla Sun Life Frontline Equity Fund)",
+      "units": 802.139,
+      "investedValue": 63000,
+      "currentValueXls": 405497.31,
+      "id": 141
+    },
+    {
+      "amcName": "Aditya Birla Sun Life Mutual Fund",
+      "schemeName": "Aditya Birla Sun Life International Equity Fund -Growth-Regular Plan",
+      "units": 4878.049,
+      "investedValue": 50000,
+      "currentValueXls": 245235.62,
+      "id": 142
+    },
+    {
+      "amcName": "Aditya Birla Sun Life Mutual Fund",
+      "schemeName": "Aditya Birla Sun Life Nifty 50 Index Fund-IDCW-Regular Plan",
+      "units": 3213.597,
+      "investedValue": 45000,
+      "currentValueXls": 79828,
+      "id": 143
+    },
+    {
+      "amcName": "Aditya Birla Sun Life Mutual Fund",
+      "schemeName": "Aditya Birla Sun Life MNC Fund - Growth-Regular Plan",
+      "units": 219.932,
+      "investedValue": 154900,
+      "currentValueXls": 280070.21,
+      "id": 144
+    },
+    {
+      "amcName": "Aditya Birla Sun Life Mutual Fund",
+      "schemeName": "Aditya Birla Sun Life Unclaimed IDCW (After 3 years)",
+      "units": 4.694,
+      "investedValue": 4694.2,
+      "currentValueXls": 4694,
+      "id": 145
+    },
+    {
+      "amcName": "DSP Mutual Fund",
+      "schemeName": "DSP Regular Savings Fund - Regular Plan - Growth (formerly DSP MIP Fund)",
+      "units": 984.767,
+      "investedValue": 23412.74,
+      "currentValueXls": 58920.68,
+      "id": 146
+    },
+    {
+      "amcName": "DSP Mutual Fund",
+      "schemeName": "DSP Mid Cap Fund - Regular Plan - Growth (formerly DSP Small and Mid Cap Fund)",
+      "units": 5342.233,
+      "investedValue": 100607.19,
+      "currentValueXls": 796660.49,
+      "id": 147
+    },
+    {
+      "amcName": "DSP Mutual Fund",
+      "schemeName": "DSP Flexi Cap Fund - Regular Plan - Growth",
+      "units": 2924.357,
+      "investedValue": 45000,
+      "currentValueXls": 291002.77,
+      "id": 148
+    },
+    {
+      "amcName": "DSP Mutual Fund",
+      "schemeName": "DSP Flexi Cap Fund - Regular Plan - IDCW",
+      "units": 1493.849,
+      "investedValue": 51000,
+      "currentValueXls": 84344.21,
+      "id": 149
+    },
+    {
+      "amcName": "Franklin Templeton Mutual Fund",
+      "schemeName": "Franklin India Large Cap FUND - IDCW (erstwhile Franklin India BLUCHIP FUND - IDCW)",
+      "units": 2682.749,
+      "investedValue": 70000,
+      "currentValueXls": 111583.85,
+      "id": 150
+    },
+    {
+      "amcName": "Franklin Templeton Mutual Fund",
+      "schemeName": "Franklin India Overnight Fund - Unclaimed IDCW Investor Education - Direct Plan - Growth",
+      "units": 410.634,
+      "investedValue": 4106.55,
+      "currentValueXls": 4106.34,
+      "id": 151
+    },
+    {
+      "amcName": "Franklin Templeton Mutual Fund",
+      "schemeName": "Franklin India Dynamic Asset Allocation Active Fund of funds - Growth",
+      "units": 1334.349,
+      "investedValue": 45000,
+      "currentValueXls": 218612.93,
+      "id": 152
+    },
+    {
+      "amcName": "Franklin Templeton Mutual Fund",
+      "schemeName": "Franklin India Large and Mid Cap Fund - IDCW (erstwhile Franklin India Equity Advantage Fund - IDCW)",
+      "units": 3000,
+      "investedValue": 30000,
+      "currentValueXls": 57168.6,
+      "id": 153
+    },
+    {
+      "amcName": "Franklin Templeton Mutual Fund",
+      "schemeName": "Franklin India Large Cap FUND -  Growth (erstwhile Franklin India BLUCHIP FUND - Growth)",
+      "units": 488.688,
+      "investedValue": 101569,
+      "currentValueXls": 484054.89,
+      "id": 154
+    },
+    {
+      "amcName": "Franklin Templeton Mutual Fund",
+      "schemeName": "Franklin India Money Market Fund - Growth",
+      "units": 1023.157,
+      "investedValue": 21965.54,
+      "currentValueXls": 54016.35,
+      "id": 155
+    },
+    {
+      "amcName": "Bandhan Mutual Fund",
+      "schemeName": "Bandhan Flexi Cap Fund-Regular Plan-IDCW",
+      "units": 2489.916,
+      "investedValue": 50000,
+      "currentValueXls": 113731.89,
+      "id": 156
+    },
+    {
+      "amcName": "Bandhan Mutual Fund",
+      "schemeName": "Bandhan Gilt Fund-Regular Plan-Growth (Formerly known as Bandhan Government Securities Fund investment Plan-Regular Plan-Growth)",
+      "units": 1930.428,
+      "investedValue": 26714.03,
+      "currentValueXls": 69467.42,
+      "id": 157
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Dynamic Debt Fund - Regular Plan- Growth (formerly HDFC High Interest Fund - Dynamic Plan)",
+      "units": 1381.979,
+      "investedValue": 25000,
+      "currentValueXls": 125156.99,
+      "id": 158
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Multi Cap Fund Regular Growth",
+      "units": 4499.775,
+      "investedValue": 45000,
+      "currentValueXls": 82111.89,
+      "id": 159
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Flexi Cap Fund - Regular Plan - IDCW",
+      "units": 1438.435,
+      "investedValue": 47500,
+      "currentValueXls": 101534.81,
+      "id": 160
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Arbitrage Fund - Wholesale Plan - Growth - Direct Plan",
+      "units": 236428.335,
+      "investedValue": 5000000,
+      "currentValueXls": 5023156.41,
+      "id": 161
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Balanced Advantage Fund - Direct Plan - Growth Option (formerly HDFC Growth Fund, erstwhile HDFC Prudence Fund merged)",
+      "units": 1881.792,
+      "investedValue": 1000000,
+      "currentValueXls": 1054482.85,
+      "id": 162
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Balanced Advantage Fund - Regular Plan - Growth (formerly HDFC Growth Fund, erstwhile HDFC Prudence Fund merged)",
+      "units": 1107.038,
+      "investedValue": 500000,
+      "currentValueXls": 571314.64,
+      "id": 163
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Equity Savings Fund - Direct Plan - Growth Option",
+      "units": 13106.707,
+      "investedValue": 1000000,
+      "currentValueXls": 986423.88,
+      "id": 164
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Pharma and Healthcare Fund Direct Growth",
+      "units": 15918.968,
+      "investedValue": 200000,
+      "currentValueXls": 298703.52,
+      "id": 165
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC ELSS Tax saver - Regular Plan - IDCW",
+      "units": 309.861,
+      "investedValue": 20000,
+      "currentValueXls": 20133.53,
+      "id": 166
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Flexi Cap Fund - Regular Plan - Growth",
+      "units": 433.43999999999994,
+      "investedValue": 216000,
+      "currentValueXls": 846684.3,
+      "id": 167
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Mid Cap Fund - Regular Plan - Growth",
+      "units": 3642.463,
+      "investedValue": 194245.26,
+      "currentValueXls": 724828.28,
+      "id": 168
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC ELSS Tax saver - Regular Plan - Growth",
+      "units": 89.634,
+      "investedValue": 20000,
+      "currentValueXls": 120001.46,
+      "id": 169
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Focused Fund - Regular Plan - Growth (formerly HDFC Core and Satellite Fund)",
+      "units": 1005.783,
+      "investedValue": 36000,
+      "currentValueXls": 225361.77,
+      "id": 170
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Focused Fund - Regular Plan - IDCW (formerly HDFC Core and Satellite Fund)",
+      "units": 2444.988,
+      "investedValue": 25000,
+      "currentValueXls": 55699.27,
+      "id": 171
+    },
+    {
+      "amcName": "HDFC Mutual Fund",
+      "schemeName": "HDFC Large and Mid Cap Fund - Regular Plan -  IDCW (formerly HDFC Large Cap Fund)",
+      "units": 1577.863,
+      "investedValue": 22500.010000000002,
+      "currentValueXls": 54067.05,
+      "id": 172
+    },
+    {
+      "amcName": "Jio BlackRock Mutual Fund",
+      "schemeName": "JioBlackRock Flexi Cap Fund - Direct - Growth",
+      "units": 49997.5,
+      "investedValue": 500000,
+      "currentValueXls": 485975.7,
+      "id": 173
+    },
+    {
+      "amcName": "Kotak Mutual Fund",
+      "schemeName": "Kotak Small Cap Fund-IDCW (Regular Plan)",
+      "units": 2933.985,
+      "investedValue": 30000,
+      "currentValueXls": 319954,
+      "id": 174
+    },
+    {
+      "amcName": "Kotak Mutual Fund",
+      "schemeName": "Kotak Bond Fund (Short Term) - Growth (Regular Plan)",
+      "units": 3184.691,
+      "investedValue": 73431.72,
+      "currentValueXls": 172342.42,
+      "id": 175
+    },
+    {
+      "amcName": "Kotak Mutual Fund",
+      "schemeName": "Kotak Large Cap Fund-IDCW (Regular Plan) (Erstwhile Kotak Bluechip Scheme)",
+      "units": 1175.088,
+      "investedValue": 50000,
+      "currentValueXls": 84356.04,
+      "id": 176
+    },
+    {
+      "amcName": "SBI Mutual Fund",
+      "schemeName": "SBI Contra Fund - Direct Plan - Growth",
+      "units": 5127.469,
+      "investedValue": 2197716.08,
+      "currentValueXls": 2102388.94,
+      "id": 177
+    },
+    {
+      "amcName": "Mahindra Manulife Mutual Fund",
+      "schemeName": "Mahindra Manulife Mid Cap Fund - Regular - Growth",
+      "units": 18194.943,
+      "investedValue": 360000,
+      "currentValueXls": 636801.17,
+      "id": 178
+    },
+    {
+      "amcName": "HSBC Mutual Fund",
+      "schemeName": "HSBC Gilt Fund - Regular Growth (Formerly known as L&T Gilt Fund - Growth Plan)",
+      "units": 881.109,
+      "investedValue": 25393.73,
+      "currentValueXls": 57590.52,
+      "id": 179
+    },
+    {
+      "amcName": "HSBC Mutual Fund",
+      "schemeName": "HSBC Arbitrage Fund - Direct Growth (Formerly known as L&T Arbitrage Opportunities Fund Direct Growth)",
+      "units": 234036.931,
+      "investedValue": 5000000,
+      "currentValueXls": 5007922.25,
+      "id": 180
+    },
+    {
+      "amcName": "HSBC Mutual Fund",
+      "schemeName": "HSBC Liquid Fund - Direct Growth (Formerly known as HSBC Cash Fund - Growth Direct Plan)",
+      "units": 366.308,
+      "investedValue": 1000000,
+      "currentValueXls": 1011895.96,
+      "id": 181
+    },
+    {
+      "amcName": "HSBC Mutual Fund",
+      "schemeName": "HSBC Multi Asset Allocation Fund - Direct Growth",
+      "units": 48664.928,
+      "investedValue": 682219.0700000001,
+      "currentValueXls": 677756.45,
+      "id": 182
+    },
+    {
+      "amcName": "HSBC Mutual Fund",
+      "schemeName": "HSBC Value Fund - Direct Growth (Formerly known as L&T India Value Fund Direct Plan - Growth)",
+      "units": 26144.664,
+      "investedValue": 3263488.7800000003,
+      "currentValueXls": 3333277.33,
+      "id": 183
+    },
+    {
+      "amcName": "ICICI Prudential Mutual Fund",
+      "schemeName": "ICICI Prudential Technology Fund - IDCW",
+      "units": 1564.972,
+      "investedValue": 13000,
+      "currentValueXls": 82333.18,
+      "id": 184
+    },
+    {
+      "amcName": "ICICI Prudential Mutual Fund",
+      "schemeName": "ICICI Prudential Dividend Yield Equity Fund Direct Plan Growth",
+      "units": 25202.408,
+      "investedValue": 1500000,
+      "currentValueXls": 1495510.89,
+      "id": 185
+    },
+    {
+      "amcName": "ICICI Prudential Mutual Fund",
+      "schemeName": "ICICI Prudential Equity & Debt Fund - Direct Plan - Growth (formerly ICICI Prudential Balanced Fund)",
+      "units": 4612.833,
+      "investedValue": 2000000,
+      "currentValueXls": 2060598.63,
+      "id": 186
+    },
+    {
+      "amcName": "ICICI Prudential Mutual Fund",
+      "schemeName": "ICICI Prudential Equity & Debt Fund - Growth (formerly ICICI Prudential Balanced Fund)",
+      "units": 1520.235,
+      "investedValue": 500000,
+      "currentValueXls": 609264.58,
+      "id": 187
+    },
+    {
+      "amcName": "ICICI Prudential Mutual Fund",
+      "schemeName": "ICICI Prudential Equity Arbitrage Fund - Direct Plan - Growth",
+      "units": 129598.717,
+      "investedValue": 5000000,
+      "currentValueXls": 5021548.53,
+      "id": 188
+    },
+    {
+      "amcName": "ICICI Prudential Mutual Fund",
+      "schemeName": "ICICI Prudential Liquid Fund - Direct Plan - Growth (formerly ICICI Prudential Liquid Plan)",
+      "units": 3111.328,
+      "investedValue": 1250000,
+      "currentValueXls": 1276494.81,
+      "id": 189
+    },
+    {
+      "amcName": "PGIM INDIA MUTUAL FUND",
+      "schemeName": "PGIM India Flexi Cap Fund - Regular Plan - Growth",
+      "units": 19283.088,
+      "investedValue": 510000,
+      "currentValueXls": 678957.53,
+      "id": 190
+    },
+    {
+      "amcName": "PGIM INDIA MUTUAL FUND",
+      "schemeName": "PGIM India Midcap Fund - Regular Plan - Growth",
+      "units": 11191.022,
+      "investedValue": 495000,
+      "currentValueXls": 705034.39,
+      "id": 191
+    },
+    {
+      "amcName": "Quant MF",
+      "schemeName": "quant Momentum Fund - Direct Plan Growth",
+      "units": 73624.198,
+      "investedValue": 1074481.09,
+      "currentValueXls": 1104826.8,
+      "id": 192
+    },
+    {
+      "amcName": "Quant MF",
+      "schemeName": "quant Value Fund - Direct Plan Growth Growth",
+      "units": 49373.668,
+      "investedValue": 1036444.6,
+      "currentValueXls": 1136063.41,
+      "id": 193
+    },
+    {
+      "amcName": "Canara Robeco Mutual Fund",
+      "schemeName": "Canara Robeco Large Cap Fund - Regular Growth",
+      "units": 11515.116,
+      "investedValue": 495000,
+      "currentValueXls": 693670.59,
+      "id": 194
+    },
+    {
+      "amcName": "BNP Paribas Mutual Fund",
+      "schemeName": "BARODA BNP PARIBAS LARGE CAP FUND - REGULAR IDCW PAYOUT",
+      "units": 9360.057999999999,
+      "investedValue": 113639.52,
+      "currentValueXls": 198787.98,
+      "id": 195
+    },
+    {
+      "amcName": "Axis Mutual Fund",
+      "schemeName": "Axis Mid Cap Fund - Regular Growth",
+      "units": 4467.321,
+      "investedValue": 64694.22,
+      "currentValueXls": 515260.8,
+      "id": 196
+    },
+    {
+      "amcName": "Axis Mutual Fund",
+      "schemeName": "Axis ESG Integration Strategy Fund - Regular Growth",
+      "units": 28932.12,
+      "investedValue": 450000,
+      "currentValueXls": 589636.61,
+      "id": 197
+    },
+    {
+      "amcName": "Edelweiss Mutual Fund",
+      "schemeName": "Edelweiss Large & Mid Cap Fund - Regular Plan IDCW",
+      "units": 2215.134,
+      "investedValue": 25000,
+      "currentValueXls": 74063.01,
+      "id": 198
+    },
+    {
+      "amcName": "Sundaram Mutual Fund",
+      "schemeName": "SUNDARAM MID CAP FUND REGULAR IDCW PAYOUT",
+      "units": 2939.868,
+      "investedValue": 49583.01,
+      "currentValueXls": 194526.66,
+      "id": 199
+    },
+    {
+      "amcName": "Sundaram Mutual Fund",
+      "schemeName": "SUNDARAM LARGE CAP FUND - REGULAR IDCW",
+      "units": 4151.749,
+      "investedValue": 27000,
+      "currentValueXls": 60971.34,
+      "id": 200
+    },
+    {
+      "amcName": "Sundaram Mutual Fund",
+      "schemeName": "SUNDARAM MID CAP FUND - REGULAR GROWTH",
+      "units": 358.474,
+      "investedValue": 157500,
+      "currentValueXls": 512446.72,
+      "id": 201
+    },
+    {
+      "amcName": "Nippon India Mutual Fund",
+      "schemeName": "NIPPON INDIA GROWTH MID CAP FUND - IDCW PLAN",
+      "units": 1724.3960000000002,
+      "investedValue": 75000,
+      "currentValueXls": 202426.84,
+      "id": 202
+    },
+    {
+      "amcName": "Nippon India Mutual Fund",
+      "schemeName": "NIPPON INDIA FLOATER FUND - GROWTH PLAN - GROWTH OPTION",
+      "units": 2314.001,
+      "investedValue": 45168.37,
+      "currentValueXls": 109181.05,
+      "id": 203
+    },
+    {
+      "amcName": "Nippon India Mutual Fund",
+      "schemeName": "NIPPON INDIA BANKING & FINANCIAL SERVICES FUND - GROWTH PLAN",
+      "units": 1419.828,
+      "investedValue": 126000,
+      "currentValueXls": 894006.34,
+      "id": 204
+    },
+    {
+      "amcName": "Nippon India Mutual Fund",
+      "schemeName": "NIPPON INDIA GROWTH MID CAP FUND - GROWTH PLAN GROWTH OPTION",
+      "units": 987.327,
+      "investedValue": 597500,
+      "currentValueXls": 4309739.91,
+      "id": 205
+    },
+    {
+      "amcName": "Nippon India Mutual Fund",
+      "schemeName": "NIPPON INDIA VISION LARGE & MID CAP FUND - IDCW PLAN",
+      "units": 1392.9,
+      "investedValue": 40039.61,
+      "currentValueXls": 84625.92,
+      "id": 206
+    },
+    {
+      "amcName": "Nippon India Mutual Fund",
+      "schemeName": "NIPPON INDIA PHARMA FUND - GROWTH  PLAN",
+      "units": 1504.36,
+      "investedValue": 307500,
+      "currentValueXls": 776028.92,
+      "id": 207
+    }
+  ],
+  "schemeCodes": [
+    {
+      "schemeNameNormalized": "aditya birla sun life dividend yield fund idcw regular plan",
+      "originalSchemeName": "Aditya Birla Sun Life Dividend Yield Fund - IDCW-Regular Plan",
+      "schemeCode": "101737",
+      "apiSchemeName": "Aditya Birla Sun Life Dividend Yield Fund -REGULAR - IDCW",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:16:59.457Z"
+    },
+    {
+      "schemeNameNormalized": "aditya birla sun life flexi cap fund growth regular plan",
+      "originalSchemeName": "Aditya Birla Sun Life Flexi Cap Fund - Growth-Regular Plan",
+      "schemeCode": "103166",
+      "apiSchemeName": "Aditya Birla Sun Life Flexi Cap Fund - Growth - Regular Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:16:59.745Z"
+    },
+    {
+      "schemeNameNormalized": "aditya birla sun life international equity fund growth regular plan",
+      "originalSchemeName": "Aditya Birla Sun Life International Equity Fund -Growth-Regular Plan",
+      "schemeCode": "106873",
+      "apiSchemeName": "Aditya Birla Sun Life International Equity Fund - Growth - Regular Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:00.311Z"
+    },
+    {
+      "schemeNameNormalized": "aditya birla sun life large cap fund growth regular plan",
+      "originalSchemeName": "Aditya Birla Sun Life Large Cap Fund -Growth-Regular Plan(formerly known as Aditya Birla Sun Life Frontline Equity Fund)",
+      "schemeCode": "103174",
+      "apiSchemeName": "Aditya Birla Sun Life Large Cap Fund-Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:25:47.081Z"
+    },
+    {
+      "schemeNameNormalized": "aditya birla sun life mnc fund growth regular plan",
+      "originalSchemeName": "Aditya Birla Sun Life MNC Fund - Growth-Regular Plan",
+      "schemeCode": "100064",
+      "apiSchemeName": "Aditya Birla Sun Life MNC Fund - Growth - Regular Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:00.814Z"
+    },
+    {
+      "schemeNameNormalized": "aditya birla sun life nifty 50 index fund idcw regular plan",
+      "originalSchemeName": "Aditya Birla Sun Life Nifty 50 Index Fund-IDCW-Regular Plan",
+      "schemeCode": "101313",
+      "apiSchemeName": "Aditya Birla Sun Life Nifty 50 Index Fund -REGULAR - IDCW",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:00.587Z"
+    },
+    {
+      "schemeNameNormalized": "aditya birla sun life unclaimed idcw",
+      "originalSchemeName": "Aditya Birla Sun Life Unclaimed IDCW (After 3 years)",
+      "schemeCode": "119525",
+      "apiSchemeName": "Aditya Birla Sun Life Arbitrage Fund-DIRECT - IDCW",
+      "score": 0.7266666666666666,
+      "updatedAt": "2026-04-29T05:17:01.149Z"
+    },
+    {
+      "schemeNameNormalized": "axis esg integration strategy fund regular growth",
+      "originalSchemeName": "Axis ESG Integration Strategy Fund - Regular Growth",
+      "schemeCode": "147929",
+      "apiSchemeName": "Axis ESG Integration Strategy Fund - Regular Plan - Growth Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:14.327Z"
+    },
+    {
+      "schemeNameNormalized": "axis mid cap fund regular growth",
+      "originalSchemeName": "Axis Mid Cap Fund - Regular Growth",
+      "schemeCode": "114564",
+      "apiSchemeName": "Axis Midcap Fund - Regular Plan - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T06:50:38.345Z"
+    },
+    {
+      "schemeNameNormalized": "bandhan flexi cap fund regular plan idcw",
+      "originalSchemeName": "Bandhan Flexi Cap Fund-Regular Plan-IDCW",
+      "schemeCode": "108595",
+      "apiSchemeName": "BANDHAN Flexi Cap Fund - Regular Plan - IDCW",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:04.413Z"
+    },
+    {
+      "schemeNameNormalized": "bandhan gilt fund regular plan growth",
+      "originalSchemeName": "Bandhan Gilt Fund-Regular Plan-Growth (Formerly known as Bandhan Government Securities Fund investment Plan-Regular Plan-Growth)",
+      "schemeCode": "111525",
+      "apiSchemeName": "Bandhan Gilt Fund - Regular Plan - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:04.676Z"
+    },
+    {
+      "schemeNameNormalized": "baroda bnp paribas large cap fund regular idcw payout",
+      "originalSchemeName": "BARODA BNP PARIBAS LARGE CAP FUND - REGULAR IDCW PAYOUT",
+      "schemeCode": "150186",
+      "apiSchemeName": "BARODA BNP PARIBAS LARGE CAP Fund - Regular Plan - IDCW Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:13.785Z"
+    },
+    {
+      "schemeNameNormalized": "canara robeco large cap fund regular growth",
+      "originalSchemeName": "Canara Robeco Large Cap Fund - Regular Growth",
+      "schemeCode": "113221",
+      "apiSchemeName": "CANARA ROBECO LARGE CAP FUND - REGULAR PLAN - GROWTH OPTION",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:13.509Z"
+    },
+    {
+      "schemeNameNormalized": "dsp flexi cap fund regular plan growth",
+      "originalSchemeName": "DSP Flexi Cap Fund - Regular Plan - Growth",
+      "schemeCode": "105875",
+      "apiSchemeName": "DSP Flexi Cap Fund - Regular Plan - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:01.957Z"
+    },
+    {
+      "schemeNameNormalized": "dsp flexi cap fund regular plan idcw",
+      "originalSchemeName": "DSP Flexi Cap Fund - Regular Plan - IDCW",
+      "schemeCode": "100080",
+      "apiSchemeName": "DSP Flexi Cap Fund - Regular Plan - IDCW",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:02.237Z"
+    },
+    {
+      "schemeNameNormalized": "dsp mid cap fund regular plan growth",
+      "originalSchemeName": "DSP Mid Cap Fund - Regular Plan - Growth (formerly DSP Small and Mid Cap Fund)",
+      "schemeCode": "104481",
+      "apiSchemeName": "DSP Midcap Fund - Regular Plan - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:34:44.082Z"
+    },
+    {
+      "schemeNameNormalized": "dsp regular savings fund regular plan growth",
+      "originalSchemeName": "DSP Regular Savings Fund - Regular Plan - Growth (formerly DSP MIP Fund)",
+      "schemeCode": "102448",
+      "apiSchemeName": "DSP Regular Savings Fund- Regular Plan - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:01.424Z"
+    },
+    {
+      "schemeNameNormalized": "edelweiss large mid cap fund regular plan idcw",
+      "originalSchemeName": "Edelweiss Large & Mid Cap Fund - Regular Plan IDCW",
+      "schemeCode": "140173",
+      "apiSchemeName": "Edelweiss Large and Mid Cap Fund - Regular Plan - IDCW Option",
+      "score": 0.9400000000000001,
+      "updatedAt": "2026-04-29T05:17:14.607Z"
+    },
+    {
+      "schemeNameNormalized": "franklin india dynamic asset allocation active fund of funds growth",
+      "originalSchemeName": "Franklin India Dynamic Asset Allocation Active Fund of funds - Growth",
+      "schemeCode": "101656",
+      "apiSchemeName": "Franklin India Dynamic Asset Allocation Active Fund of Funds-Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:03.176Z"
+    },
+    {
+      "schemeNameNormalized": "franklin india large and mid cap fund idcw",
+      "originalSchemeName": "Franklin India Large and Mid Cap Fund - IDCW (erstwhile Franklin India Equity Advantage Fund - IDCW)",
+      "schemeCode": "102884",
+      "apiSchemeName": "Franklin India Large & Mid Cap Fund - IDCW",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:44:14.298Z"
+    },
+    {
+      "schemeNameNormalized": "franklin india large cap fund growth",
+      "originalSchemeName": "Franklin India Large Cap FUND -  Growth (erstwhile Franklin India BLUCHIP FUND - Growth)",
+      "schemeCode": "100471",
+      "apiSchemeName": "Franklin India Large Cap Fund-Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:03.835Z"
+    },
+    {
+      "schemeNameNormalized": "franklin india large cap fund idcw",
+      "originalSchemeName": "Franklin India Large Cap FUND - IDCW (erstwhile Franklin India BLUCHIP FUND - IDCW)",
+      "schemeCode": "100470",
+      "apiSchemeName": "Franklin India Large Cap Fund - IDCW",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:02.571Z"
+    },
+    {
+      "schemeNameNormalized": "franklin india money market fund growth",
+      "originalSchemeName": "Franklin India Money Market Fund - Growth",
+      "schemeCode": "101357",
+      "apiSchemeName": "Franklin India Money Market Fund - Growth Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:45:37.005Z"
+    },
+    {
+      "schemeNameNormalized": "franklin india overnight fund unclaimed idcw investor education direct plan growth",
+      "originalSchemeName": "Franklin India Overnight Fund - Unclaimed IDCW Investor Education - Direct Plan - Growth",
+      "schemeCode": "149445",
+      "apiSchemeName": "Franklin India Overnight Fund- Unclaimed IDCW Investor Education Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:41:07.326Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc arbitrage fund wholesale plan growth direct plan",
+      "originalSchemeName": "HDFC Arbitrage Fund - Wholesale Plan - Growth - Direct Plan",
+      "schemeCode": "129052",
+      "apiSchemeName": "HDFC ARBITRAGE FUND - Wholesale Growth Option - Direct Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:05.684Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc balanced advantage fund direct plan growth option",
+      "originalSchemeName": "HDFC Balanced Advantage Fund - Direct Plan - Growth Option (formerly HDFC Growth Fund, erstwhile HDFC Prudence Fund merged)",
+      "schemeCode": "118968",
+      "apiSchemeName": "HDFC Balanced Advantage Fund - Growth Plan - Direct Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:05.888Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc balanced advantage fund regular plan growth",
+      "originalSchemeName": "HDFC Balanced Advantage Fund - Regular Plan - Growth (formerly HDFC Growth Fund, erstwhile HDFC Prudence Fund merged)",
+      "schemeCode": "100119",
+      "apiSchemeName": "HDFC Balanced Advantage Fund - Growth Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:06.164Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc dynamic debt fund regular plan growth",
+      "originalSchemeName": "HDFC Dynamic Debt Fund - Regular Plan- Growth (formerly HDFC High Interest Fund - Dynamic Plan)",
+      "schemeCode": "101872",
+      "apiSchemeName": "HDFC Dynamic Debt Fund - Growth Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:04.946Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc elss tax saver regular plan growth",
+      "originalSchemeName": "HDFC ELSS Tax saver - Regular Plan - Growth",
+      "schemeCode": "101979",
+      "apiSchemeName": "HDFC ELSS Tax saver - Growth Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:07.633Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc elss tax saver regular plan idcw",
+      "originalSchemeName": "HDFC ELSS Tax saver - Regular Plan - IDCW",
+      "schemeCode": "101980",
+      "apiSchemeName": "HDFC ELSS Tax saver - IDCW Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:06.834Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc equity savings fund direct plan growth option",
+      "originalSchemeName": "HDFC Equity Savings Fund - Direct Plan - Growth Option",
+      "schemeCode": "119128",
+      "apiSchemeName": "HDFC Equity Savings Fund - Growth Option - Direct Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:06.362Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc flexi cap fund regular plan growth",
+      "originalSchemeName": "HDFC Flexi Cap Fund - Regular Plan - Growth",
+      "schemeCode": "101762",
+      "apiSchemeName": "HDFC Flexi Cap Fund - Growth Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:07.098Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc flexi cap fund regular plan idcw",
+      "originalSchemeName": "HDFC Flexi Cap Fund - Regular Plan - IDCW",
+      "schemeCode": "101763",
+      "apiSchemeName": "HDFC Flexi Cap Fund - IDCW Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:05.479Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc focused fund regular plan growth",
+      "originalSchemeName": "HDFC Focused Fund - Regular Plan - Growth (formerly HDFC Core and Satellite Fund)",
+      "schemeCode": "102760",
+      "apiSchemeName": "HDFC Focused Fund - GROWTH PLAN",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:07.874Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc focused fund regular plan idcw",
+      "originalSchemeName": "HDFC Focused Fund - Regular Plan - IDCW (formerly HDFC Core and Satellite Fund)",
+      "schemeCode": "102761",
+      "apiSchemeName": "HDFC Focused Fund - IDCW PLAN",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:08.059Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc large and mid cap fund regular plan idcw",
+      "originalSchemeName": "HDFC Large and Mid Cap Fund - Regular Plan -  IDCW (formerly HDFC Large Cap Fund)",
+      "schemeCode": "130497",
+      "apiSchemeName": "HDFC Large and Mid Cap Fund - IDCW Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:08.345Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc mid cap fund regular plan growth",
+      "originalSchemeName": "HDFC Mid Cap Fund - Regular Plan - Growth",
+      "schemeCode": "105758",
+      "apiSchemeName": "HDFC Mid Cap Fund - Growth Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:07.364Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc multi cap fund regular growth",
+      "originalSchemeName": "HDFC Multi Cap Fund Regular Growth",
+      "schemeCode": "149366",
+      "apiSchemeName": "HDFC Multi Cap Fund - Growth Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:05.215Z"
+    },
+    {
+      "schemeNameNormalized": "hdfc pharma and healthcare fund direct growth",
+      "originalSchemeName": "HDFC Pharma and Healthcare Fund Direct Growth",
+      "schemeCode": "152082",
+      "apiSchemeName": "HDFC Pharma and Healthcare Fund - Growth Option - Direct Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:06.564Z"
+    },
+    {
+      "schemeNameNormalized": "hsbc arbitrage fund direct growth",
+      "originalSchemeName": "HSBC Arbitrage Fund - Direct Growth (Formerly known as L&T Arbitrage Opportunities Fund Direct Growth)",
+      "schemeCode": "151138",
+      "apiSchemeName": "HSBC Arbitrage Fund - Direct Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:10.408Z"
+    },
+    {
+      "schemeNameNormalized": "hsbc gilt fund regular growth",
+      "originalSchemeName": "HSBC Gilt Fund - Regular Growth (Formerly known as L&T Gilt Fund - Growth Plan)",
+      "schemeCode": "151013",
+      "apiSchemeName": "HSBC Gilt Fund - Regular Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:10.205Z"
+    },
+    {
+      "schemeNameNormalized": "hsbc liquid fund direct growth",
+      "originalSchemeName": "HSBC Liquid Fund - Direct Growth (Formerly known as HSBC Cash Fund - Growth Direct Plan)",
+      "schemeCode": "120038",
+      "apiSchemeName": "HSBC Liquid Fund -  Growth Direct",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:10.601Z"
+    },
+    {
+      "schemeNameNormalized": "hsbc multi asset allocation fund direct growth",
+      "originalSchemeName": "HSBC Multi Asset Allocation Fund - Direct Growth",
+      "schemeCode": "152380",
+      "apiSchemeName": "HSBC Multi Asset Allocation Fund - Direct - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:10.804Z"
+    },
+    {
+      "schemeNameNormalized": "hsbc value fund direct growth",
+      "originalSchemeName": "HSBC Value Fund - Direct Growth (Formerly known as L&T India Value Fund Direct Plan - Growth)",
+      "schemeCode": "151113",
+      "apiSchemeName": "HSBC Value Fund - Direct Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:10.995Z"
+    },
+    {
+      "schemeNameNormalized": "icici prudential dividend yield equity fund direct plan growth",
+      "originalSchemeName": "ICICI Prudential Dividend Yield Equity Fund Direct Plan Growth",
+      "schemeCode": "129312",
+      "apiSchemeName": "ICICI Prudential Dividend Yield Equity Fund Direct Plan Growth Option",
+      "score": 0.88,
+      "updatedAt": "2026-04-29T05:17:11.535Z"
+    },
+    {
+      "schemeNameNormalized": "icici prudential equity arbitrage fund direct plan growth",
+      "originalSchemeName": "ICICI Prudential Equity Arbitrage Fund - Direct Plan - Growth",
+      "schemeCode": "120364",
+      "apiSchemeName": "ICICI Prudential Equity Arbitrage Fund - Direct Plan - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:12.243Z"
+    },
+    {
+      "schemeNameNormalized": "icici prudential equity debt fund direct plan growth",
+      "originalSchemeName": "ICICI Prudential Equity & Debt Fund - Direct Plan - Growth (formerly ICICI Prudential Balanced Fund)",
+      "schemeCode": "120251",
+      "apiSchemeName": "ICICI Prudential Equity & Debt Fund - Direct Plan - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:11.739Z"
+    },
+    {
+      "schemeNameNormalized": "icici prudential equity debt fund growth",
+      "originalSchemeName": "ICICI Prudential Equity & Debt Fund - Growth (formerly ICICI Prudential Balanced Fund)",
+      "schemeCode": "100356",
+      "apiSchemeName": "ICICI Prudential Equity & Debt Fund - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:12.047Z"
+    },
+    {
+      "schemeNameNormalized": "icici prudential liquid fund direct plan growth",
+      "originalSchemeName": "ICICI Prudential Liquid Fund - Direct Plan - Growth (formerly ICICI Prudential Liquid Plan)",
+      "schemeCode": "120197",
+      "apiSchemeName": "ICICI Prudential Liquid Fund - Direct Plan - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:12.420Z"
+    },
+    {
+      "schemeNameNormalized": "icici prudential technology fund idcw",
+      "originalSchemeName": "ICICI Prudential Technology Fund - IDCW",
+      "schemeCode": "115294",
+      "apiSchemeName": "ICICI Prudential Technology Fund - IDCW",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:11.319Z"
+    },
+    {
+      "schemeNameNormalized": "jioblackrock flexi cap fund direct growth",
+      "originalSchemeName": "JioBlackRock Flexi Cap Fund - Direct - Growth",
+      "schemeCode": "153859",
+      "apiSchemeName": "JioBlackRock Flexi Cap Fund - Direct Plan - Growth Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:08.545Z"
+    },
+    {
+      "schemeNameNormalized": "kotak bond fund growth",
+      "originalSchemeName": "Kotak Bond Fund (Short Term) - Growth (Regular Plan)",
+      "schemeCode": "101373",
+      "apiSchemeName": "Kotak Bond Short Term Plan-(Growth)",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:48:22.108Z"
+    },
+    {
+      "schemeNameNormalized": "kotak large cap fund idcw",
+      "originalSchemeName": "Kotak Large Cap Fund-IDCW (Regular Plan) (Erstwhile Kotak Bluechip Scheme)",
+      "schemeCode": "114457",
+      "apiSchemeName": "Kotak Large Cap Fund - Payout of Income Distribution cumcapital withdrawal option",
+      "score": 0.74,
+      "updatedAt": "2026-04-29T05:17:09.479Z"
+    },
+    {
+      "schemeNameNormalized": "kotak small cap fund idcw",
+      "originalSchemeName": "Kotak Small Cap Fund-IDCW (Regular Plan)",
+      "schemeCode": "102874",
+      "apiSchemeName": "Kotak-Small Cap Fund - Payout of Income Distribution cum capital withdrawal option",
+      "score": 0.74,
+      "updatedAt": "2026-04-29T05:17:08.861Z"
+    },
+    {
+      "schemeNameNormalized": "mahindra manulife mid cap fund regular growth",
+      "originalSchemeName": "Mahindra Manulife Mid Cap Fund - Regular - Growth",
+      "schemeCode": "142109",
+      "apiSchemeName": "Mahindra Manulife Mid Cap Fund - Regular Plan - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:09.949Z"
+    },
+    {
+      "schemeNameNormalized": "nippon india banking financial services fund growth plan",
+      "originalSchemeName": "NIPPON INDIA BANKING & FINANCIAL SERVICES FUND - GROWTH PLAN",
+      "schemeCode": "101862",
+      "apiSchemeName": "Nippon India Banking & Financial Services Fund-Growth Plan-Growth Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T06:58:33.226Z"
+    },
+    {
+      "schemeNameNormalized": "nippon india floater fund growth plan growth option",
+      "originalSchemeName": "NIPPON INDIA FLOATER FUND - GROWTH PLAN - GROWTH OPTION",
+      "schemeCode": "102673",
+      "apiSchemeName": "Nippon India Floater Fund - Growth Plan-Growth Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:16.193Z"
+    },
+    {
+      "schemeNameNormalized": "nippon india growth mid cap fund growth plan growth option",
+      "originalSchemeName": "NIPPON INDIA GROWTH MID CAP FUND - GROWTH PLAN GROWTH OPTION",
+      "schemeCode": "100377",
+      "apiSchemeName": "Nippon India Growth Mid Cap Fund-Growth Plan-Growth Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:16.855Z"
+    },
+    {
+      "schemeNameNormalized": "nippon india growth mid cap fund idcw plan",
+      "originalSchemeName": "NIPPON INDIA GROWTH MID CAP FUND - IDCW PLAN",
+      "schemeCode": "100375",
+      "apiSchemeName": "NIPPON INDIA GROWTH MID CAP FUND - IDCW Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T06:55:40.450Z"
+    },
+    {
+      "schemeNameNormalized": "nippon india pharma fund growth plan",
+      "originalSchemeName": "NIPPON INDIA PHARMA FUND - GROWTH  PLAN",
+      "schemeCode": "102431",
+      "apiSchemeName": "Nippon India Pharma Fund-Growth Plan-Growth Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T06:59:46.543Z"
+    },
+    {
+      "schemeNameNormalized": "nippon india vision large mid cap fund idcw plan",
+      "originalSchemeName": "NIPPON INDIA VISION LARGE & MID CAP FUND - IDCW PLAN",
+      "schemeCode": "100378",
+      "apiSchemeName": "Nippon India Vision Large & Midcap Fund - IDCW Option",
+      "score": 1,
+      "updatedAt": "2026-04-29T07:20:22.217Z"
+    },
+    {
+      "schemeNameNormalized": "pgim india flexi cap fund regular plan growth",
+      "originalSchemeName": "PGIM India Flexi Cap Fund - Regular Plan - Growth",
+      "schemeCode": "133836",
+      "apiSchemeName": "PGIM India Flexi Cap Fund - Regular Plan - Growth Option",
+      "score": 0.88,
+      "updatedAt": "2026-04-29T05:17:12.682Z"
+    },
+    {
+      "schemeNameNormalized": "pgim india midcap fund regular plan growth",
+      "originalSchemeName": "PGIM India Midcap Fund - Regular Plan - Growth",
+      "schemeCode": "125305",
+      "apiSchemeName": "PGIM India Midcap Fund - Regular Plan - Growth Option",
+      "score": 0.88,
+      "updatedAt": "2026-04-29T05:17:12.873Z"
+    },
+    {
+      "schemeNameNormalized": "quant momentum fund direct plan growth",
+      "originalSchemeName": "quant Momentum Fund - Direct Plan Growth",
+      "schemeCode": "152189",
+      "apiSchemeName": "quant Momentum Fund - Growth Option - Direct Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:13.040Z"
+    },
+    {
+      "schemeNameNormalized": "quant value fund direct plan growth growth",
+      "originalSchemeName": "quant Value Fund - Direct Plan Growth Growth",
+      "schemeCode": "149335",
+      "apiSchemeName": "Quant Value Fund - Growth Option  - Direct Plan",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:13.240Z"
+    },
+    {
+      "schemeNameNormalized": "sbi contra fund direct plan growth",
+      "originalSchemeName": "SBI Contra Fund - Direct Plan - Growth",
+      "schemeCode": "119835",
+      "apiSchemeName": "SBI CONTRA FUND - DIRECT PLAN - GROWTH",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:09.675Z"
+    },
+    {
+      "schemeNameNormalized": "sundaram large cap fund regular idcw",
+      "originalSchemeName": "SUNDARAM LARGE CAP FUND - REGULAR IDCW",
+      "schemeCode": "148505",
+      "apiSchemeName": "Sundaram Large Cap Fund (Formerly Known as Sundaram Blue Chip Fund)  Regular Plan - Payout of Income Distribution cum Capital Withdrawal (IDCW)",
+      "score": 0.74,
+      "updatedAt": "2026-04-29T05:17:15.150Z"
+    },
+    {
+      "schemeNameNormalized": "sundaram mid cap fund regular growth",
+      "originalSchemeName": "SUNDARAM MID CAP FUND - REGULAR GROWTH",
+      "schemeCode": "101539",
+      "apiSchemeName": "Sundaram Mid Cap Fund Regular Plan - Growth",
+      "score": 1,
+      "updatedAt": "2026-04-29T05:17:15.432Z"
+    },
+    {
+      "schemeNameNormalized": "sundaram mid cap fund regular idcw payout",
+      "originalSchemeName": "SUNDARAM MID CAP FUND REGULAR IDCW PAYOUT",
+      "schemeCode": "101538",
+      "apiSchemeName": "Sundaram Mid Cap Fund Regular Plan - Income Distribution cum Capital Withdrawal (IDCW)",
+      "score": 0.74,
+      "updatedAt": "2026-04-29T05:17:14.880Z"
+    }
+  ],
+  "navSnapshots": [
+    {
+      "schemeCode": "100033",
+      "apiSchemeName": "Aditya Birla Sun Life Large & Mid Cap Fund - Regular Growth",
+      "latest": {
+        "nav": 908.49,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 913.39,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 830.27,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 920.37,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 844.68,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.5364630661601263,
+      "pctVs1Month": 9.42103171257543,
+      "pctVsJan1": -1.2907852276801717,
+      "pctVs1Year": 7.554340105128576,
+      "updatedAt": "2026-04-29T05:17:21.355Z"
+    },
+    {
+      "schemeCode": "100064",
+      "apiSchemeName": "Aditya Birla Sun Life MNC Fund - Growth - Regular Plan",
+      "latest": {
+        "nav": 1273.44,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 1280.57,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 1162.26,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 1334.78,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 1227.28,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.5567833074333993,
+      "pctVs1Month": 9.565845852046879,
+      "pctVsJan1": -4.595513867453806,
+      "pctVs1Year": 3.76116289681247,
+      "updatedAt": "2026-04-29T07:20:43.674Z"
+    },
+    {
+      "schemeCode": "100080",
+      "apiSchemeName": "DSP Flexi Cap Fund - Regular Plan - IDCW",
+      "latest": {
+        "nav": 56.461,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 56.636,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 52.488,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 65.013,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 61.06,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.30899074793418363,
+      "pctVs1Month": 7.56934918457552,
+      "pctVsJan1": -13.154292218479391,
+      "pctVs1Year": -7.5319358008516275,
+      "updatedAt": "2026-04-29T07:20:44.200Z"
+    },
+    {
+      "schemeCode": "100119",
+      "apiSchemeName": "HDFC Balanced Advantage Fund - Growth Plan",
+      "latest": {
+        "nav": 516.075,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 517.934,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 491.593,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 535.466,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 502.917,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.3589260407696586,
+      "pctVs1Month": 4.980136006818654,
+      "pctVsJan1": -3.6213316998651575,
+      "pctVs1Year": 2.6163362940604658,
+      "updatedAt": "2026-04-29T07:20:45.545Z"
+    },
+    {
+      "schemeCode": "100299",
+      "apiSchemeName": "Kotak Bond Fund - Regular Plan Growth",
+      "latest": {
+        "nav": 77.8458,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 77.9296,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 77.0304,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 77.7278,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 76.6023,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.10753295281895012,
+      "pctVs1Month": 1.0585431206380815,
+      "pctVsJan1": 0.1518118356623949,
+      "pctVs1Year": 1.6233194042476498,
+      "updatedAt": "2026-04-29T05:45:49.264Z"
+    },
+    {
+      "schemeCode": "100356",
+      "apiSchemeName": "ICICI Prudential Equity & Debt Fund - Growth",
+      "latest": {
+        "nav": 400.77,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 402.19,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 381.43,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 411.66,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 381.38,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.35306695840274893,
+      "pctVs1Month": 5.070392994782784,
+      "pctVsJan1": -2.6453869698294814,
+      "pctVs1Year": 5.084168021395979,
+      "updatedAt": "2026-04-29T07:20:48.334Z"
+    },
+    {
+      "schemeCode": "100375",
+      "apiSchemeName": "NIPPON INDIA GROWTH MID CAP FUND - IDCW Option",
+      "latest": {
+        "nav": 117.39,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 117.6727,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 105.3446,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 123.4641,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 111.7525,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.24024263911680915,
+      "pctVs1Month": 11.434283295014648,
+      "pctVsJan1": -4.919729702804298,
+      "pctVs1Year": 5.044629874052037,
+      "updatedAt": "2026-04-29T07:20:49.616Z"
+    },
+    {
+      "schemeCode": "100377",
+      "apiSchemeName": "Nippon India Growth Mid Cap Fund-Growth Plan-Growth Option",
+      "latest": {
+        "nav": 4365.0583,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 4375.572,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 3917.1541,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 4250.6175,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 3847.4156,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.24028172773754897,
+      "pctVs1Month": 11.4344288880542,
+      "pctVsJan1": 2.6923335256583165,
+      "pctVs1Year": 13.454296437327953,
+      "updatedAt": "2026-04-29T07:20:49.933Z"
+    },
+    {
+      "schemeCode": "100378",
+      "apiSchemeName": "Nippon India Vision Large & Midcap Fund - IDCW Option",
+      "latest": {
+        "nav": 60.7552,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 60.9413,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 55.8176,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 67.713,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 62.7847,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.30537582887138304,
+      "pctVs1Month": 8.845955397580697,
+      "pctVsJan1": -10.27542717055808,
+      "pctVs1Year": -3.232475427930688,
+      "updatedAt": "2026-04-29T07:20:50.049Z"
+    },
+    {
+      "schemeCode": "100380",
+      "apiSchemeName": "Nippon India Vision Large & Midcap Fund-GROWTH PLAN-Growth Option",
+      "latest": {
+        "nav": 1461.8025,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 1466.2809,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 1343.0027,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 1506.6381,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 1396.9813,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.3054257884693148,
+      "pctVs1Month": 8.84583478499336,
+      "pctVsJan1": -2.975870582324972,
+      "pctVs1Year": 4.640090744235452,
+      "updatedAt": "2026-04-29T07:19:10.708Z"
+    },
+    {
+      "schemeCode": "100470",
+      "apiSchemeName": "Franklin India Large Cap Fund - IDCW",
+      "latest": {
+        "nav": 41.5931,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 41.8243,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 39.6848,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 49.3355,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 45.3825,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.5527886898286432,
+      "pctVs1Month": 4.80864209974599,
+      "pctVsJan1": -15.693364818437033,
+      "pctVs1Year": -8.349914614664245,
+      "updatedAt": "2026-04-29T07:20:44.305Z"
+    },
+    {
+      "schemeCode": "100471",
+      "apiSchemeName": "Franklin India Large Cap Fund-Growth",
+      "latest": {
+        "nav": 990.5193,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 996.0254,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 945.0738,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 1069.7701,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 984.056,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.5528071874472223,
+      "pctVs1Month": 4.80867208465625,
+      "pctVsJan1": -7.408208548733968,
+      "pctVs1Year": 0.6568020519157449,
+      "updatedAt": "2026-04-29T07:20:44.693Z"
+    },
+    {
+      "schemeCode": "101313",
+      "apiSchemeName": "Aditya Birla Sun Life Nifty 50 Index Fund -REGULAR - IDCW",
+      "latest": {
+        "nav": 24.8407,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 24.9415,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 23.6365,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 27.0749,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 25.0234,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.4041457009402125,
+      "pctVs1Month": 5.094662915406242,
+      "pctVsJan1": -8.251923368138023,
+      "pctVs1Year": -0.7301166108522444,
+      "updatedAt": "2026-04-29T07:20:43.572Z"
+    },
+    {
+      "schemeCode": "101357",
+      "apiSchemeName": "Franklin India Money Market Fund - Growth Option",
+      "latest": {
+        "nav": 52.7938,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 52.7867,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 52.3879,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 51.8168,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 49.6361,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0.013450357760561108,
+      "pctVs1Month": 0.7747972337123562,
+      "pctVsJan1": 1.8854888761945872,
+      "pctVs1Year": 6.361700455918169,
+      "updatedAt": "2026-04-29T07:20:44.798Z"
+    },
+    {
+      "schemeCode": "101373",
+      "apiSchemeName": "Kotak Bond Short Term Plan-(Growth)",
+      "latest": {
+        "nav": 54.1159,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 54.1348,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 53.7393,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 53.5811,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 51.704,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.03491284718886009,
+      "pctVs1Month": 0.7007906690262123,
+      "pctVsJan1": 0.9981131406410173,
+      "pctVs1Year": 4.66482283769148,
+      "updatedAt": "2026-04-29T07:20:47.033Z"
+    },
+    {
+      "schemeCode": "101538",
+      "apiSchemeName": "Sundaram Mid Cap Fund Regular Plan - Income Distribution cum Capital Withdrawal (IDCW)",
+      "latest": {
+        "nav": 66.1685,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 66.3636,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 60.0765,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 66.6303,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 63.3641,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.2939864624583517,
+      "pctVs1Month": 10.140404317828088,
+      "pctVsJan1": -0.693078074089432,
+      "pctVs1Year": 4.425849968673103,
+      "updatedAt": "2026-04-29T07:20:49.333Z"
+    },
+    {
+      "schemeCode": "101539",
+      "apiSchemeName": "Sundaram Mid Cap Fund Regular Plan - Growth",
+      "latest": {
+        "nav": 1429.5227,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 1433.7373,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 1297.9079,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 1439.4986,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 1276.1373,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.29395901187756074,
+      "pctVs1Month": 10.140534624991501,
+      "pctVsJan1": -0.6930121363091225,
+      "pctVs1Year": 12.01950605158237,
+      "updatedAt": "2026-04-29T07:20:49.500Z"
+    },
+    {
+      "schemeCode": "101656",
+      "apiSchemeName": "Franklin India Dynamic Asset Allocation Active Fund of Funds-Growth",
+      "latest": {
+        "nav": 163.8349,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 164.371,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 157.4999,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 168.1617,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 160.8156,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.32615242348103046,
+      "pctVs1Month": 4.022224776015736,
+      "pctVsJan1": -2.5729996782858353,
+      "pctVs1Year": 1.8774919846084683,
+      "updatedAt": "2026-04-29T07:20:44.472Z"
+    },
+    {
+      "schemeCode": "101737",
+      "apiSchemeName": "Aditya Birla Sun Life Dividend Yield Fund -REGULAR - IDCW",
+      "latest": {
+        "nav": 25.85,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 25.94,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 24.26,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 26.64,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 25.42,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.34695451040863473,
+      "pctVs1Month": 6.553998351195382,
+      "pctVsJan1": -2.965465465465462,
+      "pctVs1Year": 1.6915814319433504,
+      "updatedAt": "2026-04-29T07:20:43.084Z"
+    },
+    {
+      "schemeCode": "101762",
+      "apiSchemeName": "HDFC Flexi Cap Fund - Growth Plan",
+      "latest": {
+        "nav": 1953.406,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 1970.447,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 1859.705,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 2078.458,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 1920.147,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.8648291479040005,
+      "pctVs1Month": 5.038487286962181,
+      "pctVsJan1": -6.016575749906909,
+      "pctVs1Year": 1.7321069688935282,
+      "updatedAt": "2026-04-29T07:20:45.905Z"
+    },
+    {
+      "schemeCode": "101763",
+      "apiSchemeName": "HDFC Flexi Cap Fund - IDCW Plan",
+      "latest": {
+        "nav": 70.587,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 71.203,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 67.202,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 82.39,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 76.114,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.8651320871311596,
+      "pctVs1Month": 5.037052468676535,
+      "pctVsJan1": -14.325767690253668,
+      "pctVs1Year": -7.261476206742519,
+      "updatedAt": "2026-04-29T07:20:45.265Z"
+    },
+    {
+      "schemeCode": "101862",
+      "apiSchemeName": "Nippon India Banking & Financial Services Fund-Growth Plan-Growth Option",
+      "latest": {
+        "nav": 629.6582,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 635.3423,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 583.5018,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 661.6826,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 614.3336,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.8946515917482682,
+      "pctVs1Month": 7.9102412366165735,
+      "pctVsJan1": -4.8398431513840645,
+      "pctVs1Year": 2.4945078699911445,
+      "updatedAt": "2026-04-29T07:20:49.827Z"
+    },
+    {
+      "schemeCode": "101872",
+      "apiSchemeName": "HDFC Dynamic Debt Fund - Growth Option",
+      "latest": {
+        "nav": 90.5636,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 90.7472,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 89.5862,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 90.2894,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 89.8098,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.20232029197596468,
+      "pctVs1Month": 1.0910162502706764,
+      "pctVsJan1": 0.30369013416856616,
+      "pctVs1Year": 0.8393293382236664,
+      "updatedAt": "2026-04-29T07:20:45.099Z"
+    },
+    {
+      "schemeCode": "101979",
+      "apiSchemeName": "HDFC ELSS Tax saver - Growth Plan",
+      "latest": {
+        "nav": 1338.794,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 1348.733,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 1281.457,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 1460.591,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 1363.406,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.7369138294977472,
+      "pctVs1Month": 4.4743600448551915,
+      "pctVsJan1": -8.338884739122712,
+      "pctVs1Year": -1.8051849559118747,
+      "updatedAt": "2026-04-29T07:20:46.161Z"
+    },
+    {
+      "schemeCode": "101980",
+      "apiSchemeName": "HDFC ELSS Tax saver - IDCW Plan",
+      "latest": {
+        "nav": 64.976,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 65.459,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 62.194,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 78.063,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 72.868,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.7378664507554409,
+      "pctVs1Month": 4.473100299064212,
+      "pctVsJan1": -16.76466443769776,
+      "pctVs1Year": -10.830542899489483,
+      "updatedAt": "2026-04-29T07:20:45.799Z"
+    },
+    {
+      "schemeCode": "102431",
+      "apiSchemeName": "Nippon India Pharma Fund-Growth Plan-Growth Option",
+      "latest": {
+        "nav": 515.8532,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 517.705,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 495.6005,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 509.1922,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 499.684,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.3576940535633277,
+      "pctVs1Month": 4.086497087876224,
+      "pctVsJan1": 1.3081504390679985,
+      "pctVs1Year": 3.23588507937016,
+      "updatedAt": "2026-04-29T07:20:50.158Z"
+    },
+    {
+      "schemeCode": "102448",
+      "apiSchemeName": "DSP Regular Savings Fund- Regular Plan - Growth",
+      "latest": {
+        "nav": 59.8321,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 59.9387,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 58.5593,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 60.1056,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 57.9884,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.17784836841639917,
+      "pctVs1Month": 2.1735232490825482,
+      "pctVsJan1": -0.4550324761752742,
+      "pctVs1Year": 3.1794289892461225,
+      "updatedAt": "2026-04-29T07:20:43.884Z"
+    },
+    {
+      "schemeCode": "102673",
+      "apiSchemeName": "Nippon India Floater Fund - Growth Plan-Growth Option",
+      "latest": {
+        "nav": 47.1828,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 47.1937,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 46.8603,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 46.6249,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 44.7231,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.023096303108252725,
+      "pctVs1Month": 0.6882158244825534,
+      "pctVsJan1": 1.1965709309832377,
+      "pctVs1Year": 5.499842363342429,
+      "updatedAt": "2026-04-29T07:20:49.720Z"
+    },
+    {
+      "schemeCode": "102760",
+      "apiSchemeName": "HDFC Focused Fund - GROWTH PLAN",
+      "latest": {
+        "nav": 224.066,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 226.196,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 213.653,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 239.659,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 221.532,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.9416612141682416,
+      "pctVs1Month": 4.873790679279024,
+      "pctVsJan1": -6.506327740664856,
+      "pctVs1Year": 1.143852806817973,
+      "updatedAt": "2026-04-29T07:20:46.260Z"
+    },
+    {
+      "schemeCode": "102761",
+      "apiSchemeName": "HDFC Focused Fund - IDCW PLAN",
+      "latest": {
+        "nav": 22.781,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 22.997,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 21.722,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 26.609,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 24.596,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.9392529460364443,
+      "pctVs1Month": 4.875241690452064,
+      "pctVsJan1": -14.386109962794553,
+      "pctVs1Year": -7.379248658318431,
+      "updatedAt": "2026-04-29T07:20:46.382Z"
+    },
+    {
+      "schemeCode": "102874",
+      "apiSchemeName": "Kotak-Small Cap Fund - Payout of Income Distribution cum capital withdrawal option",
+      "latest": {
+        "nav": 109.051,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 109.876,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 97.248,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 109.078,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 104.665,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.7508464086788769,
+      "pctVs1Month": 12.137010529779529,
+      "pctVsJan1": -0.024752929096610702,
+      "pctVs1Year": 4.190512587780056,
+      "updatedAt": "2026-04-29T07:20:46.923Z"
+    },
+    {
+      "schemeCode": "102884",
+      "apiSchemeName": "Franklin India Large & Mid Cap Fund - IDCW",
+      "latest": {
+        "nav": 19.0562,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 19.1515,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 17.8354,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 22.4202,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 20.4,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.4976111531733711,
+      "pctVs1Month": 6.84481424582572,
+      "pctVsJan1": -15.004326455607,
+      "pctVs1Year": -6.587254901960775,
+      "updatedAt": "2026-04-29T07:20:44.585Z"
+    },
+    {
+      "schemeCode": "103166",
+      "apiSchemeName": "Aditya Birla Sun Life Flexi Cap Fund - Growth - Regular Plan",
+      "latest": {
+        "nav": 1829.99,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 1833.04,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 1696.08,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 1895.79,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 1709.66,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.1663902588050427,
+      "pctVs1Month": 7.895264374321971,
+      "pctVsJan1": -3.4708485644507014,
+      "pctVs1Year": 7.038241521706065,
+      "updatedAt": "2026-04-29T07:20:43.191Z"
+    },
+    {
+      "schemeCode": "103174",
+      "apiSchemeName": "Aditya Birla Sun Life Large Cap Fund-Growth",
+      "latest": {
+        "nav": 505.52,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 508.14,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 476.79,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 549.57,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 507.41,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.5156059353721425,
+      "pctVs1Month": 6.025713626544173,
+      "pctVsJan1": -8.015357461287929,
+      "pctVs1Year": -0.3724798486431176,
+      "updatedAt": "2026-04-29T07:20:43.288Z"
+    },
+    {
+      "schemeCode": "103819",
+      "apiSchemeName": "DSP Large & Mid Cap Fund - Regular Plan - Growth",
+      "latest": {
+        "nav": 609.873,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 612.921,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 572.043,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 646.282,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 597.064,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.497290841723485,
+      "pctVs1Month": 6.613139222051497,
+      "pctVsJan1": -5.633608858052675,
+      "pctVs1Year": 2.1453311537791735,
+      "updatedAt": "2026-04-29T05:26:14.566Z"
+    },
+    {
+      "schemeCode": "104481",
+      "apiSchemeName": "DSP Midcap Fund - Regular Plan - Growth",
+      "latest": {
+        "nav": 149.125,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 149.437,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 136.058,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 149.611,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 134.101,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.20878363457511312,
+      "pctVs1Month": 9.603992414999492,
+      "pctVsJan1": -0.3248424246880176,
+      "pctVs1Year": 11.203495872514,
+      "updatedAt": "2026-04-29T07:20:43.991Z"
+    },
+    {
+      "schemeCode": "105758",
+      "apiSchemeName": "HDFC Mid Cap Fund - Growth Plan",
+      "latest": {
+        "nav": 198.994,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 199.378,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 184.472,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 203.735,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 178.233,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.19259898283661495,
+      "pctVs1Month": 7.872197406652496,
+      "pctVsJan1": -2.3270424816550976,
+      "pctVs1Year": 11.64823573636756,
+      "updatedAt": "2026-04-29T07:20:46.002Z"
+    },
+    {
+      "schemeCode": "105875",
+      "apiSchemeName": "DSP Flexi Cap Fund - Regular Plan - Growth",
+      "latest": {
+        "nav": 99.51,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 99.818,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 92.507,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 105.073,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 98.685,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.3085615820793772,
+      "pctVs1Month": 7.570237927940587,
+      "pctVsJan1": -5.294414359540498,
+      "pctVs1Year": 0.8359933120535065,
+      "updatedAt": "2026-04-29T07:20:44.099Z"
+    },
+    {
+      "schemeCode": "106255",
+      "apiSchemeName": "Reliance Vision Fund Institutional Dividend Plan",
+      "latest": {
+        "nav": 258.7308,
+        "date": "04-06-2018",
+        "dateObj": "2018-06-04T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 261.431,
+        "date": "01-06-2018",
+        "dateObj": "2018-06-01T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 268.6031,
+        "date": "04-05-2018",
+        "dateObj": "2018-05-04T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 339.7019,
+        "date": "01-01-2018",
+        "dateObj": "2018-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 290.5622,
+        "date": "02-06-2017",
+        "dateObj": "2017-06-02T00:00:00.000Z"
+      },
+      "pctVs1Day": -1.0328537931614825,
+      "pctVs1Month": -3.6754229567715324,
+      "pctVsJan1": -23.83592791208999,
+      "pctVs1Year": -10.95510703043962,
+      "updatedAt": "2026-04-29T07:00:01.927Z"
+    },
+    {
+      "schemeCode": "106873",
+      "apiSchemeName": "Aditya Birla Sun Life International Equity Fund - Growth - Regular Plan",
+      "latest": {
+        "nav": 50.2733,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 50.6725,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 45.6711,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 46.7589,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 36.5614,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.7878040357195727,
+      "pctVs1Month": 10.07683195718955,
+      "pctVsJan1": 7.5160023011662,
+      "pctVs1Year": 37.50376079690603,
+      "updatedAt": "2026-04-29T07:20:43.472Z"
+    },
+    {
+      "schemeCode": "108595",
+      "apiSchemeName": "BANDHAN Flexi Cap Fund - Regular Plan - IDCW",
+      "latest": {
+        "nav": 45.677,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 45.826,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 42.722,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 51.581,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 47.249,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.32514293196002464,
+      "pctVs1Month": 6.916811010720468,
+      "pctVsJan1": -11.44607510517439,
+      "pctVs1Year": -3.327054540836849,
+      "updatedAt": "2026-04-29T07:20:44.893Z"
+    },
+    {
+      "schemeCode": "111525",
+      "apiSchemeName": "Bandhan Gilt Fund - Regular Plan - Growth",
+      "latest": {
+        "nav": 35.9855,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 36.1507,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 35.7044,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 35.3984,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 35.6628,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.45697593684215987,
+      "pctVs1Month": 0.7872979240653872,
+      "pctVsJan1": 1.6585495389622114,
+      "pctVs1Year": 0.9048644525948739,
+      "updatedAt": "2026-04-29T07:20:44.991Z"
+    },
+    {
+      "schemeCode": "113221",
+      "apiSchemeName": "CANARA ROBECO LARGE CAP FUND - REGULAR PLAN - GROWTH OPTION",
+      "latest": {
+        "nav": 60.24,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 60.55,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 56.93,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 64.82,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 61.06,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.5119735755573827,
+      "pctVs1Month": 5.814157737572461,
+      "pctVsJan1": -7.065720456649169,
+      "pctVs1Year": -1.3429413691451035,
+      "updatedAt": "2026-04-29T07:20:48.924Z"
+    },
+    {
+      "schemeCode": "114457",
+      "apiSchemeName": "Kotak Large Cap Fund - Payout of Income Distribution cumcapital withdrawal option",
+      "latest": {
+        "nav": 71.787,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 72.187,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 67.963,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 76.851,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 70.811,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.5541163921481589,
+      "pctVs1Month": 5.626590939187517,
+      "pctVsJan1": -6.589374243666306,
+      "pctVs1Year": 1.3783169281608776,
+      "updatedAt": "2026-04-29T07:20:47.316Z"
+    },
+    {
+      "schemeCode": "114564",
+      "apiSchemeName": "Axis Midcap Fund - Regular Plan - Growth",
+      "latest": {
+        "nav": 115.34,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 115.55,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 104.84,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 113.35,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 103.78,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.1817395067070478,
+      "pctVs1Month": 10.01526135062953,
+      "pctVsJan1": 1.7556241729157558,
+      "pctVs1Year": 11.1389477741376,
+      "updatedAt": "2026-04-29T07:20:49.077Z"
+    },
+    {
+      "schemeCode": "115294",
+      "apiSchemeName": "ICICI Prudential Technology Fund - IDCW",
+      "latest": {
+        "nav": 52.61,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 52.73,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 51.38,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 65.67,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 63.92,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.22757443580503972,
+      "pctVs1Month": 2.393927598287265,
+      "pctVsJan1": -19.887315364702303,
+      "pctVs1Year": -17.69399249061327,
+      "updatedAt": "2026-04-29T07:20:48.034Z"
+    },
+    {
+      "schemeCode": "118506",
+      "apiSchemeName": "Franklin India Money Market Fund - Direct - Growth",
+      "latest": {
+        "nav": 54.6172,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 54.6097,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 54.19,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 53.5813,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 51.2724,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0.013733823844482362,
+      "pctVs1Month": 0.7883373316109967,
+      "pctVsJan1": 1.9333237528764664,
+      "pctVs1Year": 6.523587739212519,
+      "updatedAt": "2026-04-29T05:41:25.187Z"
+    },
+    {
+      "schemeCode": "118509",
+      "apiSchemeName": "Franklin India Large & Mid cap Fund - Direct - IDCW",
+      "latest": {
+        "nav": 21.9556,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 22.0651,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 20.5382,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 25.6961,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 23.2713,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.4962587978300601,
+      "pctVs1Month": 6.901286383422114,
+      "pctVsJan1": -14.556683699082743,
+      "pctVs1Year": -5.653745171090569,
+      "updatedAt": "2026-04-29T05:41:24.995Z"
+    },
+    {
+      "schemeCode": "118588",
+      "apiSchemeName": "Nippon India Banking & Financial Services Fund - Direct Plan Growth Plan - Bonus Option",
+      "latest": {
+        "nav": 692.6742,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 698.9118,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 641.4316,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 725.895,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 670.0355,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.8924731275104998,
+      "pctVs1Month": 7.9887863335701015,
+      "pctVsJan1": -4.576529663381059,
+      "pctVs1Year": 3.378731425424487,
+      "updatedAt": "2026-04-29T06:51:12.215Z"
+    },
+    {
+      "schemeCode": "118665",
+      "apiSchemeName": "Nippon India Growth Mid Cap Fund - Direct Plan Growth Plan - Bonus Option",
+      "latest": {
+        "nav": 799.3793,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 801.2885,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 716.8817,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 776.4723,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 698.8985,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.2382662424332878,
+      "pctVs1Month": 11.507840135966633,
+      "pctVsJan1": 2.9501374356818557,
+      "pctVs1Year": 14.377023273050368,
+      "updatedAt": "2026-04-29T06:51:11.980Z"
+    },
+    {
+      "schemeCode": "118676",
+      "apiSchemeName": "NIPPON INDIA VISION LARGE & MID CAP  FUND - DIRECT Plan - IDCW Option",
+      "latest": {
+        "nav": 69.2194,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 69.4302,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 63.5548,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 76.7821,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 70.8859,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.303614277360581,
+      "pctVs1Month": 8.912938125837847,
+      "pctVsJan1": -9.849561290977984,
+      "pctVs1Year": -2.3509611925644074,
+      "updatedAt": "2026-04-29T06:51:12.413Z"
+    },
+    {
+      "schemeCode": "118758",
+      "apiSchemeName": "Nippon India Pharma Fund - Direct Plan Growth Plan - Bonus Option",
+      "latest": {
+        "nav": 578.6001,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 580.6636,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 555.4694,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 569.5079,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 555.4348,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.355369270606936,
+      "pctVs1Month": 4.164171779759614,
+      "pctVsJan1": 1.596501119650851,
+      "pctVs1Year": 4.170660534773838,
+      "updatedAt": "2026-04-29T06:51:12.544Z"
+    },
+    {
+      "schemeCode": "118968",
+      "apiSchemeName": "HDFC Balanced Advantage Fund - Growth Plan - Direct Plan",
+      "latest": {
+        "nav": 560.361,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 562.371,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 533.511,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 580.319,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 542.81,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.35741530057559706,
+      "pctVs1Month": 5.032698482318082,
+      "pctVsJan1": -3.439142954133842,
+      "pctVs1Year": 3.233359739135249,
+      "updatedAt": "2026-04-29T07:20:45.440Z"
+    },
+    {
+      "schemeCode": "119128",
+      "apiSchemeName": "HDFC Equity Savings Fund - Growth Option - Direct Plan",
+      "latest": {
+        "nav": 75.261,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 75.392,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 73.74,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 76.349,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 71.968,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.17375848896434667,
+      "pctVs1Month": 2.062652563059399,
+      "pctVsJan1": -1.42503503647724,
+      "pctVs1Year": 4.575644730991541,
+      "updatedAt": "2026-04-29T07:20:45.638Z"
+    },
+    {
+      "schemeCode": "119525",
+      "apiSchemeName": "Aditya Birla Sun Life Arbitrage Fund-DIRECT - IDCW",
+      "latest": {
+        "nav": 11.4842,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 11.482,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 11.5569,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 11.5107,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 11.5435,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0.019160425013065686,
+      "pctVs1Month": -0.6290614265071177,
+      "pctVsJan1": -0.2302205773758365,
+      "pctVs1Year": -0.513709013730674,
+      "updatedAt": "2026-04-29T07:20:43.757Z"
+    },
+    {
+      "schemeCode": "119835",
+      "apiSchemeName": "SBI CONTRA FUND - DIRECT PLAN - GROWTH",
+      "latest": {
+        "nav": 410.0247,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 410.8779,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 388.3822,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 437.108,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 402.5791,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.2076529304691285,
+      "pctVs1Month": 5.57247474266328,
+      "pctVsJan1": -6.19602020553273,
+      "pctVs1Year": 1.849475047264007,
+      "updatedAt": "2026-04-29T07:20:47.440Z"
+    },
+    {
+      "schemeCode": "120038",
+      "apiSchemeName": "HSBC Liquid Fund -  Growth Direct",
+      "latest": {
+        "nav": 2762.4184,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 2762.1453,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 2742.2624,
+        "date": "28-03-2026",
+        "dateObj": "2026-03-28T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 2705.7246,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 2598.8648,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0.009887242354697479,
+      "pctVs1Month": 0.7350135421030441,
+      "pctVsJan1": 2.095327809785224,
+      "pctVs1Year": 6.293270815780804,
+      "updatedAt": "2026-04-29T07:20:47.793Z"
+    },
+    {
+      "schemeCode": "120197",
+      "apiSchemeName": "ICICI Prudential Liquid Fund - Direct Plan - Growth",
+      "latest": {
+        "nav": 410.2733,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 410.2302,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 407.2677,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 401.8816,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 386.0662,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0.010506296220995252,
+      "pctVs1Month": 0.7379912524366689,
+      "pctVsJan1": 2.0881025655317424,
+      "pctVs1Year": 6.270194075523842,
+      "updatedAt": "2026-04-29T07:20:48.517Z"
+    },
+    {
+      "schemeCode": "120251",
+      "apiSchemeName": "ICICI Prudential Equity & Debt Fund - Direct Plan - Growth",
+      "latest": {
+        "nav": 446.71,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 448.29,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 424.94,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 457.98,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 422.57,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.3524504227174465,
+      "pctVs1Month": 5.123076198992795,
+      "pctVsJan1": -2.460806148740128,
+      "pctVs1Year": 5.712662990747092,
+      "updatedAt": "2026-04-29T07:20:48.234Z"
+    },
+    {
+      "schemeCode": "120364",
+      "apiSchemeName": "ICICI Prudential Equity Arbitrage Fund - Direct Plan - Growth",
+      "latest": {
+        "nav": 38.7469,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 38.7322,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 38.5595,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 37.9464,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 36.3681,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0.03795291772736306,
+      "pctVs1Month": 0.4860021525175292,
+      "pctVsJan1": 2.109554529546939,
+      "pctVs1Year": 6.54089710488037,
+      "updatedAt": "2026-04-29T07:20:48.423Z"
+    },
+    {
+      "schemeCode": "125305",
+      "apiSchemeName": "PGIM India Midcap Fund - Regular Plan - Growth Option",
+      "latest": {
+        "nav": 63,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 63.17,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 57.26,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 64,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 59.77,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.2691150862751333,
+      "pctVs1Month": 10.024449877750614,
+      "pctVsJan1": -1.5625,
+      "pctVs1Year": 5.404048853940098,
+      "updatedAt": "2026-04-29T07:20:48.712Z"
+    },
+    {
+      "schemeCode": "129052",
+      "apiSchemeName": "HDFC ARBITRAGE FUND - Wholesale Growth Option - Direct Plan",
+      "latest": {
+        "nav": 21.246,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 21.234,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 21.133,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 20.805,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 19.945,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0.0565131393048738,
+      "pctVs1Month": 0.5347087493493566,
+      "pctVsJan1": 2.1196827685652435,
+      "pctVs1Year": 6.522938079719219,
+      "updatedAt": "2026-04-29T07:20:45.358Z"
+    },
+    {
+      "schemeCode": "129312",
+      "apiSchemeName": "ICICI Prudential Dividend Yield Equity Fund Direct Plan Growth Option",
+      "latest": {
+        "nav": 59.34,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 59.53,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 56.09,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 61.69,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 56.5,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.31916680665210434,
+      "pctVs1Month": 5.794259226243536,
+      "pctVsJan1": -3.809369427784073,
+      "pctVs1Year": 5.026548672566378,
+      "updatedAt": "2026-04-29T07:20:48.153Z"
+    },
+    {
+      "schemeCode": "130497",
+      "apiSchemeName": "HDFC Large and Mid Cap Fund - IDCW Option",
+      "latest": {
+        "nav": 34.266,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 34.406,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 31.568,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 38.556,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 35.284,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.406905772249028,
+      "pctVs1Month": 8.546629498226041,
+      "pctVsJan1": -11.126672891378773,
+      "pctVs1Year": -2.885160412651629,
+      "updatedAt": "2026-04-29T07:20:46.469Z"
+    },
+    {
+      "schemeCode": "133836",
+      "apiSchemeName": "PGIM India Flexi Cap Fund - Regular Plan - Growth Option",
+      "latest": {
+        "nav": 35.21,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 35.39,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 32.71,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 36.85,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 34.4,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.5086182537439946,
+      "pctVs1Month": 7.642922653622746,
+      "pctVsJan1": -4.450474898236094,
+      "pctVs1Year": 2.3546511627907045,
+      "updatedAt": "2026-04-29T07:20:48.599Z"
+    },
+    {
+      "schemeCode": "140173",
+      "apiSchemeName": "Edelweiss Large and Mid Cap Fund - Regular Plan - IDCW Option",
+      "latest": {
+        "nav": 33.435,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 33.539,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 30.805,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 34.511,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 30.993,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.3100867646620329,
+      "pctVs1Month": 8.537575068982317,
+      "pctVsJan1": -3.1178464837298265,
+      "pctVs1Year": 7.879198528700042,
+      "updatedAt": "2026-04-29T07:20:49.226Z"
+    },
+    {
+      "schemeCode": "142109",
+      "apiSchemeName": "Mahindra Manulife Mid Cap Fund - Regular Plan - Growth",
+      "latest": {
+        "nav": 34.9988,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 34.9844,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 31.5811,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 33.9436,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 31.0102,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0.041161203279181484,
+      "pctVs1Month": 10.821978968433662,
+      "pctVsJan1": 3.1086861735349203,
+      "pctVs1Year": 12.862219527768287,
+      "updatedAt": "2026-04-29T07:20:47.556Z"
+    },
+    {
+      "schemeCode": "145112",
+      "apiSchemeName": "Axis Large & Mid Cap Fund - Regular Plan - Growth",
+      "latest": {
+        "nav": 32.82,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 32.96,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 30.15,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 33.41,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 30.54,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.42475728155339976,
+      "pctVs1Month": 8.855721393034832,
+      "pctVsJan1": -1.7659383418138175,
+      "pctVs1Year": 7.46561886051081,
+      "updatedAt": "2026-04-29T05:48:40.437Z"
+    },
+    {
+      "schemeCode": "147214",
+      "apiSchemeName": "Franklin India Overnight Fund- Growth - Direct",
+      "latest": {
+        "nav": 1410.3983,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 1410.207,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 1403.91,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 1387.3836,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 1337.4381,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0.01356538437264569,
+      "pctVs1Month": 0.46215925522291174,
+      "pctVsJan1": 1.6588562817089794,
+      "pctVs1Year": 5.455220693952115,
+      "updatedAt": "2026-04-29T05:34:55.332Z"
+    },
+    {
+      "schemeCode": "147929",
+      "apiSchemeName": "Axis ESG Integration Strategy Fund - Regular Plan - Growth Option",
+      "latest": {
+        "nav": 20.38,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 20.5,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 19.3,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 22.02,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 20.65,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.5853658536585414,
+      "pctVs1Month": 5.595854922279784,
+      "pctVsJan1": -7.44777475022707,
+      "pctVs1Year": -1.3075060532687632,
+      "updatedAt": "2026-04-29T07:20:49.149Z"
+    },
+    {
+      "schemeCode": "148505",
+      "apiSchemeName": "Sundaram Large Cap Fund (Formerly Known as Sundaram Blue Chip Fund)  Regular Plan - Payout of Income Distribution cum Capital Withdrawal (IDCW)",
+      "latest": {
+        "nav": 14.6857,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 14.7832,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 14.0737,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 15.8586,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 16.106,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.6595324422317235,
+      "pctVs1Month": 4.348536632157855,
+      "pctVsJan1": -7.395987035425565,
+      "pctVs1Year": -8.81845275052776,
+      "updatedAt": "2026-04-29T07:20:49.396Z"
+    },
+    {
+      "schemeCode": "149335",
+      "apiSchemeName": "Quant Value Fund - Growth Option  - Direct Plan",
+      "latest": {
+        "nav": 23.0095,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 22.6767,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 19.618,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 21.2948,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 19.5368,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 1.4675856716365205,
+      "pctVs1Month": 17.28769497400347,
+      "pctVsJan1": 8.052200537220356,
+      "pctVs1Year": 17.775173006838376,
+      "updatedAt": "2026-04-29T07:20:48.831Z"
+    },
+    {
+      "schemeCode": "149366",
+      "apiSchemeName": "HDFC Multi Cap Fund - Growth Option",
+      "latest": {
+        "nav": 18.248,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 18.341,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 16.957,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 19.199,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 17.731,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.507060683714083,
+      "pctVs1Month": 7.613375007371589,
+      "pctVsJan1": -4.95338298869733,
+      "pctVs1Year": 2.915797191359762,
+      "updatedAt": "2026-04-29T07:20:45.163Z"
+    },
+    {
+      "schemeCode": "149445",
+      "apiSchemeName": "Franklin India Overnight Fund- Unclaimed IDCW Investor Education Plan",
+      "latest": {
+        "nav": 10,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 10,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 10,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 10,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 10,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0,
+      "pctVs1Month": 0,
+      "pctVsJan1": 0,
+      "pctVs1Year": 0,
+      "updatedAt": "2026-04-29T07:20:44.368Z"
+    },
+    {
+      "schemeCode": "150186",
+      "apiSchemeName": "BARODA BNP PARIBAS LARGE CAP Fund - Regular Plan - IDCW Option",
+      "latest": {
+        "nav": 21.2379,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 21.2561,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 21.6512,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 24.1601,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 22.6741,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.08562248013511517,
+      "pctVs1Month": -1.908901123263374,
+      "pctVsJan1": -12.095148612795477,
+      "pctVs1Year": -6.334099258625478,
+      "updatedAt": "2026-04-29T07:20:48.988Z"
+    },
+    {
+      "schemeCode": "151013",
+      "apiSchemeName": "HSBC Gilt Fund - Regular Growth",
+      "latest": {
+        "nav": 65.3614,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 65.5181,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 64.7177,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 65.9468,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 66.6953,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.23917054981753244,
+      "pctVs1Month": 0.9946274357710638,
+      "pctVsJan1": -0.8876852250601893,
+      "pctVs1Year": -1.99999100386384,
+      "updatedAt": "2026-04-29T07:20:47.625Z"
+    },
+    {
+      "schemeCode": "151113",
+      "apiSchemeName": "HSBC Value Fund - Direct Growth",
+      "latest": {
+        "nav": 127.4936,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 128.1945,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 116.8521,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 128.9879,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 114.4988,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.5467473253532751,
+      "pctVs1Month": 9.106811088546984,
+      "pctVsJan1": -1.1584807567221387,
+      "pctVs1Year": 11.349289250193014,
+      "updatedAt": "2026-04-29T07:20:47.942Z"
+    },
+    {
+      "schemeCode": "151138",
+      "apiSchemeName": "HSBC Arbitrage Fund - Direct Growth",
+      "latest": {
+        "nav": 21.398,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 21.3933,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 21.2996,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 20.9642,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 20.085,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0.021969495122303263,
+      "pctVs1Month": 0.46198050667617246,
+      "pctVsJan1": 2.0692418503925643,
+      "pctVs1Year": 6.537216828478959,
+      "updatedAt": "2026-04-29T07:20:47.696Z"
+    },
+    {
+      "schemeCode": "152082",
+      "apiSchemeName": "HDFC Pharma and Healthcare Fund - Growth Option - Direct Plan",
+      "latest": {
+        "nav": 18.764,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 18.839,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 17.711,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 17.653,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 16.497,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": -0.3981103030946403,
+      "pctVs1Month": 5.94545762520468,
+      "pctVsJan1": 6.293547838894244,
+      "pctVs1Year": 13.741892465296718,
+      "updatedAt": "2026-04-29T07:20:45.696Z"
+    },
+    {
+      "schemeCode": "152189",
+      "apiSchemeName": "quant Momentum Fund - Growth Option - Direct Plan",
+      "latest": {
+        "nav": 15.0063,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 14.8038,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 13.2766,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 14.8996,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 13.9777,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 1.3678920277226037,
+      "pctVs1Month": 13.028184926863801,
+      "pctVsJan1": 0.7161266074257029,
+      "pctVs1Year": 7.358864476988339,
+      "updatedAt": "2026-04-29T07:20:48.769Z"
+    },
+    {
+      "schemeCode": "152380",
+      "apiSchemeName": "HSBC Multi Asset Allocation Fund - Direct - Growth",
+      "latest": {
+        "nav": 13.927,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 13.9103,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 12.9531,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 13.4818,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": {
+        "nav": 11.2462,
+        "date": "28-04-2025",
+        "dateObj": "2025-04-28T00:00:00.000Z"
+      },
+      "pctVs1Day": 0.12005492333019532,
+      "pctVs1Month": 7.518663485960894,
+      "pctVsJan1": 3.302229672595646,
+      "pctVs1Year": 23.83738507229108,
+      "updatedAt": "2026-04-29T07:20:47.879Z"
+    },
+    {
+      "schemeCode": "153859",
+      "apiSchemeName": "JioBlackRock Flexi Cap Fund - Direct Plan - Growth Option",
+      "latest": {
+        "nav": 9.72,
+        "date": "28-04-2026",
+        "dateObj": "2026-04-28T00:00:00.000Z"
+      },
+      "prev1Day": {
+        "nav": 9.73,
+        "date": "27-04-2026",
+        "dateObj": "2026-04-27T00:00:00.000Z"
+      },
+      "oneMonth": {
+        "nav": 9.07,
+        "date": "27-03-2026",
+        "dateObj": "2026-03-27T00:00:00.000Z"
+      },
+      "jan1": {
+        "nav": 10.29,
+        "date": "01-01-2026",
+        "dateObj": "2026-01-01T00:00:00.000Z"
+      },
+      "oneYear": null,
+      "pctVs1Day": -0.10277492291880562,
+      "pctVs1Month": 7.166482910694601,
+      "pctVsJan1": -5.539358600583076,
+      "pctVs1Year": null,
+      "updatedAt": "2026-04-29T07:20:46.661Z"
+    }
+  ]
+}

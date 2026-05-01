@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f1420" />
+    <meta name="description" content="View all your mutual fund holdings in one place and on-demand refresh NAV to see latest valuation" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="MF Holdings" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230f1420' width='192' height='192'/><text x='96' y='110' font-size='80' font-weight='bold' fill='%2345a6ff' text-anchor='middle'>MF</text></svg>" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230f1420' width='192' height='192'/><text x='96' y='110' font-size='80' font-weight='bold' fill='%2345a6ff' text-anchor='middle'>MF</text></svg>" />
+    <title>Mutual Fund Holdings Lite</title>
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+    <div class="app-shell" id="app-root">
+        <header class="app-header">
+            <h1>Mutual Fund Holdings Lite</h1>
+            <p>View all your mutual fund holdings in one place and on-demand refresh NAV to see latest valuation</p>
+        </header>
+
+        <nav class="tab-list" role="tablist" aria-label="Mutual fund views">
+            <button class="tab-button" role="tab" data-tab-button="import">Import</button>
+            <button class="tab-button" role="tab" data-tab-button="scheme-codes">Scheme Codes</button>
+            <button class="tab-button" role="tab" data-tab-button="report">Reports</button>
+            <button class="tab-button" role="tab" data-tab-button="how-to-use">How to Use</button>
+        </nav>
+
+        <section class="tab-panel" role="tabpanel" data-tab-panel="import">
+            <div class="card">
+                <h2>Import Mutual Fund Central XLSX</h2>
+                <div class="form-grid">
+                    <label>
+                        CAS File
+                        <input id="cas-file" type="file" accept=".xlsx,.xls" />
+                    </label>
+                </div>
+
+                <div class="inline-actions">
+                    <button id="import-btn" class="button-primary" type="button">Load Holdings to IndexedDB</button>
+                    <button id="sync-codes-btn" type="button">Map Scheme Codes</button>
+                    <button id="fetch-nav-btn" type="button">Fetch NAV Snapshots</button>
+                    <button id="clear-db-btn" type="button">Clear All IndexedDB Data</button>
+                </div>
+
+                <div class="inline-actions">
+                    <span class="inline-label">Backup / Restore:</span>
+                    <button id="export-db-btn" type="button">&#8595; Export IndexedDB Dump</button>
+                    <input id="import-db-file" type="file" accept=".json" style="display:none;" />
+                    <button id="import-db-btn" type="button">&#8593; Import IndexedDB Dump</button>
+                </div>
+
+                <div id="import-status" class="status" aria-live="polite"></div>
+                <div id="import-error" class="error" aria-live="polite"></div>
+
+                <div class="meta-grid">
+                    <div><strong>Holdings:</strong> <span id="metric-holdings">0</span></div>
+                    <div><strong>Mapped Codes:</strong> <span id="metric-mapped">0</span></div>
+                    <div><strong>NAV Snapshots:</strong> <span id="metric-nav">0</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" data-tab-panel="scheme-codes">
+            <div class="card">
+                <h2>Scheme Code Manager</h2>
+                <p class="app-subtitle">Review and manually correct the MFAPI scheme code mapped to each holding. After updating, click <strong>Fetch NAV Snapshots</strong> on the Import tab to refresh valuations.</p>
+                <div class="inline-actions">
+                    <button id="refresh-scheme-manager-btn" class="button-primary" type="button">Refresh List</button>
+                    <button id="download-codes-csv-btn" type="button">&#8595; Download CSV</button>
+                    <button id="bulk-override-codes-btn" type="button">&#8593; Bulk Override from CSV</button>
+                    <input id="bulk-codes-file" type="file" accept=".csv" style="display:none;" />
+                </div>
+                <div id="scheme-manager-status" class="status" aria-live="polite"></div>
+                <div id="scheme-manager-error" class="error" aria-live="polite"></div>
+                <div class="scheme-manager-table-wrap">
+                    <table class="scheme-manager-table">
+                        <thead>
+                            <tr>
+                                <th>AMC Name</th>
+                                <th>Scheme Name (CAS)</th>
+                                <th>Scheme Code</th>
+                                <th>API Scheme Name</th>
+                                <th class="numeric">Match Score</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheme-manager-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" data-tab-panel="report">
+            <div class="card">
+                <h2>Reports</h2>
+                <div class="inline-actions">
+                    <button id="download-reports-btn" class="button-primary" type="button">Download Reports Excel</button>
+                </div>
+                <nav class="report-subtab-list" role="tablist" aria-label="Report sections">
+                    <button id="report-view-scheme-btn" class="report-subtab-button is-active" type="button" aria-selected="true">Scheme Report</button>
+                    <button id="report-view-amc-btn" class="report-subtab-button" type="button" aria-selected="false">AMC Summary</button>
+                    <button id="report-view-amc-dist-btn" class="report-subtab-button" type="button" aria-selected="false">AMC Distribution</button>
+                    <button id="report-view-comparison-btn" class="report-subtab-button" type="button" aria-selected="false">XLS vs Calc Comparison</button>
+                </nav>
+
+                <section id="scheme-report-panel" class="report-subtab-panel is-active">
+                    <div class="inline-actions">
+                        <button id="refresh-report-btn" class="button-primary" type="button">Refresh Report</button>
+                    </div>
+                    <div id="scheme-report-totals" class="report-totals-grid"></div>
+                    <div id="report-status" class="status" aria-live="polite"></div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-col="amcName">AMC Name</th>
+                                <th data-col="schemeName">Scheme Name</th>
+                                <th data-col="schemeCode">Scheme Code</th>
+                                <th class="numeric" data-col="investedValue">Invested Value</th>
+                                <th class="numeric" data-col="units">Units</th>
+                                <th class="numeric" data-col="latestNav">Latest NAV</th>
+                                <th class="numeric" data-col="currentValue">Current Value</th>
+                                <th class="numeric" data-col="oneDayNav">1 Day NAV</th>
+                                <th class="numeric" data-col="oneMonthNav">1 Month NAV</th>
+                                <th class="numeric" data-col="jan1Nav">1 Jan NAV</th>
+                                <th class="numeric" data-col="oneYearNav">1 Year NAV</th>
+                                <th class="numeric" data-col="pctVs1Day">vs 1D %</th>
+                                <th class="numeric" data-col="pctVs1Month">vs 1M %</th>
+                                <th class="numeric" data-col="pctVsJan1">vs 1 Jan %</th>
+                                <th class="numeric" data-col="pctVs1Year">vs 1Y %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="report-table-body"></tbody>
+                    </table>
+                </section>
+
+                <section id="amc-report-panel" class="report-subtab-panel">
+                    <h2>AMC Level Summary</h2>
+                    <div id="amc-report-totals" class="report-totals-grid"></div>
+                    <div class="inline-actions">
+                        <label>
+                            AMC Filter
+                            <input id="amc-filter-text" type="text" placeholder="Search AMC" />
+                        </label>
+                        <label>
+                            Returns Filter
+                            <select id="amc-filter-return">
+                                <option value="all">All</option>
+                                <option value="gain">Gainers</option>
+                                <option value="loss">Losers</option>
+                            </select>
+                        </label>
+                        <label>
+                            Top N
+                            <select id="amc-filter-top">
+                                <option value="0">All</option>
+                                <option value="5">Top 5</option>
+                                <option value="10">Top 10</option>
+                                <option value="15">Top 15</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div id="amc-chart" class="amc-chart" aria-label="AMC summary bar chart"></div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-amc-col="amcName">AMC Name</th>
+                                <th class="numeric" data-amc-col="investedValue">Invested Value</th>
+                                <th class="numeric" data-amc-col="currentValue">Current Value</th>
+                                <th class="numeric" data-amc-col="returnsValue">Returns</th>
+                                <th class="numeric" data-amc-col="returnsPct">Returns %</th>
+                                <th class="numeric" data-amc-col="schemeCount">Schemes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="amc-table-body"></tbody>
+                    </table>
+                </section>
+
+                <section id="amc-distribution-panel" class="report-subtab-panel">
+                    <h2>AMC Distribution</h2>
+                    <p class="app-subtitle">Uses AMC filters from AMC Summary tab (text, gain/loss, top N).</p>
+                    <div class="pie-grid">
+                        <div class="pie-card">
+                            <h3>Invested Value Distribution</h3>
+                            <div id="pie-invested" class="pie-chart"></div>
+                        </div>
+                        <div class="pie-card">
+                            <h3>Current Value Distribution</h3>
+                            <div id="pie-current" class="pie-chart"></div>
+                        </div>
+                        <div class="pie-card">
+                            <h3>Return % Distribution</h3>
+                            <div id="pie-returns-pct" class="pie-chart"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="comparison-report-panel" class="report-subtab-panel">
+                    <h2>XLS vs Calculated Current Value</h2>
+                    <p class="app-subtitle">Compares the current value recorded in the imported CAS file against the value calculated from the latest NAV (MFAPI) × units. Run <em>Import → Map Scheme Codes → Fetch NAV Snapshots</em> first.</p>
+                    <div id="comparison-report-totals" class="report-totals-grid"></div>
+                    <div class="inline-actions">
+                        <button id="refresh-comparison-btn" class="button-primary" type="button">Refresh Comparison</button>
+                    </div>
+                    <div id="comparison-status" class="status" aria-live="polite"></div>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th data-cmp-col="amcName">AMC Name</th>
+                                <th data-cmp-col="schemeName">Scheme Name</th>
+                                <th data-cmp-col="schemeCode">Scheme Code</th>
+                                <th class="numeric" data-cmp-col="investedValue">Invested Value</th>
+                                <th class="numeric" data-cmp-col="units">Units</th>
+                                <th class="numeric" data-cmp-col="currentValueXls">Current Value (XLS)</th>
+                                <th class="numeric" data-cmp-col="currentValue">Current Value (Calc)</th>
+                                <th class="numeric" data-cmp-col="valueDelta">Difference</th>
+                                <th class="numeric" data-cmp-col="valueDeltaPct">Diff %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparison-table-body"></tbody>
+                    </table>
+                </section>
+            </div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" data-tab-panel="how-to-use">
+            <div class="card how-to-use-card">
+                <h2>How to Use — MF Holdings App</h2>
+                <p class="app-subtitle">Follow these steps to load your mutual fund portfolio and review current valuations.</p>
+
+                <ol class="how-to-steps">
+                    <li>
+                        <div class="step-heading">Download Transaction Details from Mutual Fund Central</div>
+                        <div class="step-body">
+                            <p>Log in to <a href="https://www.mfcentral.com" target="_blank" rel="noopener">mfcentral.com</a> and download your Consolidated Account Statement (CAS) as an <strong>XLSX file</strong>.</p>
+                            <ul>
+                                <li>Go to <em>Reports → Consolidated Account Statement</em></li>
+                                <li>Select the date range and choose <strong>Detailed</strong> format</li>
+                                <li>Download and save the <code>.xlsx</code> file to your computer</li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="step-heading">Upload the File in the Import Tab</div>
+                        <div class="step-body">
+                            <p>Switch to the <strong>Import</strong> tab and upload the downloaded XLSX file.</p>
+                            <ul>
+                                <li>Click <strong>Choose File</strong> next to <em>CAS File</em> and select your downloaded XLSX</li>
+                                <li>Click <strong>Load Holdings to IndexedDB</strong></li>
+                                <li>You should see a confirmation like <em>"Loaded 69 holding(s) into IndexedDB"</em></li>
+                                <li>The <em>Holdings</em> counter at the bottom will update</li>
+                            </ul>
+                            <p class="step-tip">💡 Holdings are stored locally in your browser's IndexedDB — nothing is sent to any server.</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="step-heading">Map Scheme Codes</div>
+                        <div class="step-body">
+                            <p>Scheme names in your CAS file need to be matched to official MFAPI scheme codes to enable NAV lookups.</p>
+                            <ul>
+                                <li>Click <strong>Map Scheme Codes</strong> on the Import tab</li>
+                                <li>The app fetches all schemes from <a href="https://api.mfapi.in/mf" target="_blank" rel="noopener">api.mfapi.in</a> and matches each holding by name</li>
+                                <li>Most schemes match automatically. Any <em>Unmatched</em> schemes will be shown in the error area</li>
+                                <li>The <em>Mapped Codes</em> counter updates when complete</li>
+                            </ul>
+                            <p class="step-tip">⚠️ If scheme codes look wrong (e.g., "Large Cap" matched to "Large &amp; Mid Cap"), go to the <strong>Scheme Codes</strong> tab to fix them manually.</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="step-heading">Fetch NAV Snapshots</div>
+                        <div class="step-body">
+                            <p>Download the latest NAV history for each mapped scheme to compute current valuations and return percentages.</p>
+                            <ul>
+                                <li>Click <strong>Fetch NAV Snapshots</strong> on the Import tab</li>
+                                <li>The app fetches NAV history for each scheme from MFAPI (this may take 30–60 seconds for large portfolios)</li>
+                                <li>For each scheme it captures: latest NAV, 1-day, 1-month, 1-Jan, and 1-year reference NAVs</li>
+                                <li>The <em>NAV Snapshots</em> counter updates when complete</li>
+                            </ul>
+                            <p class="step-tip">💡 You can re-run <em>Fetch NAV Snapshots</em> any time to refresh prices with the latest available NAV.</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="step-heading">View Reports</div>
+                        <div class="step-body">
+                            <p>Switch to the <strong>Reports</strong> tab to explore your portfolio. Three report views are available:</p>
+                            <ul>
+                                <li>
+                                    <strong>Scheme Report</strong> — Per-scheme breakdown showing invested value, units, latest NAV,
+                                    current value, and percentage changes vs 1 day / 1 month / 1 Jan / 1 year.
+                                    Sortable and filterable columns.
+                                </li>
+                                <li>
+                                    <strong>AMC Summary</strong> — Aggregated view by fund house (AMC) with a bar chart.
+                                    Filter by AMC name, gainers/losers, and top N.
+                                </li>
+                                <li>
+                                    <strong>AMC Distribution</strong> — Pie charts showing portfolio split by invested value,
+                                    current value, and return % per AMC.
+                                </li>
+                                <li>
+                                    <strong>XLS vs Calc Comparison</strong> — Side-by-side comparison of the current value
+                                    from your CAS file versus the value calculated from <em>latest NAV × units</em>.
+                                    Useful for spotting valuation discrepancies.
+                                </li>
+                            </ul>
+                            <p>Each report shows a <strong>totals summary</strong> at the top with total invested value, total current value, total returns (₹ and %).</p>
+                        </div>
+                    </li>
+                </ol>
+
+                <hr class="how-to-divider" />
+
+                <div class="how-to-section">
+                    <h3>🔍 If Current Values Don't Match Between XLS and App</h3>
+                    <p>The <strong>XLS vs Calc Comparison</strong> report compares:</p>
+                    <ul>
+                        <li><strong>Current Value (XLS)</strong> — the value recorded in your downloaded CAS file at the time of export</li>
+                        <li><strong>Current Value (Calc)</strong> — recalculated as <em>latest NAV × units</em> using MFAPI data fetched today</li>
+                    </ul>
+                    <p>A difference is <strong>expected and normal</strong> if NAV has moved between the CAS export date and today. However, a <em>large mismatch</em> (e.g., 50–300%) usually means the scheme code was mapped incorrectly.</p>
+
+                    <h4>How to Fix Wrong Scheme Code Mappings</h4>
+                    <ol>
+                        <li>Go to the <strong>Scheme Codes</strong> tab</li>
+                        <li>Find the scheme with the mismatch</li>
+                        <li>Look up the correct scheme code on <a href="https://api.mfapi.in/mf" target="_blank" rel="noopener">api.mfapi.in/mf</a> — search for the scheme name and note the <code>schemeCode</code></li>
+                        <li>Enter the correct code in the <strong>Scheme Code</strong> input for that row</li>
+                        <li>Click <strong>Apply</strong> — the system validates the code against MFAPI and saves it</li>
+                        <li>Go back to the <strong>Import</strong> tab and click <strong>Fetch NAV Snapshots</strong> to refresh the values</li>
+                        <li>Open the <strong>XLS vs Calc Comparison</strong> report and click <strong>Refresh Comparison</strong> to verify the delta is now close to zero</li>
+                    </ol>
+
+                    <h4>Common Mapping Mistakes</h4>
+                    <table class="how-to-table">
+                        <thead>
+                            <tr>
+                                <th>Problem</th>
+                                <th>Example</th>
+                                <th>Fix</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Large Cap matched to Large &amp; Mid Cap</td>
+                                <td>ABSL Large Cap Fund → ABSL Large &amp; Mid Cap Fund</td>
+                                <td>Find the correct "Large Cap" code on MFAPI and apply it</td>
+                            </tr>
+                            <tr>
+                                <td>Regular Plan matched to Direct Plan</td>
+                                <td>Nippon India Pharma Growth → Nippon Direct Bonus</td>
+                                <td>Look for the "Regular Plan – Growth Option" variant and apply it</td>
+                            </tr>
+                            <tr>
+                                <td>Short Term fund matched to long-term</td>
+                                <td>Kotak Bond Short Term → Kotak Bond Fund</td>
+                                <td>Search "Kotak Bond Short Term" on MFAPI and apply the Growth code</td>
+                            </tr>
+                            <tr>
+                                <td>Unclaimed IDCW / placeholder accounts</td>
+                                <td>ABSL Unclaimed IDCW (After 3 years)</td>
+                                <td>These are placeholder rows — no live NAV exists. Delta is expected</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr class="how-to-divider" />
+
+                <div class="how-to-section">
+                    <h3>💾 Backup and Restore</h3>
+                    <p>Use the <strong>Export / Import IndexedDB Dump</strong> buttons on the Import tab to backup and restore all your data (holdings, scheme codes, NAV snapshots).</p>
+                    <ul>
+                        <li><strong>Export</strong> saves a <code>.json</code> file you can store locally as a backup</li>
+                        <li><strong>Import</strong> restores from that file — useful when switching browsers or devices</li>
+                        <li>You don't need to re-run all import steps after restoring from a backup</li>
+                    </ul>
+                </div>
+        </section>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script type="module" src="./main.js"></script>
+
+    <!-- Service Worker Registration for PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then((registration) => {
+                        console.log('✓ Service Worker registered:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.warn('✗ Service Worker registration failed:', error);
+                    });
+            });
+
+            // Handle service worker updates
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                console.log('Service Worker updated');
+            });
+        }
+    </script>
+</body>
+</html>
+
