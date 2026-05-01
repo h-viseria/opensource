@@ -1,0 +1,19 @@
+{
+  "name": "mf-holdings-app",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "check": "node --check ./main.js",
+    "smoke": "node ./tests/smoke.mjs",
+    "amc:test": "node ./tests/amc-report.mjs",
+    "matcher:test": "node ./tests/scheme-matcher.mjs",
+    "cas:test": "node ./tests/cas-regression.mjs",
+    "portfolio:compare": "node ./tests/portfolio-compare.mjs",
+    "icons:generate": "node ./scripts/generate-icons.mjs",
+    "test": "npm run check && npm run smoke && npm run amc:test && npm run matcher:test && npm run cas:test"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}
