@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini CTRM</title>
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+    <div class="app-shell" id="tab-root">
+        <header class="app-header">
+            <div>
+                <h1 class="app-title">Mini CTRM</h1>
+                <p class="app-subtitle">Trader Desk - Real-time Position and PnL Monitor</p>
+            </div>
+        </header>
+
+        <nav class="tab-list" role="tablist" aria-label="CTRM Views">
+            <button class="tab-button" role="tab" data-tab-button="trade">Trade Entry</button>
+            <button class="tab-button" role="tab" data-tab-button="market">Market Prices</button>
+            <button class="tab-button" role="tab" data-tab-button="positions">Positions</button>
+            <button class="tab-button" role="tab" data-tab-button="pnl">PnL</button>
+        </nav>
+
+        <section class="tab-panel" role="tabpanel" data-tab-panel="trade">
+            <div class="card">
+                <h2 class="section-title">Trade Entry</h2>
+                <form id="trade-form" class="form-grid">
+                    <label>
+                        Commodity
+                        <input name="commodity" type="text" required />
+                    </label>
+                    <label>
+                        Buy/Sell
+                        <select name="buySell" required>
+                            <option value="BUY">BUY</option>
+                            <option value="SELL">SELL</option>
+                        </select>
+                    </label>
+                    <label>
+                        Quantity
+                        <input name="quantity" type="number" min="0.000001" step="any" required />
+                    </label>
+                    <label>
+                        Price
+                        <input name="price" type="number" min="0.000001" step="any" required />
+                    </label>
+                    <label>
+                        Counterparty
+                        <input name="counterparty" type="text" required />
+                    </label>
+                    <div class="inline-actions">
+                        <button class="button-primary" type="submit">Submit Trade</button>
+                    </div>
+                </form>
+                <div id="trade-form-error" class="error" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" data-tab-panel="market">
+            <div class="card">
+                <h2 class="section-title">Market Prices</h2>
+                <form id="market-price-form" class="form-grid">
+                    <label>
+                        Commodity
+                        <input name="commodity" type="text" required />
+                    </label>
+                    <label>
+                        Market Price
+                        <input name="marketPrice" type="number" min="0.000001" step="any" required />
+                    </label>
+                    <div class="inline-actions">
+                        <button class="button-primary" type="submit">Update Price</button>
+                        <button type="button" id="simulate-market-btn">Simulate Market</button>
+                    </div>
+                </form>
+                <div id="market-price-error" class="error" aria-live="polite"></div>
+                <div id="market-price-status" class="status" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" data-tab-panel="positions">
+            <div class="card">
+                <h2 class="section-title">Positions Dashboard</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Commodity</th>
+                            <th>Net Quantity</th>
+                            <th>Avg Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="positions-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" data-tab-panel="pnl">
+            <div class="card">
+                <h2 class="section-title">PnL Dashboard</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Commodity</th>
+                            <th>Unrealized PnL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pnl-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1a1a1a" />
+    <meta name="description" content="Generic PWA wrapper - Load any web app as a native-like application" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="PWA Wrapper" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a1a' width='192' height='192'/><text x='96' y='110' font-size='80' font-weight='bold' fill='%2300d4ff' text-anchor='middle'>W</text></svg>" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a1a' width='192' height='192'/><text x='96' y='110' font-size='80' font-weight='bold' fill='%2300d4ff' text-anchor='middle'>W</text></svg>" />
+    <title>PWA Web App Wrapper</title>
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+    <div id="app-root">
+        <!-- URL Configuration Panel -->
+        <div id="config-panel" class="config-panel">
+            <div class="config-container">
+                <h1>Web App Wrapper</h1>
+                <p>Load any web app as a native application</p>
+
+                <form id="url-form" class="url-form">
+                    <div class="form-group">
+                        <label for="app-url">Web App URL</label>
+                        <input
+                            id="app-url"
+                            type="url"
+                            placeholder="https://example.com"
+                            required
+                            autocomplete="off"
+                        />
+                        <p class="help-text">Enter the full URL of the web app (must start with https:// or http://)</p>
+                    </div>
+
+                    <button type="submit" class="button-primary">Load App</button>
+                </form>
+
+                <div id="config-status" class="status" aria-live="polite"></div>
+                <div id="config-error" class="error" aria-live="polite"></div>
+            </div>
+        </div>
+
+        <!-- App Display Panel -->
+        <div id="app-panel" class="app-panel" style="display:none;">
+            <div class="app-header">
+                <h2 id="app-title">Web App</h2>
+                <button id="settings-btn" class="settings-btn" title="Change URL">⚙️</button>
+            </div>
+            <iframe id="app-iframe" class="app-iframe" title="Loaded web app"></iframe>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Change Web App URL</h2>
+                    <button id="close-modal-btn" class="close-btn">&times;</button>
+                </div>
+
+                <form id="settings-form" class="url-form">
+                    <div class="form-group">
+                        <label for="settings-url">New URL</label>
+                        <input
+                            id="settings-url"
+                            type="url"
+                            placeholder="https://example.com"
+                            required
+                        />
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" id="cancel-btn" class="button-secondary">Cancel</button>
+                        <button type="submit" class="button-primary">Update</button>
+                    </div>
+                </form>
+
+                <div id="settings-status" class="status"></div>
+                <div id="settings-error" class="error"></div>
+
+                <div class="modal-footer">
+                    <button id="clear-all-btn" class="button-danger">Clear All Data</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay" style="display:none;">
+            <div class="spinner"></div>
+            <p>Loading app...</p>
+        </div>
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then((registration) => {
+                        console.log('✓ Service Worker registered:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.warn('✗ Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
+

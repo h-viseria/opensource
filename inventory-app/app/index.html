@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory ERP - Offline</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="shell">
+        <header class="topbar">
+            <div>
+                <h1>Inventory ERP Desk</h1>
+                <p>Offline-first inventory, orders, and fulfilment management</p>
+            </div>
+            <div id="toast-host"></div>
+        </header>
+
+        <nav id="nav-root"></nav>
+
+        <main class="view-root">
+            <section id="tab-dashboard" class="tab-panel"></section>
+            <section id="tab-suppliers" class="tab-panel"></section>
+            <section id="tab-buyers" class="tab-panel"></section>
+            <section id="tab-commodities" class="tab-panel"></section>
+            <section id="tab-commodityMaster" class="tab-panel"></section>
+            <section id="tab-orders" class="tab-panel"></section>
+            <section id="tab-fulfilment" class="tab-panel"></section>
+        </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+</body>
+</html>
+

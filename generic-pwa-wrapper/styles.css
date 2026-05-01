@@ -1,0 +1,383 @@
+:root {
+    --bg: #1a1a1a;
+    --surface: #2d2d2d;
+    --border: #404040;
+    --text: #e0e0e0;
+    --muted: #a0a0a0;
+    --accent: #00d4ff;
+    --success: #4caf50;
+    --error: #ff6b6b;
+    --warning: #ffc107;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+}
+
+#app-root {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ─── Configuration Panel ─────────────────────────────────────────────────── */
+
+.config-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.config-container {
+    width: 90%;
+    max-width: 500px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.config-container h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: var(--accent);
+}
+
+.config-container p {
+    color: var(--muted);
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.url-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.form-group input {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #1a1a1a;
+    color: var(--text);
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.help-text {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* ─── Buttons ─────────────────────────────────────────────────────────────── */
+
+button {
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button-primary {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+.button-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.button-primary:active {
+    transform: translateY(0);
+}
+
+.button-secondary {
+    background: var(--border);
+    color: var(--text);
+}
+
+.button-secondary:hover {
+    background: #505050;
+}
+
+.button-danger {
+    background: var(--error);
+    color: white;
+    font-size: 12px;
+    padding: 8px 16px;
+}
+
+.button-danger:hover {
+    opacity: 0.9;
+}
+
+/* ─── Status Messages ─────────────────────────────────────────────────────── */
+
+.status {
+    color: var(--success);
+    font-size: 13px;
+    margin-top: 8px;
+    display: none;
+}
+
+.error {
+    color: var(--error);
+    font-size: 13px;
+    margin-top: 8px;
+    display: none;
+}
+
+/* ─── App Panel ───────────────────────────────────────────────────────────── */
+
+.app-panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+}
+
+.app-header h2 {
+    font-size: 16px;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.settings-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    font-size: 16px;
+}
+
+.settings-btn:hover {
+    background: var(--border);
+}
+
+.app-iframe {
+    flex: 1;
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+/* ─── Loading Overlay ─────────────────────────────────────────────────────── */
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 1000;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-overlay p {
+    color: var(--text);
+    font-size: 14px;
+}
+
+/* ─── Modal ───────────────────────────────────────────────────────────────── */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 16px;
+}
+
+.modal-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 24px;
+    padding: 0;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    color: var(--accent);
+}
+
+.modal-content > form {
+    padding: 20px;
+    flex: 1;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 10px 16px;
+}
+
+.modal-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+}
+
+.modal-footer button {
+    flex: 1;
+}
+
+/* ─── Responsive Design ───────────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+    .config-container {
+        padding: 24px;
+        margin: 16px;
+    }
+
+    .config-container h1 {
+        font-size: 24px;
+    }
+
+    .app-header {
+        padding: 10px 12px;
+    }
+
+    .app-header h2 {
+        font-size: 14px;
+    }
+
+    .settings-btn {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    .modal {
+        padding: 12px;
+    }
+
+    .modal-header {
+        padding: 16px;
+    }
+
+    .modal-content > form {
+        padding: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
