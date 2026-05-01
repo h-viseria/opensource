@@ -1,5 +1,0 @@
-export const EVENTS = {
-    HOLDING_CREATED: 'HOLDING_CREATED',
-    NAV_REFRESHED: 'NAV_REFRESHED',
-};
-
