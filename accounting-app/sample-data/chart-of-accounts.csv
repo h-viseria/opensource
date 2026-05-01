@@ -1,0 +1,13 @@
+Opening Date,Account Name,Description,Account ShortCode,Full Account Name,Account Type,Opening Balance
+01-Apr-2026,Assets,Top level assets,AST,Assets,Asset,0
+01-Apr-2026,Current Assets,Current asset group,CA,Assets:Current Assets,Asset,0
+01-Apr-2026,Savings Bank,Primary savings account,SAV,Assets:Current Assets:Savings Bank,Asset,10000
+01-Apr-2026,Cash in Hand,Petty cash,CASH,Assets:Current Assets:Cash in Hand,Asset,2000
+01-Apr-2026,Mutual Funds,Mutual fund group,MF,Assets:Current Assets:Mutual Funds,Asset,0
+01-Apr-2026,Master Share,Master Share investment,MSH,Assets:Current Assets:Mutual Funds:Master Share,Asset,15000
+01-Apr-2026,Income,Top level income,INC,Income,Income,0
+01-Apr-2026,Salary Income,Salary credits,SAL,Income:Salary Income,Income,0
+01-Apr-2026,Expenses,Top level expenses,EXP,Expenses,Expense,0
+01-Apr-2026,Food Expense,Food and groceries,FOOD,Expenses:Food Expense,Expense,0
+01-Apr-2026,Equity,Owner capital,EQT,Equity,Equity,12000
+

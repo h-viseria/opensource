@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Browser Accounting System</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <div id="launch-warning" class="launch-warning" hidden></div>
+    <header class="page-header">
+        <h1>Web Accounting System</h1>
+        <p>Pure HTML + JavaScript, data stored locally in IndexedDB.</p>
+    </header>
+
+    <nav class="tabs">
+        <button class="tab-btn active" data-tab="tab-dashboard">Dashboard</button>
+        <button class="tab-btn" data-tab="tab-reports">Reports</button>
+        <button class="tab-btn" data-tab="tab-import">Import / Backup</button>
+        <button class="tab-btn" data-tab="tab-update-coa">Chart of Accounts</button>
+        <button class="tab-btn" data-tab="tab-update-transactions">Accounts</button>
+        <button class="tab-btn" data-tab="tab-rules">Rules</button>
+    </nav>
+
+    <div class="fy-filter-bar">
+        <label for="fy-filter-select"><strong>Financial Year:</strong></label>
+        <select id="fy-filter-select">
+            <option value="">All</option>
+        </select>
+        <span class="hint" style="margin:0">Applies only to Income/Expense balances and ledgers.</span>
+    </div>
+
+    <main>
+        <section id="tab-dashboard" class="tab-content active">
+            <div class="panel">
+                <h2>Account Hierarchy</h2>
+                <p class="hint">Click an account row to view account ledger with running balance.</p>
+                <div class="button-row">
+                    <button id="btn-export-gl-pdf" class="btn">Download General Ledger (PDF)</button>
+                    <button id="btn-export-gl-xls" class="btn">Download General Ledger (XLS)</button>
+                </div>
+                <div id="gl-export-status" class="status-msg"></div>
+                <div id="account-tree-container"></div>
+            </div>
+            <div id="ledger-panel" class="panel ledger-panel" style="display:none;"></div>
+        </section>
+
+        <section id="tab-import" class="tab-content">
+            <div class="panel upload-grid">
+                <div>
+                    <h2>Upload Chart of Accounts</h2>
+                    <p class="hint">CSV fields: Opening Date, Account Name, Description, Account ShortCode, Full Account Name, Account Type, Opening Balance</p>
+                    <p class="hint">Date format: <code>dd-mmm-yyyy</code> (example: <code>20-Apr-2026</code>)</p>
+                    <div class="import-mode-box">
+                        <span>Import Mode:</span>
+                        <label><input type="radio" name="coa-import-mode" value="replace" checked> Clean / Full Reload</label>
+                        <label><input type="radio" name="coa-import-mode" value="append"> Append / Merge</label>
+                    </div>
+                    <label class="file-label" for="coa-file">Choose COA CSV</label>
+                    <input id="coa-file" type="file" accept=".csv,text/csv">
+                    <div class="sample-download-row">
+                        <a class="sample-download-link" href="./sample-data/chart-of-accounts.csv" download="chart-of-accounts-sample.csv">Download Sample COA CSV</a>
+                    </div>
+                    <div id="coa-status" class="status-msg"></div>
+                </div>
+
+                <div>
+                    <h2>Upload Transactions</h2>
+                    <p class="hint">CSV fields: Main Account, Transaction Date, Value Date, Description, Comments1, Comments2, Deposit Amount, Withdrawal Amount, Target Account</p>
+                    <p class="hint">Date format: <code>dd-mmm-yyyy</code> (example: <code>20-Apr-2026</code>)</p>
+                    <div class="import-mode-box">
+                        <span>Import Mode:</span>
+                        <label><input type="radio" name="tx-import-mode" value="replace" checked> Clean / Full Reload</label>
+                        <label><input type="radio" name="tx-import-mode" value="append"> Append / Merge</label>
+                    </div>
+                    <label class="file-label" for="tx-file">Choose Transactions CSV</label>
+                    <input id="tx-file" type="file" accept=".csv,text/csv">
+                    <div class="sample-download-row">
+                        <a class="sample-download-link" href="./sample-data/transactions.csv" download="transactions-sample.csv">Download Sample Transactions CSV</a>
+                    </div>
+                    <div id="tx-status" class="status-msg"></div>
+
+                    <hr style="margin:14px 0;border:0;border-top:1px solid #e5e9f4">
+                    <h3 style="margin:0 0 6px">Upload GNUCash Transaction Export Format</h3>
+                    <p class="hint">
+                        Required headers include <code>Date</code>, <code>Transaction Unique ID</code>, <code>Description</code>,
+                        <code>Notes</code>, <code>Memo</code>, <code>Full Account</code>, <code>Amount Num.</code>.
+                        Dual-entry postings are grouped by Transaction Unique ID.
+                    </p>
+                    <div class="import-mode-box">
+                        <span>Import Mode:</span>
+                        <label><input type="radio" name="gnucash-import-mode" value="replace" checked> Clean / Full Reload</label>
+                        <label><input type="radio" name="gnucash-import-mode" value="append"> Append / Merge</label>
+                    </div>
+                    <label class="file-label" for="gnucash-file">Choose GNUCash Export CSV</label>
+                    <input id="gnucash-file" type="file" accept=".csv,text/csv">
+                    <div id="gnucash-status" class="status-msg"></div>
+
+                    <hr style="margin:14px 0;border:0;border-top:1px solid #e5e9f4">
+                    <h3 style="margin:0 0 6px">Or Upload HDFC Statement</h3>
+                    <p class="hint">
+                        Columns matched by header name: <code>Date</code>, <code>Narration</code>, <code>Chq./Ref.No.</code>,
+                        <code>Value Dt</code>, <code>Withdrawal Amt.</code>, <code>Deposit Amt.</code>, <code>Account</code>.
+                    </p>
+
+                    <label class="hdfc-label">
+                        <strong>Main Account</strong>
+                        <select id="hdfc-main-account" class="hdfc-select">
+                            <option value="">— Select Main Account —</option>
+                        </select>
+                        <button id="hdfc-refresh-accounts" class="btn btn-secondary" type="button" style="margin-top:6px">
+                            &#8635; Refresh Account List
+                        </button>
+                    </label>
+
+                    <div class="import-mode-box" style="margin-top:10px">
+                        <span>Import Mode:</span>
+                        <label><input type="radio" name="hdfc-import-mode" value="replace" checked> Clean / Full Reload</label>
+                        <label><input type="radio" name="hdfc-import-mode" value="append"> Append / Merge</label>
+                    </div>
+
+                    <label class="file-label" for="hdfc-file">Choose HDFC Statement (CSV / TSV)</label>
+                    <input id="hdfc-file" type="file" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values">
+                    <div id="hdfc-status" class="status-msg"></div>
+                </div>
+            </div>
+
+            <div class="panel backup-actions">
+                <h2>Backup / Restore</h2>
+                <div class="button-row">
+                    <button id="btn-export" class="btn">Export JSON Backup</button>
+                    <button id="btn-import-backup" class="btn">Import JSON Backup</button>
+                    <button id="btn-clear" class="btn btn-danger">Clear All Data</button>
+                    <input id="backup-file" type="file" accept="application/json" hidden>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-reports" class="tab-content">
+            <div id="reports-root" class="panel"></div>
+        </section>
+
+        <section id="tab-update-coa" class="tab-content">
+            <div id="update-coa-root"></div>
+        </section>
+
+        <section id="tab-update-transactions" class="tab-content">
+            <div id="update-tx-root"></div>
+        </section>
+
+        <section id="tab-rules" class="tab-content">
+            <div class="panel">
+                <h2>Accounting Rules</h2>
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Account Type</th>
+                            <th>Natural Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Asset</td><td>Debit</td></tr>
+                        <tr><td>Liability</td><td>Credit</td></tr>
+                        <tr><td>Equity</td><td>Credit</td></tr>
+                        <tr><td>Income</td><td>Credit</td></tr>
+                        <tr><td>Expense</td><td>Debit</td></tr>
+                    </tbody>
+                </table>
+                <p><strong>Asset and Expense</strong>: Increase = Debit, Decrease = Credit.</p>
+                <p><strong>Liability, Income, Equity</strong>: Increase = Credit, Decrease = Debit.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="hdfc-preview-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>HDFC Import Preview</h3>
+                <button id="hdfc-preview-close" class="btn btn-secondary" type="button">Close</button>
+            </div>
+            <p id="hdfc-preview-summary" class="hint"></p>
+            <div class="table-scroll modal-table-wrap">
+                <table class="report-table" id="hdfc-preview-table">
+                    <thead>
+                        <tr>
+                            <th>Row</th>
+                            <th>Tx Date</th>
+                            <th>Value Date</th>
+                            <th>Description</th>
+                            <th>Main</th>
+                            <th>Target</th>
+                            <th class="num">Deposit</th>
+                            <th class="num">Withdrawal</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hdfc-preview-body"></tbody>
+                </table>
+            </div>
+            <div class="button-row" style="margin-top:10px">
+                <button id="hdfc-preview-confirm" class="btn" type="button">Confirm Import</button>
+                <button id="hdfc-preview-cancel" class="btn btn-secondary" type="button">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="gnucash-preview-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>GNUCash Import Preview</h3>
+                <button id="gnucash-preview-close" class="btn btn-secondary" type="button">Close</button>
+            </div>
+            <p id="gnucash-preview-summary" class="hint"></p>
+            <div class="table-scroll modal-table-wrap">
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Row</th>
+                            <th>Txn ID</th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Full Account</th>
+                            <th class="num">Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gnucash-preview-body"></tbody>
+                </table>
+            </div>
+            <div class="button-row" style="margin-top:10px">
+                <button id="gnucash-preview-confirm" class="btn" type="button">Confirm Import</button>
+                <button id="gnucash-preview-cancel" class="btn btn-secondary" type="button">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+    <script type="module">
+        const warning = document.getElementById('launch-warning');
+        if (window.location.protocol === 'file:') {
+            warning.hidden = false;
+            warning.innerHTML = 'This app cannot run from <code>file://</code> because browser module/CORS rules block local imports. Start a local server and open <code>http://localhost:8080</code>.';
+        } else {
+            import('./js/app.js');
+        }
+    </script>
+</body>
+</html>
+
