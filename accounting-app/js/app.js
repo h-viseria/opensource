@@ -11,6 +11,7 @@ import { initHdfcImport, populateHdfcAccountDropdown } from './import-hdfc.js';
 import { initGnuCashImport } from './import-gnucash.js';
 import { renderUpdateCoaTab } from './ui-update-coa.js';
 import { renderUpdateTransactionsTab } from './ui-update-transactions.js';
+import { renderCashflowReportTab } from './ui-cashflow-report.js';
 import { getAll } from './db.js';
 import { collectFinancialYears, setSelectedFinancialYear, getSelectedFinancialYear } from './fiscal-year.js';
 
@@ -104,6 +105,9 @@ async function refreshCurrentView(tabId) {
         case 'tab-reports':
             await renderReportsSafe();
             break;
+        case 'tab-cashflow':
+            await renderCashflowReportTab();
+            break;
         case 'tab-import':
             await populateHdfcAccountDropdown();
             break;
@@ -192,4 +196,3 @@ if (document.readyState === 'loading') {
     // Module may load after DOMContentLoaded; initialize immediately in that case.
     initOnce();
 }
-
