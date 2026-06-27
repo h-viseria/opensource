@@ -18,6 +18,7 @@
     <nav class="tabs">
         <button class="tab-btn active" data-tab="tab-dashboard">Dashboard</button>
         <button class="tab-btn" data-tab="tab-reports">Reports</button>
+        <button class="tab-btn" data-tab="tab-cashflow">Cashflow</button>
         <button class="tab-btn" data-tab="tab-import">Import / Backup</button>
         <button class="tab-btn" data-tab="tab-update-coa">Chart of Accounts</button>
         <button class="tab-btn" data-tab="tab-update-transactions">Accounts</button>
@@ -142,6 +143,10 @@
             <div id="reports-root" class="panel"></div>
         </section>
 
+        <section id="tab-cashflow" class="tab-content">
+            <div id="cashflow-root"></div>
+        </section>
+
         <section id="tab-update-coa" class="tab-content">
             <div id="update-coa-root"></div>
         </section>
@@ -243,11 +248,10 @@
         const warning = document.getElementById('launch-warning');
         if (window.location.protocol === 'file:') {
             warning.hidden = false;
-            warning.innerHTML = 'This app cannot run from <code>file://</code> because browser module/CORS rules block local imports. Start a local server and open <code>http://localhost:8080</code>.';
+            warning.innerHTML = 'This app cannot run from <code>file://</code> because browser module/CORS rules block local imports. Start a local server and open <code>http://localhost:8080</code> instead.';
         } else {
             import('./js/app.js');
         }
     </script>
 </body>
 </html>
-
