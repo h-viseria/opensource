@@ -286,6 +286,84 @@ export function buildBankAccountSummaryReport({ accountCode, accounts, transacti
     };
 }
 
+export function buildCashflowReport({ accountCodes, startDate, endDate, accounts, transactions, financialYear }) {
+    const accountMap = Object.fromEntries((accounts || []).map((a) => [a.shortCode, a]));
+    
+    if (!accountCodes || accountCodes.length === 0) {
+        return null;
+    }
+
+    const accountRows = [];
+    let totalOpeningBalance = 0;
+    let totalIncoming = 0;
+    let totalOutgoing = 0;
+    let totalClosingBalance = 0;
+
+    accountCodes.forEach((accountCode) => {
+        const account = accountMap[accountCode];
+        if (!account) return;
+
+        let openingBalance = Number(account.openingBalance || 0);
+        let incomingTotal = 0;
+        let outgoingTotal = 0;
+
+        // Calculate opening balance adjusted for transactions before start date
+        (transactions || []).forEach((tx) => {
+            const perspective = projectForAccount(tx, accountCode);
+            if (!perspective) return;
+
+            const txDate = parseDate(tx.valueDate || tx.transactionDate || '');
+            if (!txDate || txDate >= startDate) return;
+
+            const deposit = Math.abs(Number(perspective.depositAmount || 0));
+            const withdrawal = Math.abs(Number(perspective.withdrawalAmount || 0));
+            openingBalance += (deposit - withdrawal);
+        });
+
+        // Calculate incoming and outgoing for period
+        (transactions || []).forEach((tx) => {
+            const perspective = projectForAccount(tx, accountCode);
+            if (!perspective) return;
+
+            const txDate = parseDate(tx.valueDate || tx.transactionDate || '');
+            if (!txDate || txDate < startDate || txDate > endDate) return;
+
+            const deposit = Math.abs(Number(perspective.depositAmount || 0));
+            const withdrawal = Math.abs(Number(perspective.withdrawalAmount || 0));
+
+            incomingTotal += deposit;
+            outgoingTotal += withdrawal;
+        });
+
+        const closingBalance = openingBalance + incomingTotal - outgoingTotal;
+
+        accountRows.push({
+            shortCode: accountCode,
+            openingBalance,
+            incomingTotal,
+            outgoingTotal,
+            closingBalance,
+        });
+
+        totalOpeningBalance += openingBalance;
+        totalIncoming += incomingTotal;
+        totalOutgoing += outgoingTotal;
+        totalClosingBalance += closingBalance;
+    });
+
+    return {
+        reportPeriod: { startDate, endDate },
+        summary: {
+            totalOpeningBalance,
+            totalIncoming,
+            totalOutgoing,
+            totalClosingBalance,
+            netCashflow: totalIncoming - totalOutgoing,
+        },
+        accountRows: accountRows.sort((a, b) => a.shortCode.localeCompare(b.shortCode)),
+    };
+}
+
 function sumByType(accounts, type) {
     return accounts
         .filter((a) => normalizeAccountTypeLabel(a.type) === type)
