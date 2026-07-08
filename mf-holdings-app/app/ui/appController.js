@@ -1,4 +1,4 @@
-import { importHoldingsFromFile } from '../application/services/holdingsImportService.js';
+import { importCasFromFile } from '../application/services/casImportService.js';
 import { syncSchemeCodes } from '../application/services/schemeCodeSyncService.js';
 import { refreshNavSnapshots } from '../application/services/navSnapshotService.js';
 import { buildReportRows } from '../application/services/reportService.js';
@@ -6,6 +6,15 @@ import { buildAmcDistributionRows, buildAmcSummaryRows, filterAmcSummaryRows } f
 import { formatNumber, formatPercent } from '../shared/formatters.js';
 import { clearAllData, getAllHoldings, getAllNavSnapshots, getAllSchemeCodes, normalizeSchemeName, upsertSchemeCode } from '../infrastructure/db/indexedDb.js';
 import { fetchSchemeHistory } from '../infrastructure/api/mfApiClient.js';
+import {
+    clearTransactionsData,
+    getTransactionMetricCount,
+    getXirrRowsForExport,
+    initXirrReportController,
+    readTransactionsForExport,
+    refreshXirrReport,
+    restoreTransactionsFromDump,
+} from './xirrReportController.js';
 
 const REPORT_COLUMNS = [
     { key: 'amcName', type: 'text' },
@@ -350,6 +359,21 @@ function downloadReportsExcel() {
     window.XLSX.utils.book_append_sheet(workbook, window.XLSX.utils.json_to_sheet(comparisonRows), 'XLS vs Calc Comparison');
     window.XLSX.utils.book_append_sheet(workbook, window.XLSX.utils.json_to_sheet(amcSummaryRows), 'AMC Summary');
     window.XLSX.utils.book_append_sheet(workbook, window.XLSX.utils.json_to_sheet(amcDistRows), 'AMC Distribution');
+
+    const xirrRows = getXirrRowsForExport().map((row) => ({
+        'AMC Name': row.amcName,
+        'Scheme Name': row.schemeName,
+        'Scheme Code': row.schemeCode,
+        'First Purchase': row.firstPurchaseDate,
+        'Last Tx Date': row.lastTransactionDate,
+        'Tx Count': row.transactionCount,
+        'Invested (Flows)': row.investedInFlows,
+        'Redeemed (Flows)': row.redeemedInFlows,
+        'Current Value': row.currentValue,
+        'XIRR %': row.xirrPct,
+        Status: row.statusLabel,
+    }));
+    window.XLSX.utils.book_append_sheet(workbook, window.XLSX.utils.json_to_sheet(xirrRows), 'XIRR Report');
     window.XLSX.writeFile(workbook, `mf-reports-${new Date().toISOString().slice(0, 10)}.xlsx`);
 }
 
@@ -446,10 +470,12 @@ function initReportSubtabs() {
     const amcButton        = byId('report-view-amc-btn');
     const amcDistButton    = byId('report-view-amc-dist-btn');
     const comparisonButton = byId('report-view-comparison-btn');
+    const xirrButton       = byId('report-view-xirr-btn');
     const schemePanel      = byId('scheme-report-panel');
     const amcPanel         = byId('amc-report-panel');
     const amcDistPanel     = byId('amc-distribution-panel');
     const comparisonPanel  = byId('comparison-report-panel');
+    const xirrPanel        = byId('xirr-report-panel');
 
     if (!schemeButton || !amcButton || !amcDistButton || !comparisonButton) return;
 
@@ -459,13 +485,17 @@ function initReportSubtabs() {
             amc:        [amcButton,         amcPanel],
             amcDist:    [amcDistButton,    amcDistPanel],
             comparison: [comparisonButton, comparisonPanel],
+            xirr:       [xirrButton,       xirrPanel],
         };
 
         Object.entries(map).forEach(([key, [btn, panel]]) => {
+            if (!btn || !panel) {
+                return;
+            }
             const active = key === view;
             btn.classList.toggle('is-active', active);
             btn.setAttribute('aria-selected', String(active));
-            if (panel) panel.classList.toggle('is-active', active);
+            panel.classList.toggle('is-active', active);
         });
     };
 
@@ -473,17 +503,20 @@ function initReportSubtabs() {
     amcButton.addEventListener('click',    () => activate('amc'));
     amcDistButton.addEventListener('click',() => { activate('amcDist'); renderAmcDistribution(); });
     comparisonButton.addEventListener('click', () => activate('comparison'));
+    initXirrReportController({ activateReportView: activate });
     activate('scheme');
 }
 
 async function refreshMetrics() {
-    const [holdings, codes, navs] = await Promise.all([
+    const [holdings, codes, navs, transactionCount] = await Promise.all([
         getAllHoldings(),
         getAllSchemeCodes(),
         getAllNavSnapshots(),
+        getTransactionMetricCount(),
     ]);
 
     setText('metric-holdings', String(holdings.length));
+    setText('metric-transactions', String(transactionCount));
     setText('metric-mapped', String(codes.length));
     setText('metric-nav', String(navs.length));
 }
@@ -497,6 +530,7 @@ async function refreshReport() {
     renderAmcDistribution();
     renderComparisonRows(allReportRows);
     renderReportTotals();
+    await refreshXirrReport();
 }
 
 // ─── Report Totals Summary ────────────────────────────────────────────────────
@@ -878,18 +912,21 @@ async function exportIndexedDbDump() {
         setText('import-error', '');
         setText('import-status', 'Exporting IndexedDB dump...');
 
-        const [holdings, schemeCodes, navSnapshots] = await Promise.all([
+        const [holdings, schemeCodes, navSnapshots, transactions] = await Promise.all([
             getAllHoldings(),
             getAllSchemeCodes(),
             getAllNavSnapshots(),
+            readTransactionsForExport(),
         ]);
 
         const dump = {
-            version: 1,
+            version: 2,
             exportedAt: new Date().toISOString(),
             holdings,
             schemeCodes,
             navSnapshots,
+            transactions: transactions.map(({ id, ...rest }) => rest),
+            transactionMetadata: transactions[0]?.importMetadata || null,
         };
 
         const json = JSON.stringify(dump, null, 2);
@@ -903,7 +940,7 @@ async function exportIndexedDbDump() {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
-        setText('import-status', `Exported ${holdings.length} holding(s), ${schemeCodes.length} code mapping(s), ${navSnapshots.length} NAV snapshot(s).`);
+        setText('import-status', `Exported ${holdings.length} holding(s), ${transactions.length} transaction(s), ${schemeCodes.length} code mapping(s), ${navSnapshots.length} NAV snapshot(s).`);
     } catch (error) {
         setText('import-error', `Export failed: ${error.message}`);
     }
@@ -922,7 +959,7 @@ async function importIndexedDbDump(file) {
         const json = await file.text();
         const dump = JSON.parse(json);
 
-        if (dump.version !== 1) {
+        if (dump.version !== 1 && dump.version !== 2) {
             throw new Error(`Unsupported backup version: ${dump.version}`);
         }
 
@@ -947,7 +984,14 @@ async function importIndexedDbDump(file) {
             await upsertNavSnapshot(snapshot);
         }
 
-        setText('import-status', `Imported ${dump.holdings.length} holding(s), ${dump.schemeCodes.length} code mapping(s), ${dump.navSnapshots.length} NAV snapshot(s).`);
+        if (Array.isArray(dump.transactions)) {
+            await restoreTransactionsFromDump(dump);
+        } else {
+            await clearTransactionsData();
+        }
+
+        const transactionCount = Array.isArray(dump.transactions) ? dump.transactions.length : 0;
+        setText('import-status', `Imported ${dump.holdings.length} holding(s), ${transactionCount} transaction(s), ${dump.schemeCodes.length} code mapping(s), ${dump.navSnapshots.length} NAV snapshot(s).`);
         await refreshMetrics();
         await refreshReport();
         await renderSchemeCodeManager();
@@ -1023,8 +1067,11 @@ export function initAppController() {
         setText('import-error', '');
         try {
             const file = fileInput.files?.[0] || null;
-            const holdings = await importHoldingsFromFile(file);
-            setText('import-status', `Loaded ${holdings.length} holding(s) into IndexedDB.`);
+            const result = await importCasFromFile(file);
+            const txPart = result.transactions.length
+                ? `${result.transactions.length} transaction(s)`
+                : 'no transactions (sheet 2 not found or empty)';
+            setText('import-status', `Loaded ${result.holdings.length} holding(s) and ${txPart} into IndexedDB.`);
             await refreshMetrics();
             await refreshReport();
         } catch (error) {
@@ -1069,13 +1116,14 @@ export function initAppController() {
 
     clearDbButton.addEventListener('click', async () => {
         setText('import-error', '');
-        const confirmed = window.confirm('This will clear holdings, scheme codes, and NAV snapshots from IndexedDB. Continue?');
+        const confirmed = window.confirm('This will clear holdings, transactions, scheme codes, and NAV snapshots from IndexedDB. Continue?');
         if (!confirmed) {
             return;
         }
 
         try {
             await clearAllData();
+            await clearTransactionsData();
             setText('import-status', 'IndexedDB cleared. You can now do a clean import.');
             await refreshMetrics();
             await refreshReport();
