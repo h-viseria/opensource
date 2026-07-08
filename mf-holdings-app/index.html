@@ -9,13 +9,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="MF Holdings" />
-    <meta name="google-adsense-account" content="ca-pub-3312349367159855">
     <link rel="manifest" href="./manifest.json" />
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230f1420' width='192' height='192'/><text x='96' y='110' font-size='80' font-weight='bold' fill='%2345a6ff' text-anchor='middle'>MF</text></svg>" />
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230f1420' width='192' height='192'/><text x='96' y='110' font-size='80' font-weight='bold' fill='%2345a6ff' text-anchor='middle'>MF</text></svg>" />
     <title>Mutual Fund Holdings Lite</title>
     <link rel="stylesheet" href="./styles.css" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3312349367159855" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="app-shell" id="app-root">
@@ -60,6 +58,7 @@
 
                 <div class="meta-grid">
                     <div><strong>Holdings:</strong> <span id="metric-holdings">0</span></div>
+                    <div><strong>Transactions:</strong> <span id="metric-transactions">0</span></div>
                     <div><strong>Mapped Codes:</strong> <span id="metric-mapped">0</span></div>
                     <div><strong>NAV Snapshots:</strong> <span id="metric-nav">0</span></div>
                 </div>
@@ -107,6 +106,7 @@
                     <button id="report-view-amc-btn" class="report-subtab-button" type="button" aria-selected="false">AMC Summary</button>
                     <button id="report-view-amc-dist-btn" class="report-subtab-button" type="button" aria-selected="false">AMC Distribution</button>
                     <button id="report-view-comparison-btn" class="report-subtab-button" type="button" aria-selected="false">XLS vs Calc Comparison</button>
+                    <button id="report-view-xirr-btn" class="report-subtab-button" type="button" aria-selected="false">XIRR Report</button>
                 </nav>
 
                 <section id="scheme-report-panel" class="report-subtab-panel is-active">
@@ -200,6 +200,34 @@
                             <div id="pie-returns-pct" class="pie-chart"></div>
                         </div>
                     </div>
+                </section>
+
+                <section id="xirr-report-panel" class="report-subtab-panel">
+                    <h2>XIRR Report</h2>
+                    <p class="app-subtitle">XIRR from the first purchase in the CAS transaction sheet through today&apos;s market value (latest NAV × units). Dividend payouts are excluded. Run <em>Import → Map Scheme Codes → Fetch NAV Snapshots</em> first.</p>
+                    <div id="xirr-report-totals" class="report-totals-grid"></div>
+                    <div class="inline-actions">
+                        <button id="refresh-xirr-btn" class="button-primary" type="button">Refresh XIRR Report</button>
+                    </div>
+                    <div id="xirr-status" class="status" aria-live="polite"></div>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th data-xirr-col="amcName">AMC Name</th>
+                                <th data-xirr-col="schemeName">Scheme Name</th>
+                                <th data-xirr-col="schemeCode">Scheme Code</th>
+                                <th data-xirr-col="firstPurchaseDate">First Purchase</th>
+                                <th data-xirr-col="lastTransactionDate">Last Tx Date</th>
+                                <th class="numeric" data-xirr-col="transactionCount">Tx Count</th>
+                                <th class="numeric" data-xirr-col="investedInFlows">Invested (Flows)</th>
+                                <th class="numeric" data-xirr-col="redeemedInFlows">Redeemed (Flows)</th>
+                                <th class="numeric" data-xirr-col="currentValue">Current Value</th>
+                                <th class="numeric" data-xirr-col="xirrPct">XIRR %</th>
+                                <th data-xirr-col="statusLabel">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="xirr-table-body"></tbody>
+                    </table>
                 </section>
 
                 <section id="comparison-report-panel" class="report-subtab-panel">
