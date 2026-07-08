@@ -10,8 +10,13 @@
     "matcher:test": "node ./tests/scheme-matcher.mjs",
     "cas:test": "node ./tests/cas-regression.mjs",
     "portfolio:compare": "node ./tests/portfolio-compare.mjs",
+    "xirr:test": "node ./tests/xirr.mjs",
+    "cas-dates:test": "node ./tests/cas-dates.mjs",
+    "transactions:test": "node ./tests/transactions-parser.mjs",
+    "transaction-mapper:test": "node ./tests/transaction-holding-mapper.mjs",
+    "switch-classifier:test": "node ./tests/switch-transaction-classifier.mjs",
     "icons:generate": "node ./scripts/generate-icons.mjs",
-    "test": "npm run check && npm run smoke && npm run amc:test && npm run matcher:test && npm run cas:test"
+    "test": "npm run check && npm run smoke && npm run amc:test && npm run matcher:test && npm run cas:test && npm run xirr:test && npm run transactions:test && npm run transaction-mapper:test"
   },
   "dependencies": {
     "xlsx": "^0.18.5"
