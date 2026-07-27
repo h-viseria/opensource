@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="PicoERP">
+  <rect width="512" height="512" rx="64" fill="#0f3d3e"/>
+  <!-- Right-facing swastik -->
+  <g fill="#f7f3ec">
+    <rect x="220" y="72" width="72" height="368" rx="8"/>
+    <rect x="72" y="220" width="368" height="72" rx="8"/>
+    <rect x="220" y="72" width="220" height="72" rx="8"/>
+    <rect x="368" y="220" width="72" height="220" rx="8"/>
+    <rect x="72" y="368" width="220" height="72" rx="8"/>
+    <rect x="72" y="72" width="72" height="220" rx="8"/>
+  </g>
+  <!-- Operators in pockets -->
+  <g fill="#d4af5f" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="72" text-anchor="middle" dominant-baseline="central">
+    <text x="182" y="182">-</text>
+    <text x="330" y="182">+</text>
+    <text x="330" y="330">x</text>
+    <text x="182" y="330">/</text>
+  </g>
+</svg>
