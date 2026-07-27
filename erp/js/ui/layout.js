@@ -8,6 +8,7 @@ import * as router from '../core/router.js';
 import * as bookService from '../services/bookService.js';
 import { escapeHtml } from './modal.js';
 import { showToast } from './toast.js';
+import * as backupActions from './backupActions.js';
 
 /** @type {import('../models/types.js').Book | null} */
 let currentBook = null;
@@ -275,6 +276,20 @@ function renderTopbar(hasBook) {
         <span class="topbar__crumb-current" id="crumb-current">Portfolio</span>
       </div>
       <div class="topbar__actions">
+        <div class="topbar__backup" role="group" aria-label="Backup">
+          <button type="button" class="topbar__icon-btn" id="btn-topbar-backup"
+                  title="Download full backup" aria-label="Download full backup">
+            <svg class="topbar__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path fill="currentColor" d="M12 3a1 1 0 0 1 1 1v9.6l2.3-2.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L11 13.6V4a1 1 0 0 1 1-1Zm-7 14a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/>
+            </svg>
+          </button>
+          <button type="button" class="topbar__icon-btn" id="btn-topbar-gdrive"
+                  title="Save full backup to Google Drive" aria-label="Save full backup to Google Drive">
+            <svg class="topbar__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path fill="currentColor" d="M8.4 3.2 3 12.5l2.7 4.7h5.1L7.7 7.9 8.4 3.2Zm1.5 0 3.3 5.7-3.5 6.1H4.5L9.9 3.2Zm4.2 0L21 15.4h-5.4l-3.6-6.2 2.7-6Zm-1.2 12.7 2.7 4.7H4.5l2.7-4.7h6.7Z"/>
+            </svg>
+          </button>
+        </div>
         <div class="book-switcher" id="book-switcher">
           <button type="button" class="book-switcher__btn" id="btn-book-menu" aria-haspopup="listbox" aria-expanded="false">
             <span class="book-switcher__label">
@@ -336,6 +351,26 @@ function bindShellEvents() {
     } else {
       bookMenu.setAttribute('hidden', '');
       bookMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.getElementById('btn-topbar-backup')?.addEventListener('click', async () => {
+    try {
+      await backupActions.downloadFullBackupLocal();
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Backup failed', 'error');
+    }
+  });
+
+  document.getElementById('btn-topbar-gdrive')?.addEventListener('click', async () => {
+    const btn = /** @type {HTMLButtonElement|null} */ (document.getElementById('btn-topbar-gdrive'));
+    if (btn) btn.disabled = true;
+    try {
+      await backupActions.uploadFullBackupToGoogleDrive();
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Google Drive upload failed', 'error');
+    } finally {
+      if (btn) btn.disabled = false;
     }
   });
 
