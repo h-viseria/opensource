@@ -1,122 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-adsense-account" content="ca-pub-3312349367159855">
-    <title>Build Your Own SaaS</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #0f172a;
-            color: #e2e8f0;
-        }
-        header {
-            text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(135deg, #1e293b, #020617);
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        p.tagline {
-            font-size: 1.2rem;
-            color: #94a3b8;
-            max-width: 800px;
-            margin: auto;
-        }
-        .container {
-            padding: 40px 20px;
-            max-width: 1000px;
-            margin: auto;
-        }
-        .app-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        .app-card {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 12px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .app-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-        .app-card h3 {
-            margin-top: 0;
-        }
-        .app-card a {
-            display: inline-block;
-            margin-top: 10px;
-            color: #38bdf8;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-    </style>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3312349367159855"
-     crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PicoAI — ultra-light, 100% private web apps for everyday work and finance. Free, open-source, offline-first micro-tools in your browser." />
+  <meta name="google-adsense-account" content="ca-pub-3312349367159855" />
+  <title>PicoAI — Private Web Apps for Work &amp; Finance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0b1210;
+      --ink-2: #121c18;
+      --panel: #17231e;
+      --panel-2: #1c2a24;
+      --line: rgba(232, 224, 208, 0.12);
+      --cream: #f3eee4;
+      --cream-muted: #b7b0a3;
+      --accent: #3d9b7a;
+      --accent-2: #c4a574;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+      --radius: 1rem;
+      --max: 68rem;
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body: "Manrope", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      color: var(--cream);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(61, 155, 122, 0.22), transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, rgba(196, 165, 116, 0.14), transparent 50%),
+        linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 45%, #0e1613 100%);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; }
+
+    .wrap {
+      width: min(100% - 2rem, var(--max));
+      margin-inline: auto;
+    }
+
+    /* ── Header / Hero ── */
+    .site-header {
+      padding: 1.25rem 0 0;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.15rem;
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+
+    .brand span {
+      color: var(--accent);
+    }
+
+    .nav-link {
+      color: var(--cream-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .nav-link:hover { color: var(--cream); }
+
+    .hero {
+      padding: 4.5rem 0 3.25rem;
+      animation: rise 0.7s ease-out both;
+    }
+
+    .hero__brand {
+      margin: 0 0 1rem;
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 5.25rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+    }
+
+    .hero__brand span { color: var(--accent); }
+
+    .hero__tagline {
+      margin: 0 0 1rem;
+      max-width: 22ch;
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 3.2vw, 1.85rem);
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+    }
+
+    .hero__sub {
+      margin: 0;
+      max-width: 60rem;
+      color: var(--cream-muted);
+      font-size: 1.05rem;
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.75rem;
+      animation: rise 0.7s ease-out 0.12s both;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(23, 35, 30, 0.75);
+      color: var(--cream);
+      font-size: 0.82rem;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+    }
+
+    /* ── Main / Apps ── */
+    main { padding-bottom: 4rem; }
+
+    .category {
+      margin-top: 2.75rem;
+      animation: rise 0.65s ease-out both;
+    }
+
+    .category__title {
+      margin: 0 0 1rem;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--accent-2);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr));
+      gap: 1rem;
+    }
+
+    .app-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      padding: 1.35rem 1.35rem 1.25rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(165deg, rgba(61, 155, 122, 0.08), transparent 40%),
+        var(--panel);
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .app-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(61, 155, 122, 0.35);
+      background:
+        linear-gradient(165deg, rgba(61, 155, 122, 0.14), transparent 45%),
+        var(--panel-2);
+    }
+
+    .app-card__badge {
+      align-self: flex-start;
+      padding: 0.28rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(196, 165, 116, 0.12);
+      color: var(--accent-2);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .app-card h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .app-card p {
+      margin: 0;
+      flex: 1;
+      color: var(--cream-muted);
+      font-size: 0.95rem;
+    }
+
+    .app-card__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 0.35rem;
+      padding: 0.65rem 0.95rem;
+      width: fit-content;
+      border-radius: 0.65rem;
+      background: var(--accent);
+      color: #04140f;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: filter 0.15s ease, transform 0.15s ease;
+    }
+
+    .app-card__cta:hover {
+      filter: brightness(1.08);
+      transform: translateX(2px);
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 2rem 0 2.5rem;
+      color: var(--cream-muted);
+    }
+
+    .site-footer__inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .site-footer p {
+      margin: 0;
+      max-width: 60rem;
+      font-size: 0.92rem;
+    }
+
+    .github {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: var(--cream-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      opacity: 0.85;
+    }
+    .github:hover { color: var(--cream); opacity: 1; }
+    .github svg { flex-shrink: 0; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 3rem 0 2.25rem; }
+      .hero__tagline { max-width: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3312349367159855"
+    crossorigin="anonymous"></script>
 </head>
 <body>
-
-<header>
-    <h1>Build. Launch. Own.</h1>
-    <p class="tagline">
-        Stop shipping code for others—start building your own future. The SaaS playbook is open, AI is your co-founder, and the only thing missing is you.
-    </p>
-</header>
-
-<div class="container">
-    <h2>🚀 Apps Built with AI - Open source models running on personal Laptop</h2>
-    <div class="app-list">
-        
-        <div class="app-card">
-            <h3>Mutual Fund Holdings Lite</h3>
-            <p>Consolidated view of all mutual fund holdings using IndexedDB.</p>
-            <a href="mf-holdings-app//index.html" target="_blank">Launch App →</a>
-        </div>
-
-        <div class="app-card">
-            <h3>Mini CTRM Lite</h3>
-            <p>Lightweight commodity trading & risk management tool.</p>
-            <a href="ctrm-app/index.html" target="_blank">Launch App →</a>
-        </div>
-
-        <div class="app-card">
-            <h3>Inventory ERP Lite</h3>
-            <p>Track orders, suppliers, and fulfillment lifecycle.</p>
-            <a href="inventory-app/app/index.html" target="_blank">Launch App →</a>
-        </div>
-      
-        <div class="app-card">
-            <h3> Free Accounting System Lite </h3>
-            <p>Lite version of GnuCash</p>
-            <a href="accounting-app/index.html" target="_blank">Launch App →</a>
-        </div>
-
-        <div class="app-card">
-            <h3> Free PDF Utils </h3>
-            <p>Open source pdf utilities</p>
-            <a href="pdf-utils/index.html" target="_blank">Launch App →</a>
-        </div>
-        <!-- Add more apps here -->
-
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="#top">Pico<span>AI</span></a>
+      <a class="nav-link" href="#apps">Browse apps</a>
     </div>
-</div>
 
-<footer>
-    Built to prove what AI-assisted coding can achieve. Now it's your turn.
-</footer>
+    <div class="wrap hero" id="top">
+      <p class="hero__brand" aria-label="PicoAI">Pico<span>AI</span></p>
+      <h1 class="hero__tagline">Ultra-Light, 100% Private Web Apps for Everyday Work &amp; Finance</h1>
+      <p class="hero__sub">
+        Free, open-source micro-tools built for small businesses, professionals, and individuals.<BR>
+        No accounts, no subscriptions, and zero cloud uploads — everything runs safely inside your browser.
+      </p>
+      <div class="pills" aria-label="Key benefits">
+        <span class="pill">🔒 100% Private (Local-first)</span>
+        <span class="pill">⚡ Instant Access (Zero install or sign-up)</span>
+        <span class="pill">💡 AI-Engineered (Ultra-lean &amp; open source)</span>
+        <span class="pill">💸 100% Free Forever</span>
+      </div>
+    </div>
+  </header>
 
+  <main class="wrap" id="apps">
+    <section class="category" aria-labelledby="cat-finance">
+      <h2 class="category__title" id="cat-finance">Finance &amp; Wealth</h2>
+      <div class="grid">
+        <article class="app-card">
+          <span class="app-card__badge">Private / Local-first</span>
+          <h3>PicoERP</h3>
+          <p>Offline-first double-entry accounting ERP for shops, societies, and personal finance — books, invoices, inventory, tax, and reports in your browser.</p>
+          <a class="app-card__cta" href="erp/index.html">Launch App →</a>
+        </article>
+        <article class="app-card">
+          <span class="app-card__badge">Local Storage</span>
+          <h3>Mutual Fund Holdings Lite</h3>
+          <p>Consolidated view of all your mutual fund holdings stored securely in local browser storage.</p>
+          <a class="app-card__cta" href="mf-holdings-app/index.html">Launch App →</a>
+        </article>
+        <article class="app-card">
+          <span class="app-card__badge">Local Storage</span>
+          <h3>Free Accounting System Lite</h3>
+          <p>A lightweight, privacy-focused double-entry ledger inspired by GnuCash for personal and small business tracking.</p>
+          <a class="app-card__cta" href="accounting-app/index.html">Launch App →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="category" aria-labelledby="cat-business">
+      <h2 class="category__title" id="cat-business">Business &amp; Operations</h2>
+      <div class="grid">
+        <article class="app-card">
+          <span class="app-card__badge">Local Operations</span>
+          <h3>Inventory ERP Lite</h3>
+          <p>Track orders, supplier relationships, and fulfillment lifecycles without complex software setups.</p>
+          <a class="app-card__cta" href="inventory-app/app/index.html">Launch App →</a>
+        </article>
+        <article class="app-card">
+          <span class="app-card__badge">Local Operations</span>
+          <h3>Mini CTRM Lite</h3>
+          <p>Lightweight commodity trading and risk management suite engineered for quick, small-scale evaluation.</p>
+          <a class="app-card__cta" href="ctrm-app/index.html">Launch App →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="category" aria-labelledby="cat-docs">
+      <h2 class="category__title" id="cat-docs">Document Utilities</h2>
+      <div class="grid">
+        <article class="app-card">
+          <span class="app-card__badge">100% Client-Side</span>
+          <h3>Browser PDF Utilities</h3>
+          <p>Process and manage PDF documents directly on your device without ever sending sensitive files to third-party servers.</p>
+          <a class="app-card__cta" href="pdf-utils/index.html">Launch App →</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap site-footer__inner">
+      <p>PicoAI — Built with open-source spirit and AI precision. Zero cloud dependencies.</p>
+      <a class="github" href="https://github.com/h-viseria/opensource" target="_blank" rel="noopener noreferrer" title="View on GitHub" aria-label="GitHub repository">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.27 2.75 1.05A9.3 9.3 0 0 1 12 7.5c.85 0 1.71.12 2.51.35 1.9-1.32 2.74-1.05 2.74-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .26.18.58.69.48A10.05 10.05 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z"/>
+        </svg>
+        GitHub
+      </a>
+    </div>
+  </footer>
 </body>
 </html>
