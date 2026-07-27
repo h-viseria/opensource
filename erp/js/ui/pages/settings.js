@@ -5,10 +5,10 @@
 import * as settingsService from '../../services/settingsService.js';
 import * as bookService from '../../services/bookService.js';
 import * as backupService from '../../services/backupService.js';
+import * as backupActions from '../backupActions.js';
 import { escapeHtml, confirmModal } from '../modal.js';
 import { showToast } from '../toast.js';
 import { deleteDatabase } from '../../db/database.js';
-import { formatDisplayDate } from '../../utils/date.js';
 
 /**
  * @param {import('../../core/router.js').RouteContext} ctx
@@ -52,13 +52,15 @@ export async function renderSettings(ctx, outlet, opts = {}) {
       <h2 class="panel__title">Backup</h2>
       <p class="panel__desc">
         Export to <span class="mono">*.erp.json</span> (masters, vouchers, inventory, tax, budgets, goals, settings).
-        Keep a copy outside this browser.
+        Google Drive uploads use a compressed <span class="mono">*.erp.zip</span>.
+        Keep a copy outside this browser. Top-bar icons also run full backup.
       </p>
-      <div class="form-actions" style="justify-content:flex-start;border:0;padding:0;margin-top:0.75rem">
+      <div class="form-actions" style="justify-content:flex-start;border:0;padding:0;margin-top:0.75rem;flex-wrap:wrap">
         <button type="button" class="btn btn--primary" id="btn-backup-full">Download full backup</button>
         <button type="button" class="btn btn--secondary" id="btn-backup-book" ${session.book ? '' : 'disabled'}>
           Download active book
         </button>
+        <button type="button" class="btn btn--secondary" id="btn-backup-gdrive">Save full backup to Google Drive</button>
       </div>
       ${
         books.length > 1
@@ -71,15 +73,26 @@ export async function renderSettings(ctx, outlet, opts = {}) {
       <h2 class="panel__title">Restore</h2>
       <p class="panel__desc">
         Full backups replace <strong>all</strong> local data. Book backups replace that book only.
+        Accepts <span class="mono">.erp.json</span> / <span class="mono">.json</span> or compressed <span class="mono">.erp.zip</span> / <span class="mono">.zip</span>.
         Schema is validated before import.
       </p>
       <div class="form-actions" style="justify-content:flex-start;border:0;padding:0;margin-top:0.75rem;flex-wrap:wrap">
         <label class="btn btn--secondary" style="cursor:pointer">
-          Choose .erp.json file
-          <input type="file" id="file-restore" accept=".json,.erp.json,application/json" hidden />
+          Choose .json / .zip file
+          <input type="file" id="file-restore" accept=".json,.erp.json,.zip,.erp.zip,application/json,application/zip" hidden />
         </label>
+        <button type="button" class="btn btn--secondary" id="btn-restore-gdrive">Restore from Google Drive</button>
       </div>
       <div id="restore-preview" class="restore-preview" hidden></div>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel__title">Google Drive</h2>
+      <p class="panel__desc">
+        Use the Drive icon in the top bar (or the buttons above). PicoERP downloads a compressed backup and opens Google Drive
+        so you can upload it with <strong>+ New → File upload</strong>. Restore: download the file from Drive, then choose it here.
+        No technical setup is required for everyday use.
+      </p>
     </div>
 
     <div class="panel">
@@ -110,11 +123,16 @@ export async function renderSettings(ctx, outlet, opts = {}) {
     </div>
   `;
 
+  const onRestored = () => {
+    if (opts.onReset) opts.onReset();
+    else location.reload();
+  };
+
+  const preview = /** @type {HTMLElement} */ (outlet.querySelector('#restore-preview'));
+
   outlet.querySelector('#btn-backup-full')?.addEventListener('click', async () => {
     try {
-      const { payload, fileName, summary } = await backupService.exportFullBackup();
-      backupService.downloadBackup(payload, fileName);
-      showToast(`Downloaded ${summary.totalRecords} records (${summary.bookCount} books)`, 'success');
+      await backupActions.downloadFullBackupLocal();
     } catch (err) {
       showToast(err instanceof Error ? err.message : 'Backup failed', 'error');
     }
@@ -131,87 +149,52 @@ export async function renderSettings(ctx, outlet, opts = {}) {
     }
   });
 
-  /** @type {Record<string, unknown>|null} */
-  let pendingBackup = null;
+  outlet.querySelector('#btn-backup-gdrive')?.addEventListener('click', async () => {
+    const btn = /** @type {HTMLButtonElement} */ (outlet.querySelector('#btn-backup-gdrive'));
+    btn.disabled = true;
+    try {
+      await backupActions.uploadFullBackupToGoogleDrive();
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Google Drive upload failed', 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  });
 
-  const preview = /** @type {HTMLElement} */ (outlet.querySelector('#restore-preview'));
   const fileInput = /** @type {HTMLInputElement} */ (outlet.querySelector('#file-restore'));
-
   fileInput?.addEventListener('change', async () => {
     const file = fileInput.files?.[0];
     fileInput.value = '';
     if (!file) return;
     try {
-      const text = await backupService.readFileAsText(file);
-      const parsed = backupService.parseBackupText(text);
+      const parsed = await backupService.parseBackupFile(file);
       if (!parsed.ok || !parsed.raw) {
-        showToast(parsed.errors[0] || 'Invalid backup', 'error');
+        showToast(parsed.errors?.[0] || 'Invalid backup', 'error');
         preview.hidden = true;
-        pendingBackup = null;
+        preview.innerHTML = '';
         return;
       }
-      pendingBackup = parsed.raw;
-      const exported = parsed.exportedAt
-        ? formatDisplayDate(String(parsed.exportedAt))
-        : '—';
-      preview.hidden = false;
-      preview.innerHTML = `
-        <div class="restore-preview__card">
-          <p><strong>Valid backup</strong>
-            <span class="badge badge--${parsed.scope === 'full' ? 'warning' : 'info'}">${escapeHtml(String(parsed.scope))}</span>
-          </p>
-          <p class="muted" style="font-size:var(--text-sm)">
-            ${parsed.bookName ? `Book: <strong>${escapeHtml(String(parsed.bookName))}</strong> · ` : ''}
-            ${parsed.totalRecords} records · App ${escapeHtml(String(parsed.appVersion || '—'))} ·
-            Exported ${escapeHtml(exported)}
-          </p>
-          ${
-            parsed.warnings?.length
-              ? `<p class="muted" style="font-size:var(--text-xs)">${parsed.warnings.map((w) => escapeHtml(w)).join(' · ')}</p>`
-              : ''
-          }
-          <div class="form-actions" style="justify-content:flex-start;border:0;padding-top:0.75rem;margin:0">
-            <button type="button" class="btn btn--primary" id="btn-restore-confirm">
-              ${parsed.scope === 'full' ? 'Replace all data' : 'Restore book'}
-            </button>
-            <button type="button" class="btn btn--ghost" id="btn-restore-cancel">Cancel</button>
-          </div>
-        </div>`;
-
-      preview.querySelector('#btn-restore-cancel')?.addEventListener('click', () => {
-        pendingBackup = null;
-        preview.hidden = true;
-      });
-
-      preview.querySelector('#btn-restore-confirm')?.addEventListener('click', async () => {
-        if (!pendingBackup) return;
-        const isFull = pendingBackup.scope === 'full';
-        const ok = await confirmModal({
-          title: isFull ? 'Replace all data?' : 'Restore book?',
-          danger: true,
-          confirmLabel: isFull ? 'Replace everything' : 'Restore book',
-          bodyHtml: isFull
-            ? `<p>This <strong>deletes all current books</strong> in this browser and loads the backup. This cannot be undone.</p>`
-            : `<p>This replaces the book <strong>${escapeHtml(String(pendingBackup.bookName || ''))}</strong> if it already exists (same id), or imports it as a new book.</p>`,
-        });
-        if (!ok) return;
-        try {
-          if (isFull) {
-            await backupService.restoreFullBackup(pendingBackup);
-            showToast('Full backup restored', 'success');
-          } else {
-            const result = await backupService.restoreBookBackup(pendingBackup);
-            showToast(`Restored ${result.bookName || 'book'}`, 'success');
-          }
-          pendingBackup = null;
-          if (opts.onReset) opts.onReset();
-          else location.reload();
-        } catch (err) {
-          showToast(err instanceof Error ? err.message : 'Restore failed', 'error');
-        }
-      });
+      backupActions.showRestorePreview(preview, parsed, { onRestored });
     } catch (err) {
       showToast(err instanceof Error ? err.message : 'Could not read file', 'error');
+    }
+  });
+
+  outlet.querySelector('#btn-restore-gdrive')?.addEventListener('click', async () => {
+    const btn = /** @type {HTMLButtonElement} */ (outlet.querySelector('#btn-restore-gdrive'));
+    btn.disabled = true;
+    try {
+      const parsed = await backupActions.pickAndParseGoogleDriveBackup();
+      if (!parsed) return;
+      if (!parsed.ok || !parsed.raw) {
+        showToast(parsed.errors?.[0] || 'Invalid backup', 'error');
+        return;
+      }
+      backupActions.showRestorePreview(preview, parsed, { onRestored });
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Google Drive restore failed', 'error');
+    } finally {
+      btn.disabled = false;
     }
   });
 
