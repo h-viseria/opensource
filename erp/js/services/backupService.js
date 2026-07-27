@@ -418,6 +418,14 @@ export async function restoreBookBackup(backup) {
 export function downloadBackup(payload, fileName) {
   const json = JSON.stringify(payload, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
+  downloadBlob(blob, fileName);
+}
+
+/**
+ * @param {Blob} blob
+ * @param {string} fileName
+ */
+export function downloadBlob(blob, fileName) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -430,8 +438,63 @@ export function downloadBackup(payload, fileName) {
 }
 
 /**
+ * Build a compressed ZIP blob containing the backup JSON.
+ * @param {object} payload
+ * @param {string} [jsonFileName]
+ * @returns {Promise<{ blob: Blob, zipFileName: string, jsonFileName: string }>}
+ */
+export async function buildBackupZip(payload, jsonFileName) {
+  const { zipDeflate } = await import('../utils/zip.js');
+  const inner =
+    jsonFileName ||
+    String(backupFileName(String(payload.bookName || payload.appName || APP_NAME))).replace(
+      /\.erp\.json$/i,
+      '.erp.json'
+    );
+  const safeInner = inner.toLowerCase().endsWith('.json') ? inner : `${inner}.erp.json`;
+  const bytes = new TextEncoder().encode(JSON.stringify(payload, null, 2));
+  const buffer = await zipDeflate({ [safeInner]: bytes });
+  const zipFileName = safeInner.replace(/\.erp\.json$/i, '.erp.zip').replace(/\.json$/i, '.zip');
+  return {
+    blob: new Blob([buffer], { type: 'application/zip' }),
+    zipFileName,
+    jsonFileName: safeInner,
+  };
+}
+
+/**
+ * Read a local File/Blob as text or unzip and extract backup JSON.
+ * @param {File|Blob} file
+ * @param {string} [fileName]
+ */
+export async function parseBackupFile(file, fileName = '') {
+  const name = String(fileName || (file instanceof File ? file.name : '') || '').toLowerCase();
+  const isZip =
+    name.endsWith('.zip') ||
+    name.endsWith('.erp.zip') ||
+    file.type === 'application/zip' ||
+    file.type === 'application/x-zip-compressed';
+
+  if (isZip) {
+    const { unzip } = await import('../utils/zip.js');
+    const buffer = await file.arrayBuffer();
+    const files = await unzip(buffer);
+    const jsonEntry =
+      [...files.keys()].find((k) => /\.erp\.json$/i.test(k) || /\.json$/i.test(k)) || null;
+    if (!jsonEntry) {
+      return { ok: false, errors: ['ZIP has no .json / .erp.json backup inside'], warnings: [] };
+    }
+    const text = new TextDecoder('utf-8').decode(files.get(jsonEntry));
+    return parseBackupText(text);
+  }
+
+  const text = await readFileAsText(file);
+  return parseBackupText(text);
+}
+
+/**
  * Read a File as text.
- * @param {File} file
+ * @param {File|Blob} file
  */
 export function readFileAsText(file) {
   return new Promise((resolve, reject) => {
