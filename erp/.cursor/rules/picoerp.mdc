@@ -1,0 +1,16 @@
+---
+description: PicoERP project conventions for all agent work
+alwaysApply: true
+---
+
+# PicoERP
+
+Vanilla JS offline-first ERP. Layers: **UI → Services → Engine → Repository → IndexedDB**.
+
+Before large changes, read root `AGENTS.md` and the `AGENTS.md` in the target folder.
+
+- App name: PicoERP. DB: `erpDataStore`.
+- Routes in `js/routes.js`; nav in `js/ui/layout.js`.
+- Bump `APP_VERSION`, `index.html` script `?v=`, and `sw.js` `CACHE_VERSION` when users need a cache bust.
+- Keep UI free of direct IndexedDB access.
+- Prefer extending book templates / User Guide over ad-hoc one-off UX.
