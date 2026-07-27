@@ -54,29 +54,88 @@ export async function unzip(buffer) {
  * @returns {ArrayBuffer}
  */
 export function zipStore(files) {
+  return buildZip(files, false);
+}
+
+/**
+ * Build a DEFLATE-compressed ZIP (falls back to STORE if CompressionStream missing).
+ * @param {Map<string, Uint8Array>|Record<string, Uint8Array>} files
+ * @returns {Promise<ArrayBuffer>}
+ */
+export async function zipDeflate(files) {
+  return buildZip(files, true);
+}
+
+/**
+ * @param {Map<string, Uint8Array>|Record<string, Uint8Array>} files
+ * @param {boolean} preferDeflate
+ * @returns {Promise<ArrayBuffer>|ArrayBuffer}
+ */
+function buildZip(files, preferDeflate) {
   const entries = files instanceof Map ? [...files.entries()] : Object.entries(files);
+
+  if (!preferDeflate) {
+    return assembleZip(entries.map(([name, data]) => ({ name, data, method: 0, compressed: data })));
+  }
+
+  return (async () => {
+    /** @type {{ name: string, data: Uint8Array, method: number, compressed: Uint8Array }[]} */
+    const prepared = [];
+    for (const [name, data] of entries) {
+      let method = 0;
+      let compressed = data;
+      try {
+        compressed = await deflateRaw(data);
+        method = 8;
+        // Prefer STORE if deflate did not shrink
+        if (compressed.length >= data.length) {
+          method = 0;
+          compressed = data;
+        }
+      } catch {
+        method = 0;
+        compressed = data;
+      }
+      prepared.push({ name, data, method, compressed });
+    }
+    return assembleZip(prepared);
+  })();
+}
+
+/**
+ * @param {{ name: string, data: Uint8Array, method: number, compressed: Uint8Array }[]} entries
+ * @returns {ArrayBuffer}
+ */
+function assembleZip(entries) {
   /** @type {Uint8Array[]} */
   const parts = [];
-  /** @type {{ name: string, offset: number, size: number, crc: number }[]} */
+  /** @type {{ name: string, offset: number, size: number, compSize: number, method: number, crc: number }[]} */
   const centrals = [];
   let offset = 0;
 
-  for (const [name, data] of entries) {
-    const nameBytes = new TextEncoder().encode(name);
-    const crc = crc32(data);
+  for (const entry of entries) {
+    const nameBytes = new TextEncoder().encode(entry.name);
+    const crc = crc32(entry.data);
     const local = new Uint8Array(30 + nameBytes.length);
     const lv = new DataView(local.buffer);
     lv.setUint32(0, 0x04034b50, true);
     lv.setUint16(4, 20, true);
-    lv.setUint16(8, 0, true); // STORE
+    lv.setUint16(8, entry.method, true);
     lv.setUint32(14, crc, true);
-    lv.setUint32(18, data.length, true);
-    lv.setUint32(22, data.length, true);
+    lv.setUint32(18, entry.compressed.length, true);
+    lv.setUint32(22, entry.data.length, true);
     lv.setUint16(26, nameBytes.length, true);
     local.set(nameBytes, 30);
-    parts.push(local, data);
-    centrals.push({ name, offset, size: data.length, crc });
-    offset += local.length + data.length;
+    parts.push(local, entry.compressed);
+    centrals.push({
+      name: entry.name,
+      offset,
+      size: entry.data.length,
+      compSize: entry.compressed.length,
+      method: entry.method,
+      crc,
+    });
+    offset += local.length + entry.compressed.length;
   }
 
   /** @type {Uint8Array[]} */
@@ -89,9 +148,9 @@ export function zipStore(files) {
     cv.setUint32(0, 0x02014b50, true);
     cv.setUint16(4, 20, true);
     cv.setUint16(6, 20, true);
-    cv.setUint16(10, 0, true);
+    cv.setUint16(10, c.method, true);
     cv.setUint32(16, c.crc, true);
-    cv.setUint32(20, c.size, true);
+    cv.setUint32(20, c.compSize, true);
     cv.setUint32(24, c.size, true);
     cv.setUint16(28, nameBytes.length, true);
     cv.setUint32(42, c.offset, true);
@@ -121,6 +180,19 @@ export function zipStore(files) {
   }
   out.set(eocd, pos);
   return out.buffer;
+}
+
+/**
+ * @param {Uint8Array} data
+ */
+async function deflateRaw(data) {
+  if (typeof CompressionStream === 'undefined') {
+    throw new Error('CompressionStream unavailable');
+  }
+  const cs = new CompressionStream('deflate-raw');
+  const stream = new Blob([data]).stream().pipeThrough(cs);
+  const buf = await new Response(stream).arrayBuffer();
+  return new Uint8Array(buf);
 }
 
 /**
