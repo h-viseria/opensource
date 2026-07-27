@@ -464,9 +464,11 @@ const CHAPTERS = [
         path: '/settings',
         body: `
           <h4>Backup</h4>
-          <p>Download a full <code>.erp.json</code> backup (all books) or the active book only. Store copies outside this browser.</p>
+          <p>Download a full <code>.erp.json</code> backup (all books) or the active book only. Top-bar icons next to Active book also download a full backup or upload a compressed <code>.erp.zip</code> to Google Drive.</p>
           <h4>Restore</h4>
-          <p>Choose a backup file. Full backups replace all local data; book backups replace that book. Schema is validated first.</p>
+          <p>Choose a local <code>.json</code> / <code>.zip</code> file, or restore from Google Drive. Full backups replace all local data; book backups replace that book. Schema is validated first.</p>
+          <h4>Google Drive</h4>
+          <p>Click the Drive icon: PicoERP downloads a compressed backup and opens Google Drive. Use <strong>+ New → File upload</strong> and pick the downloaded file. To restore, download that backup from Drive, then choose it under Settings → Restore (or Restore from Google Drive for step-by-step help). No Client ID or technical setup is needed.</p>
           <h4>PWA / updates</h4>
           <p>Install ${escapeHtml(APP_NAME)} from the browser menu for offline use. Use <strong>Check for updates</strong> after a new version is deployed.</p>
           <h4>Danger zone</h4>
