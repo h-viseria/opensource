@@ -1,0 +1,11 @@
+{
+  "name": "picoerp",
+  "version": "0.12.0",
+  "private": true,
+  "description": "PicoERP — offline-first accounting ERP (Tally + GnuCash inspired)",
+  "scripts": {
+    "start": "python -m http.server 8765 --bind 127.0.0.1",
+    "serve": "python -m http.server 8765 --bind 127.0.0.1",
+    "icons": "python scripts/generate_icons.py"
+  }
+}
