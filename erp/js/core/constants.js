@@ -3,7 +3,7 @@
  */
 
 export const APP_NAME = 'PicoERP';
-export const APP_VERSION = '0.13.1';
+export const APP_VERSION = '0.14.2';
 
 /** IndexedDB database name. */
 export const DB_NAME = 'erpDataStore';
@@ -44,6 +44,9 @@ export const SETTINGS_KEYS = Object.freeze({
   ACTIVE_BOOK_ID: 'activeBookId',
   ACTIVE_FY_ID: 'activeFinancialYearId',
   UI_PREFERENCES: 'uiPreferences',
+  GOOGLE_DRIVE_CLIENT_ID: 'googleDriveClientId',
+  GOOGLE_DRIVE_API_KEY: 'googleDriveApiKey',
+  GOOGLE_DRIVE_APP_ID: 'googleDriveAppId',
 });
 
 /** Event bus channel names. */
