@@ -14,7 +14,8 @@ Orchestrate repositories + engines, emit events, write audit logs. Called by UI 
 | `catalogueService.js` | Catalogue types + SKU attribute helpers |
 | `taxService.js` | Tax codes + reports |
 | `reportService.js` | Loads data → reporting engine |
-| `backupService.js` | `*.erp.json` export/import |
+| `backupService.js` | `*.erp.json` export/import; zip via `buildBackupZip` / `parseBackupFile` |
+| `googleDriveService.js` | OAuth (`drive.file`) upload/list/download; Client ID in settings |
 | `gnuCashImportService.js` | Accounts + transactions CSV round-trip |
 | `personalFinanceService.js` | Budgets/goals + PF reports |
 | `invoiceTemplateService.js` | docx/odt placeholder fill |
