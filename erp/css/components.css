@@ -1739,3 +1739,139 @@
     max-height: none;
   }
 }
+
+/* ── PicoScan floating widget (iframe) ─────────────────── */
+
+.picoscan-fab-host {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+}
+
+.picoscan-fab-host > * {
+  pointer-events: auto;
+}
+
+.picoscan-fab {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.7rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-brand, #0f3d3e);
+  color: #f7f3ec;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-lg, 0 8px 24px rgba(15, 61, 62, 0.35));
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  z-index: 81;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.picoscan-fab.is-placed {
+  right: auto;
+  bottom: auto;
+}
+
+.picoscan-fab.is-dragging {
+  cursor: grabbing;
+  box-shadow: 0 12px 28px rgba(15, 61, 62, 0.45);
+  transition: none;
+}
+
+.picoscan-fab:hover {
+  background: var(--color-brand-soft, #1a5c5e);
+}
+
+.picoscan-fab.is-open {
+  background: var(--color-accent, #c45c26);
+}
+
+.picoscan-fab__icon {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.picoscan-panel {
+  position: fixed;
+  right: 1rem;
+  bottom: 4.5rem;
+  width: min(24rem, calc(100vw - 1.5rem));
+  height: min(36rem, calc(100vh - 5.5rem));
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-elevated, #fffcf7);
+  border: 1px solid var(--color-border, #d4cfc5);
+  border-radius: var(--radius-md, 10px);
+  box-shadow: var(--shadow-lg, 0 12px 40px rgba(0, 0, 0, 0.2));
+  overflow: hidden;
+  z-index: 80;
+}
+
+.picoscan-panel[hidden] {
+  display: none !important;
+}
+
+.picoscan-panel__chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.55rem 0.45rem 0.75rem;
+  background: var(--color-brand, #0f3d3e);
+  color: #f7f3ec;
+  flex-shrink: 0;
+}
+
+.picoscan-panel__title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  min-width: 0;
+}
+
+.picoscan-panel__hint {
+  font-size: 0.65rem;
+  font-weight: var(--weight-regular);
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.picoscan-panel__close {
+  color: #f7f3ec !important;
+}
+
+.picoscan-panel__frame {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: var(--color-bg, #f3f0ea);
+  min-height: 0;
+}
+
+@media (max-width: 520px) {
+  .picoscan-fab__label {
+    display: none;
+  }
+  .picoscan-fab {
+    padding: 0.85rem;
+    border-radius: 999px;
+  }
+  .picoscan-panel {
+    width: calc(100vw - 1rem);
+    height: calc(100vh - 5rem);
+  }
+  .picoscan-panel__hint {
+    display: none;
+  }
+}
