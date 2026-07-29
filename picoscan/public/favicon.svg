@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PicoScan">
+  <rect width="64" height="64" rx="12" fill="#0f3d3e"/>
+  <rect x="14" y="12" width="36" height="40" rx="4" fill="none" stroke="#f7f3ec" stroke-width="3"/>
+  <path d="M22 28h20M22 36h14M22 44h10" stroke="#c45c26" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="44" cy="44" r="8" fill="#1a5c5e" stroke="#f7f3ec" stroke-width="2"/>
+  <path d="M41 44h6M44 41v6" stroke="#f7f3ec" stroke-width="2" stroke-linecap="round"/>
+</svg>
