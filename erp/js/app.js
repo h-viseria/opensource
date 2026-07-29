@@ -12,6 +12,7 @@ import { mountShell, mountBookGate } from './ui/layout.js';
 import { registerRoutes } from './routes.js';
 import { renderBooks } from './ui/pages/books.js';
 import { registerServiceWorker } from './pwa/register.js';
+import { mountPicoScanFab } from './ui/picoscanFab.js';
 
 /** @type {boolean} */
 let hasActiveBook = false;
@@ -26,6 +27,7 @@ async function main() {
   console.info(`${APP_NAME} v${APP_VERSION}`);
 
   initToasts();
+  mountPicoScanFab();
 
   try {
     await getDatabase();
