@@ -1,0 +1,15 @@
+---
+description: PicoScan project conventions
+alwaysApply: true
+---
+
+# PicoScan
+
+Offline OCR app. Layers: **UI → Engine → Core/DB**. Shared engine powers Phase 2 widget.
+
+- Match PicoERP visual tokens (`src/styles/variables.css`).
+- Editable document model is the export source of truth.
+- No cloud OCR / no backend. Third-party libs live in `vendor/`.
+- Serve with `python -m http.server` from repo root.
+- Embed host: `widget.html` (no SW) for PicoERP FAB iframe.
+- Read root `AGENTS.md` before large changes.
