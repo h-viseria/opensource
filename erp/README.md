@@ -10,6 +10,18 @@ python -m http.server 8765 --bind 127.0.0.1
 
 Open `http://127.0.0.1:8765` (not `file://`).
 
+## PicoScan widget
+
+A floating **PicoScan** button (bottom-right) opens an iframe to:
+
+`../picoscan/widget.html`
+
+On GitHub Pages that is:
+
+`https://h-viseria.github.io/opensource/picoscan/widget.html`
+
+Scan results stay in PicoScan; copy/paste into ERP fields manually.
+
 ## Stack
 
 - No bundler / no framework
