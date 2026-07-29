@@ -1,0 +1,21 @@
+{
+  "name": "picoscan",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PicoScan — offline OCR + local AI document scanning in the browser",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test src/core/**/*.test.js src/engine/**/*.test.js"
+  },
+  "dependencies": {
+    "tesseract.js": "^5.1.1",
+    "xlsx": "^0.18.5",
+    "pdfjs-dist": "^4.10.38"
+  },
+  "devDependencies": {
+    "vite": "^6.0.7"
+  }
+}
