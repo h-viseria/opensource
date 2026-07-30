@@ -68,3 +68,25 @@ You can easily verify that PicoAI never transmits your data:
 2. Open **Developer Tools** (`F12` or `Ctrl+Shift+I`) and switch to the **Network** tab.
 3. Disconnect your device's internet connection.
 4. Process your PDFs, accounting logs, or mutual funds—**everything operates 100% offline.**
+
+Here are the **Contributing** and **License** sections ready for direct copy-pasting:
+
+---
+
+## 🤝 Contributing
+
+Contributions are always welcome! Whether it's adding a new offline micro-tool, improving UI/UX, or optimizing existing client-side scripts:
+
+1. **Fork** the repository.
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the branch (`git push origin feature/AmazingFeature`).
+5. Open a **Pull Request**.
+
+---
+
+## 📄 License
+
+Distributed under the **MIT License**. See `LICENSE` for more information.
+
+**If you find these privacy-first tools useful, please consider giving this repository a ⭐️!**
