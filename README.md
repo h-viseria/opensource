@@ -56,3 +56,15 @@ Access all tools instantly without downloading anything:
    git clone [https://github.com/h-viseria/opensource.git](https://github.com/h-viseria/opensource.git)
 2. **Open directly in browser:**
    Simply double-click index.html inside the cloned folder, or host it locally using any static web server (e.g., python -m http.server).
+Here is the **Privacy Audit** section formatted directly in clean Markdown so you can copy and paste it without any extra code block syntax getting in the way:
+
+---
+
+## 🛡️ Privacy Audit & Data Verification
+
+You can easily verify that PicoAI never transmits your data:
+
+1. Open any utility in your browser.
+2. Open **Developer Tools** (`F12` or `Ctrl+Shift+I`) and switch to the **Network** tab.
+3. Disconnect your device's internet connection.
+4. Process your PDFs, accounting logs, or mutual funds—**everything operates 100% offline.**
