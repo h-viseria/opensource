@@ -188,7 +188,9 @@ function renderSidebar(hasBook) {
         <img class="sidebar__logo" src="icons/icon-192.png" width="36" height="36" alt="" />
         <div>
           <div class="sidebar__title">PicoERP</div>
-          <div class="sidebar__subtitle">Accounting ERP</div>
+          <div class="sidebar__subtitle">
+            <a class="sidebar__contact" href="mailto:support@picoai.org" title="support@picoai.org">Contact us</a>
+          </div>
         </div>
       </div>
       <nav class="sidebar__nav">${sections}</nav>
