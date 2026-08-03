@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Main Portal / Root -->
+  <url>
+    <loc>https://picoai.org/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Individual App Utilities (Add a entry for each tool) -->
+  <url>
+    <loc>https://picoai.org/erp/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://picoai.org/mf-holdings-app/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://picoai.org/picoscan/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://picoai.org/pdf-utils/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://picoai.org/inventory-app/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://picoai.org/accounting-app/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://picoai.org/ctrm-app/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
