@@ -9,6 +9,26 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="PicoERP" />
+  <meta name="keywords" content="PicoERP, open source ERP, offline first ERP, browser ERP, IndexedDB accounting, privacy ERP, MSME billing, small business management, client side software" />
+  <meta name="author" content="PicoAI / PicoERP Team" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Canonical URL (Update domain to your primary site structure) -->
+  <link rel="canonical" href="https://picoai.org/erp/" />
+
+  <!-- Open Graph / WhatsApp / Facebook / LinkedIn Cards -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://picoai.org/erp/" />
+  <meta property="og:site_name" content="PicoERP" />
+  <meta property="og:title" content="PicoERP — Lightweight, Offline-First Open Source ERP" />
+  <meta property="og:description" content="Free, open-source business management running entirely in your browser. Keep your financial, inventory, and billing data 100% private and offline." />
+    
+
+  <!-- Twitter / X Card -->  
+  <meta name="twitter:url" content="https://picoai.org/erp/" />
+  <meta name="twitter:title" content="PicoERP — Offline-First Open Source ERP" />
+  <meta name="twitter:description" content="Privacy-first, browser-based ERP software powered by pure HTML, JS, and IndexedDB. Zero cloud telemetry." />
+
   <title>PicoERP — Accounting ERP</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon.png" />
@@ -21,6 +41,31 @@
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PicoERP",
+    "url": "https://picoai.org/erp/",
+    "description": "An open-source, offline-first Enterprise Resource Planning (ERP) application for small businesses and developers.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "All (Web Browser)",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "100% Offline-first local storage",
+      "Zero server telemetry or cloud dependency",
+      "Inventory & Order Management",
+      "Invoicing & Billing",
+      "Client-side IndexedDB persistence"
+    ],
+    "license": "https://opensource.org/licenses/MIT"
+  }
+  </script>
 </head>
 <body>
   <div id="app" class="app">
