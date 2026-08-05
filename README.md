@@ -18,10 +18,11 @@ PicoAI is an open-source AI-native application platform that enables private, in
 Most web tools require cloud accounts, subscription fees, or upload your sensitive financial and document data to remote servers. 
 
 **PicoAI is built differently:**
+* 
 * 🔒 **100% Local-First & Private:** Your data never leaves your device's browser memory/IndexedDB.
 * ⚡ **Instant Access:** Zero installation, sign-ups, or framework setup required.
 * ✈️ **Offline Capable:** Load the page once and run it completely disconnected from the internet.
-* 💡 **Ultra-Lean & Open Source:** Clean HTML/JS micro-apps designed for high performance and longevity.
+* 💡 **AI Native:** Born with AI DNA, capable of running locally, on private infrastructure, or in the browser.
 
 ---
 
