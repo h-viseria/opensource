@@ -2,9 +2,9 @@
 
 # ⚡ PicoAI
 
-### Ultra-Light, 100% Private Web Apps for Everyday Work & Finance
+### Ultra-Light, Private 100% Private, Open-Source AI Application Platform
 
-Free, open-source micro-tools built for small businesses, professionals, and individuals.  
+PicoAI is an open-source AI-native application platform that enables private, intelligent software to run where your data lives.  
 **No accounts. No subscriptions. Zero cloud uploads.** Everything runs safely inside your browser.
 
 [**🌐 Launch Live Suite (GitHub Pages)**](https://h-viseria.github.io/opensource/) • [**Report Bug**](https://github.com/h-viseria/opensource/issues) • [**Request Feature**](https://github.com/h-viseria/opensource/issues)
