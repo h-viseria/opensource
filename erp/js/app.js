@@ -136,6 +136,11 @@ async function boot() {
         router.navigate('/portfolio', { replace: true });
       }
     }
+
+    // Google Drive sync: track local changes, periodic upload, launch compare
+    import('./ui/backupActions.js')
+      .then((backupActions) => backupActions.checkDriveSyncOnLaunch())
+      .catch((err) => console.warn('[Drive sync]', err));
   } finally {
     booting = false;
   }
