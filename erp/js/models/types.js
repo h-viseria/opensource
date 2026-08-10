@@ -185,15 +185,13 @@
  */
 
 /**
- * Inventory stock movement. Quantity is always positive; direction comes from type
- * (and adjustmentSign for Adjustment). Value/rate use weighted-average cost.
  * @typedef {Object} InventoryTransaction
  * @property {string} id
  * @property {string} bookId
  * @property {string} date YYYY-MM-DD
  * @property {string} itemId
  * @property {string} warehouseId
- * @property {'Opening'|'Purchase'|'Sale'|'Adjustment'|'Transfer'} type
+ * @property {'Opening'|'Purchase'|'Sale'|'Sales Return'|'Purchase Return'|'Adjustment'|'Transfer'} type
  * @property {number} quantity Absolute quantity moved
  * @property {number} rate Unit cost used for this posting
  * @property {number} value quantity * rate (absolute)
@@ -203,6 +201,60 @@
  * @property {string} [narration]
  * @property {string} createdAt
  * @property {string} updatedAt
+ */
+
+/**
+ * Sales / Purchase invoice or Credit / Debit note (return).
+ * @typedef {Object} Invoice
+ * @property {string} id
+ * @property {string} bookId
+ * @property {string} financialYearId
+ * @property {'Sales'|'Purchase'|'Credit Note'|'Debit Note'} invoiceType
+ * @property {string} invoiceNumber
+ * @property {string} date
+ * @property {string} partyLedgerId
+ * @property {string} partyName
+ * @property {string|null} [salesLedgerId]
+ * @property {string} warehouseId
+ * @property {string} [warehouseName]
+ * @property {string} [narration]
+ * @property {InvoiceLine[]} lines
+ * @property {number} subtotal
+ * @property {number} taxTotal
+ * @property {number} grandTotal
+ * @property {number} [costTotal]
+ * @property {string|null} [voucherId]
+ * @property {string[]} [stockVoucherIds]
+ * @property {string[]} [inventoryTxnIds]
+ * @property {'Posted'|'PartiallyReturned'|'Cancelled'} [status]
+ * @property {string|null} [sourceInvoiceId] Set on credit/debit notes
+ * @property {string} [sourceInvoiceNumber]
+ * @property {string[]} [returnInvoiceIds] Credit/debit note ids against this invoice
+ * @property {string} [cancelReason]
+ * @property {string} [cancelledAt]
+ * @property {string} createdAt
+ * @property {string} updatedAt
+ */
+
+/**
+ * @typedef {Object} InvoiceLine
+ * @property {number} lineNo
+ * @property {string} itemId
+ * @property {string} itemName
+ * @property {string} [itemCode]
+ * @property {string|null} [unitId]
+ * @property {number} quantity
+ * @property {number} rate
+ * @property {number} amount
+ * @property {string|null} [taxCodeId]
+ * @property {string} [taxCodeName]
+ * @property {number} [taxRate]
+ * @property {number} [taxAmount]
+ * @property {number} lineTotal
+ * @property {string|null} [inventoryTxnId]
+ * @property {number} [returnedQuantity] Cumulative returned qty (source invoices)
+ * @property {number} [sourceLineNo] Original line on source (return notes)
+ * @property {string|null} [sourceInventoryTxnId]
  */
 
 /**
