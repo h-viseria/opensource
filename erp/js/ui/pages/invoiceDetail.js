@@ -1,12 +1,13 @@
 /**
- * Invoice detail — view, print PDF, fill Word/ODT template.
+ * Invoice detail — view, print PDF, fill Word/ODT template, return, cancel, delete.
  */
 
 import * as bookService from '../../services/bookService.js';
 import * as invoiceService from '../../services/invoiceService.js';
 import * as invoiceTemplateService from '../../services/invoiceTemplateService.js';
-import { escapeHtml, confirmModal } from '../modal.js';
-import { formatDisplayDate } from '../../utils/date.js';
+import { INVOICE_STATUS } from '../../core/constants.js';
+import { escapeHtml, confirmModal, formModal } from '../modal.js';
+import { formatDisplayDate, toDateInput } from '../../utils/date.js';
 import { formatMoney } from '../../utils/money.js';
 import { showToast } from '../toast.js';
 import * as router from '../../core/router.js';
@@ -27,18 +28,51 @@ export async function renderInvoiceDetail(ctx, outlet) {
   const currency = book?.currency || 'INR';
   const templates = await invoiceTemplateService.listTemplates(invoice.bookId);
   const printBody = await invoiceService.buildInvoicePrintHtml(invoice, { book, currency });
+  const isSource = invoiceService.isSourceInvoice(invoice);
+  const isNote = invoiceService.isReturnNote(invoice);
+  const returnable = isSource ? invoiceService.getReturnableLines(invoice) : [];
+  const canReturn = isSource && invoice.status !== INVOICE_STATUS.CANCELLED && returnable.length > 0;
+  const canCancel = canReturn;
+  const statusBadge = statusBadgeHtml(invoice.status);
+
+  /** @type {any[]} */
+  let relatedNotes = [];
+  if (isSource && (invoice.returnInvoiceIds || []).length) {
+    const all = await Promise.all(
+      invoice.returnInvoiceIds.map((rid) => invoiceService.getInvoice(rid))
+    );
+    relatedNotes = all.filter(Boolean);
+  }
+
+  let sourceInvoice = null;
+  if (isNote && invoice.sourceInvoiceId) {
+    sourceInvoice = await invoiceService.getInvoice(invoice.sourceInvoiceId);
+  }
 
   outlet.innerHTML = `
     <div class="page-header">
       <div>
         <p class="page-eyebrow"><a href="#/invoices">Invoices</a> / ${escapeHtml(invoice.invoiceNumber)}</p>
-        <h1 class="page-header__title">${escapeHtml(invoice.invoiceType)} invoice</h1>
+        <h1 class="page-header__title">${escapeHtml(invoice.invoiceType)}${
+          isNote ? '' : ' invoice'
+        } ${statusBadge}</h1>
         <p class="page-header__desc">
           ${escapeHtml(formatDisplayDate(invoice.date))} · ${escapeHtml(invoice.partyName)} ·
           ${formatMoney(invoice.grandTotal, currency)}
+          ${
+            sourceInvoice
+              ? ` · against <a href="#/invoices/${sourceInvoice.id}">${escapeHtml(sourceInvoice.invoiceNumber)}</a>`
+              : ''
+          }
         </p>
       </div>
       <div class="page-header__actions">
+        ${
+          canReturn
+            ? `<a class="btn btn--secondary" href="#/invoices/${escapeHtml(invoice.id)}/return">Return / reject</a>`
+            : ''
+        }
+        ${canCancel ? `<button type="button" class="btn btn--secondary" id="btn-cancel">Cancel invoice</button>` : ''}
         <button type="button" class="btn btn--secondary" id="btn-pdf">PDF preview</button>
         <button type="button" class="btn btn--secondary" id="btn-template" ${templates.length ? '' : 'disabled'} title="${
           templates.length ? 'Fill Word/ODT template' : 'Upload a template first'
@@ -66,13 +100,19 @@ export async function renderInvoiceDetail(ctx, outlet) {
       <h2 class="panel__title">Details</h2>
       <table style="font-size:var(--text-sm);margin-bottom:1rem">
         <tbody>
-          <tr><td class="muted" style="padding:0.35rem 1rem 0.35rem 0;width:9rem">Warehouse</td><td>${escapeHtml(invoice.warehouseName || '—')}</td></tr>
+          <tr><td class="muted" style="padding:0.35rem 1rem 0.35rem 0;width:9rem">Status</td><td>${statusBadge}</td></tr>
+          <tr><td class="muted" style="padding:0.35rem 1rem 0.35rem 0">Warehouse</td><td>${escapeHtml(invoice.warehouseName || '—')}</td></tr>
           <tr><td class="muted" style="padding:0.35rem 1rem 0.35rem 0">Voucher</td><td>${
             invoice.voucherId
               ? `<a class="mono" href="#/transactions/${invoice.voucherId}">Open accounting voucher</a>`
               : '—'
           }</td></tr>
           <tr><td class="muted" style="padding:0.35rem 1rem 0.35rem 0">Narration</td><td>${escapeHtml(invoice.narration || '—')}</td></tr>
+          ${
+            invoice.cancelReason
+              ? `<tr><td class="muted" style="padding:0.35rem 1rem 0.35rem 0">Cancel reason</td><td>${escapeHtml(invoice.cancelReason)}</td></tr>`
+              : ''
+          }
         </tbody>
       </table>
 
@@ -80,7 +120,9 @@ export async function renderInvoiceDetail(ctx, outlet) {
         <table class="data-table">
           <thead>
             <tr>
-              <th>#</th><th>Item</th><th class="num">Qty</th><th class="num">Rate</th>
+              <th>#</th><th>Item</th><th class="num">Qty</th>
+              ${isSource ? '<th class="num">Returned</th>' : ''}
+              <th class="num">Rate</th>
               <th class="num">Amount</th><th class="num">Tax</th><th class="num">Line total</th>
             </tr>
           </thead>
@@ -92,6 +134,11 @@ export async function renderInvoiceDetail(ctx, outlet) {
                 <td>${l.lineNo}</td>
                 <td>${escapeHtml(l.itemName)}</td>
                 <td class="num mono">${l.quantity}</td>
+                ${
+                  isSource
+                    ? `<td class="num mono">${Number(l.returnedQuantity) || 0}</td>`
+                    : ''
+                }
                 <td class="num mono">${formatMoney(l.rate, currency)}</td>
                 <td class="num mono">${formatMoney(l.amount, currency)}</td>
                 <td class="num mono">${l.taxRate ? `${l.taxRate}% / ${formatMoney(l.taxAmount, currency)}` : '—'}</td>
@@ -103,6 +150,34 @@ export async function renderInvoiceDetail(ctx, outlet) {
         </table>
       </div>
     </div>
+
+    ${
+      relatedNotes.length
+        ? `<div class="panel" style="margin-top:1rem">
+             <h2 class="panel__title">Returns / notes</h2>
+             <div class="table-wrap">
+               <table class="data-table">
+                 <thead>
+                   <tr><th>Date</th><th>Number</th><th>Type</th><th class="num">Total</th></tr>
+                 </thead>
+                 <tbody>
+                   ${relatedNotes
+                     .map(
+                       (n) => `
+                     <tr>
+                       <td>${formatDisplayDate(n.date)}</td>
+                       <td class="mono"><a href="#/invoices/${n.id}">${escapeHtml(n.invoiceNumber)}</a></td>
+                       <td><span class="badge badge--muted">${escapeHtml(n.invoiceType)}</span></td>
+                       <td class="num mono">${formatMoney(n.grandTotal, currency)}</td>
+                     </tr>`
+                     )
+                     .join('')}
+                 </tbody>
+               </table>
+             </div>
+           </div>`
+        : ''
+    }
 
     ${
       templates.length
@@ -147,12 +222,50 @@ export async function renderInvoiceDetail(ctx, outlet) {
     }
   });
 
+  outlet.querySelector('#btn-cancel')?.addEventListener('click', async () => {
+    const fields = await formModal({
+      title: 'Cancel invoice?',
+      confirmLabel: 'Cancel invoice',
+      fieldsHtml: `
+        <p style="margin:0 0 1rem">This posts a full ${
+          invoice.invoiceType === 'Sales' ? 'credit note' : 'debit note'
+        } for all remaining quantities on <strong>${escapeHtml(invoice.invoiceNumber)}</strong>,
+        reversing stock, tax, and receivables/payables.</p>
+        <label class="field">
+          <span class="field__label">Date</span>
+          <input class="input" name="date" type="date" value="${toDateInput(new Date())}" required />
+        </label>
+        <label class="field">
+          <span class="field__label">Reason</span>
+          <input class="input" name="reason" placeholder="Optional cancellation reason" />
+        </label>
+      `,
+    });
+    if (!fields) return;
+    try {
+      const result = await invoiceService.cancelInvoice(invoice.id, {
+        date: String(fields.get('date') || ''),
+        reason: String(fields.get('reason') || ''),
+      });
+      showToast(
+        `Invoice cancelled — ${result.returnNote.invoiceType} ${result.returnNote.invoiceNumber} posted`,
+        'success'
+      );
+      await renderInvoiceDetail(ctx, outlet);
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Cancel failed', 'error');
+    }
+  });
+
   outlet.querySelector('#btn-delete')?.addEventListener('click', async () => {
     const ok = await confirmModal({
       title: 'Delete invoice?',
       danger: true,
       confirmLabel: 'Delete',
-      bodyHtml: `<p>Delete <strong>${escapeHtml(invoice.invoiceNumber)}</strong> and reverse stock + vouchers?</p>`,
+      bodyHtml: isNote
+        ? `<p>Delete <strong>${escapeHtml(invoice.invoiceNumber)}</strong>? This reverses the note’s stock and vouchers and restores returnable qty on the source invoice.</p>`
+        : `<p>Delete <strong>${escapeHtml(invoice.invoiceNumber)}</strong> and reverse stock + vouchers?
+             Prefer <strong>Cancel invoice</strong> if you need an audit trail via a credit/debit note.</p>`,
     });
     if (!ok) return;
     try {
@@ -163,6 +276,20 @@ export async function renderInvoiceDetail(ctx, outlet) {
       showToast(err instanceof Error ? err.message : 'Delete failed', 'error');
     }
   });
+}
+
+/**
+ * @param {string} [status]
+ */
+function statusBadgeHtml(status) {
+  const s = status || INVOICE_STATUS.POSTED;
+  if (s === INVOICE_STATUS.CANCELLED) {
+    return `<span class="badge badge--danger">Cancelled</span>`;
+  }
+  if (s === INVOICE_STATUS.PARTIALLY_RETURNED) {
+    return `<span class="badge badge--warning">Partially returned</span>`;
+  }
+  return `<span class="badge badge--success">Posted</span>`;
 }
 
 /**
@@ -204,7 +331,7 @@ function openInvoicePrintPreview(invoice, bodyHtml) {
 
   overlay.querySelector('[data-print-close]')?.addEventListener('click', close);
   overlay.querySelector('[data-print-go]')?.addEventListener('click', () => window.print());
-  document.body.appendChild(overlay);
-  document.body.classList.add('has-report-print-preview');
   document.addEventListener('keydown', onKey);
+  document.body.classList.add('has-report-print-preview');
+  document.body.appendChild(overlay);
 }
