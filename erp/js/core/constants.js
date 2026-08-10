@@ -3,7 +3,7 @@
  */
 
 export const APP_NAME = 'PicoERP';
-export const APP_VERSION = '0.16.0';
+export const APP_VERSION = '0.17.1';
 
 /** IndexedDB database name. */
 export const DB_NAME = 'erpDataStore';
@@ -47,6 +47,10 @@ export const SETTINGS_KEYS = Object.freeze({
   GOOGLE_DRIVE_CLIENT_ID: 'googleDriveClientId',
   GOOGLE_DRIVE_API_KEY: 'googleDriveApiKey',
   GOOGLE_DRIVE_APP_ID: 'googleDriveAppId',
+  /** Synced folder / file ids + timestamps for automatic Drive backup */
+  GOOGLE_DRIVE_SYNC: 'googleDriveSync',
+  /** ISO timestamp of last local domain data change (for sync compare) */
+  LOCAL_DATA_UPDATED_AT: 'localDataUpdatedAt',
 });
 
 /** Event bus channel names. */
@@ -65,6 +69,7 @@ export const EVENTS = Object.freeze({
   TOAST: 'toast:show',
   DB_READY: 'db:ready',
   APP_ERROR: 'app:error',
+  DRIVE_SYNC_CHANGED: 'driveSync:changed',
 });
 
 /** Voucher types from specification §6. */
