@@ -286,7 +286,7 @@ function renderTopbar(hasBook) {
             </svg>
           </button>
           <button type="button" class="topbar__icon-btn" id="btn-topbar-gdrive"
-                  title="Save full backup to Google Drive" aria-label="Save full backup to Google Drive">
+                  title="Google Drive sync / backup" aria-label="Google Drive sync / backup">
             <svg class="topbar__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
               <path fill="currentColor" d="M8.4 3.2 3 12.5l2.7 4.7h5.1L7.7 7.9 8.4 3.2Zm1.5 0 3.3 5.7-3.5 6.1H4.5L9.9 3.2Zm4.2 0L21 15.4h-5.4l-3.6-6.2 2.7-6Zm-1.2 12.7 2.7 4.7H4.5l2.7-4.7h6.7Z"/>
             </svg>
