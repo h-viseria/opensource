@@ -169,15 +169,23 @@ export async function renderInventoryMovementNew(ctx, outlet) {
     const needsRate =
       type === INVENTORY_TXN_TYPES.OPENING ||
       type === INVENTORY_TXN_TYPES.PURCHASE ||
+      type === INVENTORY_TXN_TYPES.SALES_RETURN ||
       type === INVENTORY_TXN_TYPES.ADJUSTMENT;
-    wrapRate?.toggleAttribute('hidden', type === INVENTORY_TXN_TYPES.SALE || type === INVENTORY_TXN_TYPES.TRANSFER);
+    wrapRate?.toggleAttribute(
+      'hidden',
+      type === INVENTORY_TXN_TYPES.SALE ||
+        type === INVENTORY_TXN_TYPES.PURCHASE_RETURN ||
+        type === INVENTORY_TXN_TYPES.TRANSFER
+    );
     if (lblWh) {
       lblWh.textContent =
         type === INVENTORY_TXN_TYPES.TRANSFER ? 'From warehouse *' : 'Warehouse *';
     }
 
     const showCounter =
-      type === INVENTORY_TXN_TYPES.OPENING || type === INVENTORY_TXN_TYPES.PURCHASE;
+      type === INVENTORY_TXN_TYPES.OPENING ||
+      type === INVENTORY_TXN_TYPES.PURCHASE ||
+      type === INVENTORY_TXN_TYPES.PURCHASE_RETURN;
     wrapCounter?.toggleAttribute('hidden', !showCounter);
     wrapPost?.toggleAttribute('hidden', type === INVENTORY_TXN_TYPES.TRANSFER);
 
