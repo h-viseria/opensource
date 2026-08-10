@@ -3,7 +3,7 @@
  */
 
 export const APP_NAME = 'PicoERP';
-export const APP_VERSION = '0.15.2';
+export const APP_VERSION = '0.16.0';
 
 /** IndexedDB database name. */
 export const DB_NAME = 'erpDataStore';
@@ -85,8 +85,17 @@ export const INVENTORY_TXN_TYPES = Object.freeze({
   OPENING: 'Opening',
   PURCHASE: 'Purchase',
   SALE: 'Sale',
+  SALES_RETURN: 'Sales Return',
+  PURCHASE_RETURN: 'Purchase Return',
   ADJUSTMENT: 'Adjustment',
   TRANSFER: 'Transfer',
+});
+
+/** Invoice document status. */
+export const INVOICE_STATUS = Object.freeze({
+  POSTED: 'Posted',
+  PARTIALLY_RETURNED: 'PartiallyReturned',
+  CANCELLED: 'Cancelled',
 });
 
 /** Tax types and components — master specification §11. */
