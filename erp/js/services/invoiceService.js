@@ -5,6 +5,7 @@
 import {
   EVENTS,
   INVENTORY_TXN_TYPES,
+  INVOICE_STATUS,
   TAX_COMPONENTS,
   VOUCHER_TYPES,
 } from '../core/constants.js';
@@ -13,12 +14,14 @@ import { uuid } from '../core/uuid.js';
 import { nowIso, toDateInput, formatDisplayDate } from '../utils/date.js';
 import { roundMoney, formatMoney } from '../utils/money.js';
 import { calcTaxAmount } from '../engine/taxEngine.js';
+import { roundQty } from '../engine/inventoryEngine.js';
 import { invoiceRepository } from '../repositories/invoiceRepository.js';
 import { ledgerRepository } from '../repositories/ledgerRepository.js';
 import { itemRepository } from '../repositories/itemRepository.js';
 import { unitRepository } from '../repositories/unitRepository.js';
 import { warehouseRepository } from '../repositories/warehouseRepository.js';
 import { taxCodeRepository } from '../repositories/taxCodeRepository.js';
+import { inventoryTransactionRepository } from '../repositories/inventoryTransactionRepository.js';
 import { auditLogRepository } from '../repositories/auditLogRepository.js';
 import * as bookService from './bookService.js';
 import * as voucherService from './voucherService.js';
@@ -29,15 +32,67 @@ import * as invoiceTemplateService from './invoiceTemplateService.js';
 export const INVOICE_TYPES = Object.freeze({
   SALES: 'Sales',
   PURCHASE: 'Purchase',
+  CREDIT_NOTE: 'Credit Note',
+  DEBIT_NOTE: 'Debit Note',
 });
+
+const SOURCE_TYPES = new Set([INVOICE_TYPES.SALES, INVOICE_TYPES.PURCHASE]);
+const NOTE_TYPES = new Set([INVOICE_TYPES.CREDIT_NOTE, INVOICE_TYPES.DEBIT_NOTE]);
+
+/**
+ * @param {any} invoice
+ */
+export function normalizeInvoice(invoice) {
+  if (!invoice) return invoice;
+  const lines = (invoice.lines || []).map((l) => ({
+    ...l,
+    returnedQuantity: roundQty(Number(l.returnedQuantity) || 0),
+  }));
+  return {
+    ...invoice,
+    status: invoice.status || INVOICE_STATUS.POSTED,
+    returnInvoiceIds: Array.isArray(invoice.returnInvoiceIds) ? invoice.returnInvoiceIds : [],
+    sourceInvoiceId: invoice.sourceInvoiceId || null,
+    lines,
+  };
+}
+
+/**
+ * Remaining returnable quantity per line on a Sales/Purchase invoice.
+ * @param {any} invoice
+ */
+export function getReturnableLines(invoice) {
+  const inv = normalizeInvoice(invoice);
+  return (inv.lines || [])
+    .map((l) => {
+      const returnableQuantity = roundQty(l.quantity - (Number(l.returnedQuantity) || 0));
+      return { ...l, returnableQuantity };
+    })
+    .filter((l) => l.returnableQuantity > 0.0001);
+}
+
+/**
+ * @param {any} invoice
+ */
+export function isSourceInvoice(invoice) {
+  return SOURCE_TYPES.has(invoice?.invoiceType);
+}
+
+/**
+ * @param {any} invoice
+ */
+export function isReturnNote(invoice) {
+  return NOTE_TYPES.has(invoice?.invoiceType);
+}
 
 /**
  * @param {string} bookId
- * @param {{ invoiceType?: string, fromDate?: string, toDate?: string }} [filters]
+ * @param {{ invoiceType?: string, fromDate?: string, toDate?: string, status?: string }} [filters]
  */
 export async function listInvoices(bookId, filters = {}) {
-  let rows = await invoiceRepository.findByBook(bookId);
+  let rows = (await invoiceRepository.findByBook(bookId)).map(normalizeInvoice);
   if (filters.invoiceType) rows = rows.filter((r) => r.invoiceType === filters.invoiceType);
+  if (filters.status) rows = rows.filter((r) => r.status === filters.status);
   if (filters.fromDate) rows = rows.filter((r) => r.date >= filters.fromDate);
   if (filters.toDate) rows = rows.filter((r) => r.date <= filters.toDate);
   return rows;
@@ -45,16 +100,23 @@ export async function listInvoices(bookId, filters = {}) {
 
 /** @param {string} id */
 export async function getInvoice(id) {
-  return invoiceRepository.findById(id);
+  return normalizeInvoice(await invoiceRepository.findById(id));
 }
 
 /**
  * @param {string} bookId
- * @param {'Sales'|'Purchase'} invoiceType
+ * @param {string} invoiceType
  */
 export async function nextInvoiceNumber(bookId, invoiceType) {
   const seq = (await invoiceRepository.maxSequence(bookId, invoiceType)) + 1;
-  const prefix = invoiceType === INVOICE_TYPES.PURCHASE ? 'PINV' : 'SINV';
+  const prefix =
+    invoiceType === INVOICE_TYPES.PURCHASE
+      ? 'PINV'
+      : invoiceType === INVOICE_TYPES.CREDIT_NOTE
+        ? 'CN'
+        : invoiceType === INVOICE_TYPES.DEBIT_NOTE
+          ? 'DN'
+          : 'SINV';
   return `${prefix}-${String(seq).padStart(4, '0')}`;
 }
 
@@ -161,6 +223,7 @@ export async function createInvoice(input) {
       taxAmount,
       lineTotal: roundMoney(amount + taxAmount),
       inventoryTxnId: null,
+      returnedQuantity: 0,
     });
   }
 
@@ -285,6 +348,9 @@ export async function createInvoice(input) {
       voucherId: main.voucher.id,
       stockVoucherIds,
       inventoryTxnIds,
+      status: INVOICE_STATUS.POSTED,
+      sourceInvoiceId: null,
+      returnInvoiceIds: [],
       createdAt: now,
       updatedAt: now,
     };
@@ -327,11 +393,389 @@ export async function createInvoice(input) {
 }
 
 /**
+ * Post a Credit Note (sales return) or Debit Note (purchase return) against a source invoice.
+ * Supports partial quantities per line.
+ *
+ * @param {{
+ *   sourceInvoiceId: string,
+ *   date?: string,
+ *   invoiceNumber?: string,
+ *   narration?: string,
+ *   reason?: string,
+ *   lines: { lineNo: number, quantity: number }[],
+ * }} input
+ */
+export async function createReturnNote(input) {
+  const source = await getInvoice(input.sourceInvoiceId);
+  if (!source) throw new Error('Source invoice not found');
+  if (!isSourceInvoice(source)) {
+    throw new Error('Returns can only be posted against Sales or Purchase invoices');
+  }
+  if (source.status === INVOICE_STATUS.CANCELLED) {
+    throw new Error('Invoice is already cancelled — nothing left to return');
+  }
+
+  const bookId = source.bookId;
+  const session = await bookService.getSessionContext();
+  const financialYearId = session.financialYear?.id;
+  if (!financialYearId) throw new Error('Select a financial year first');
+
+  const noteType =
+    source.invoiceType === INVOICE_TYPES.SALES
+      ? INVOICE_TYPES.CREDIT_NOTE
+      : INVOICE_TYPES.DEBIT_NOTE;
+
+  if (!Array.isArray(input.lines) || input.lines.length === 0) {
+    throw new Error('Select at least one line to return');
+  }
+
+  const sourceByLine = new Map((source.lines || []).map((l) => [l.lineNo, l]));
+  /** @type {any[]} */
+  const builtLines = [];
+  let subtotal = 0;
+  let taxTotal = 0;
+
+  for (let i = 0; i < input.lines.length; i++) {
+    const raw = input.lines[i];
+    const srcLine = sourceByLine.get(Number(raw.lineNo));
+    if (!srcLine) throw new Error(`Line ${raw.lineNo}: not found on source invoice`);
+
+    const qty = roundQty(Number(raw.quantity) || 0);
+    const already = roundQty(Number(srcLine.returnedQuantity) || 0);
+    const returnable = roundQty(srcLine.quantity - already);
+    if (qty <= 0) throw new Error(`Line ${srcLine.lineNo}: quantity must be positive`);
+    if (qty > returnable + 0.0001) {
+      throw new Error(
+        `Line ${srcLine.lineNo}: only ${returnable} of ${srcLine.quantity} remaining to return`
+      );
+    }
+
+    const rate = roundMoney(Number(srcLine.rate) || 0);
+    const amount = roundMoney(qty * rate);
+    let taxAmount = 0;
+    if (srcLine.taxCodeId && srcLine.taxRate) {
+      taxAmount = calcTaxAmount(amount, srcLine.taxRate);
+    } else if (srcLine.taxCodeId && srcLine.taxAmount && srcLine.quantity) {
+      taxAmount = roundMoney((srcLine.taxAmount * qty) / srcLine.quantity);
+    }
+
+    subtotal = roundMoney(subtotal + amount);
+    taxTotal = roundMoney(taxTotal + taxAmount);
+    builtLines.push({
+      lineNo: i + 1,
+      sourceLineNo: srcLine.lineNo,
+      itemId: srcLine.itemId,
+      itemName: srcLine.itemName,
+      itemCode: srcLine.itemCode || '',
+      unitId: srcLine.unitId || null,
+      quantity: qty,
+      rate,
+      amount,
+      taxCodeId: srcLine.taxCodeId || null,
+      taxCodeName: srcLine.taxCodeName || '',
+      taxRate: srcLine.taxRate || 0,
+      taxAmount,
+      lineTotal: roundMoney(amount + taxAmount),
+      inventoryTxnId: null,
+      returnedQuantity: 0,
+      sourceInventoryTxnId: srcLine.inventoryTxnId || null,
+    });
+  }
+
+  const grandTotal = roundMoney(subtotal + taxTotal);
+  const date = String(input.date || '').trim() || toDateInput(new Date());
+  const invoiceNumber =
+    String(input.invoiceNumber || '').trim() || (await nextInvoiceNumber(bookId, noteType));
+  const reason = String(input.reason || input.narration || '').trim();
+  const narration =
+    reason ||
+    `${noteType} against ${source.invoiceNumber} — ${source.partyName}`;
+
+  const party = await ledgerRepository.findById(source.partyLedgerId);
+  if (!party || party.bookId !== bookId) throw new Error('Party ledger not found');
+
+  const salesLedger =
+    noteType === INVOICE_TYPES.CREDIT_NOTE
+      ? await resolveSalesLedger(bookId, source.salesLedgerId || undefined)
+      : null;
+  const stockLedger = await requireLedgerByName(bookId, 'Stock');
+
+  /** @type {string[]} */
+  const inventoryTxnIds = [];
+  /** @type {string[]} */
+  const stockVoucherIds = [];
+  let costTotal = 0;
+
+  try {
+    for (const line of builtLines) {
+      let costRate = line.rate;
+      if (noteType === INVOICE_TYPES.CREDIT_NOTE && line.sourceInventoryTxnId) {
+        const origTxn = await inventoryTransactionRepository.findById(line.sourceInventoryTxnId);
+        if (origTxn && Number(origTxn.rate) > 0) {
+          costRate = roundMoney(Number(origTxn.rate));
+        }
+      }
+
+      const mov = await inventoryService.postMovement({
+        bookId,
+        financialYearId,
+        date,
+        itemId: line.itemId,
+        warehouseId: source.warehouseId,
+        type:
+          noteType === INVOICE_TYPES.CREDIT_NOTE
+            ? INVENTORY_TXN_TYPES.SALES_RETURN
+            : INVENTORY_TXN_TYPES.PURCHASE_RETURN,
+        quantity: line.quantity,
+        rate: costRate,
+        value: roundMoney(line.quantity * costRate),
+        narration: `${invoiceNumber} / ${line.itemName} (vs ${source.invoiceNumber})`,
+        postAccounting: false,
+        counterLedgerId: undefined,
+      });
+      line.inventoryTxnId = mov.transaction.id;
+      inventoryTxnIds.push(mov.transaction.id);
+      if (noteType === INVOICE_TYPES.CREDIT_NOTE) {
+        costTotal = roundMoney(costTotal + (Number(mov.transaction.value) || 0));
+      }
+    }
+
+    // Credit note: reverse COGS (Dr Stock Cr COGS)
+    if (noteType === INVOICE_TYPES.CREDIT_NOTE && costTotal > 0) {
+      const cogs = await requireLedgerByName(bookId, 'Cost of Goods Sold');
+      const cogsResult = await voucherService.createVoucher({
+        bookId,
+        financialYearId,
+        voucherType: VOUCHER_TYPES.JOURNAL,
+        date,
+        narration: `COGS reversal for ${invoiceNumber}`,
+        lines: [
+          { ledgerId: stockLedger.id, debit: costTotal, credit: 0 },
+          { ledgerId: cogs.id, debit: 0, credit: costTotal },
+        ],
+      });
+      stockVoucherIds.push(cogsResult.voucher.id);
+    }
+
+    /** @type {{ ledgerId: string, debit: number, credit: number, taxCodeId?: string|null, narration?: string }[]} */
+    const glLines = [];
+
+    if (noteType === INVOICE_TYPES.CREDIT_NOTE) {
+      glLines.push({
+        ledgerId: /** @type {any} */ (salesLedger).id,
+        debit: subtotal,
+        credit: 0,
+        narration: `Sales return — ${invoiceNumber}`,
+      });
+      await appendTaxDebits(glLines, builtLines, bookId);
+      // Relabel tax narration for output reversal
+      for (const gl of glLines) {
+        if (gl.narration === 'Input tax') gl.narration = 'Output tax reversal';
+      }
+      glLines.push({
+        ledgerId: party.id,
+        debit: 0,
+        credit: grandTotal,
+        narration: `Credit note — ${invoiceNumber}`,
+      });
+    } else {
+      glLines.push({
+        ledgerId: party.id,
+        debit: grandTotal,
+        credit: 0,
+        narration: `Debit note — ${invoiceNumber}`,
+      });
+      glLines.push({
+        ledgerId: stockLedger.id,
+        debit: 0,
+        credit: subtotal,
+        narration: `Purchase return — ${invoiceNumber}`,
+      });
+      await appendTaxCredits(glLines, builtLines, bookId);
+      for (const gl of glLines) {
+        if (gl.narration === 'Output tax') gl.narration = 'Input tax reversal';
+      }
+    }
+
+    const voucherType =
+      noteType === INVOICE_TYPES.CREDIT_NOTE
+        ? VOUCHER_TYPES.CREDIT_NOTE
+        : VOUCHER_TYPES.DEBIT_NOTE;
+    const main = await voucherService.createVoucher({
+      bookId,
+      financialYearId,
+      voucherType,
+      date,
+      narration,
+      lines: glLines,
+    });
+
+    const now = nowIso();
+    /** @type {any} */
+    const note = {
+      id: uuid(),
+      bookId,
+      financialYearId,
+      invoiceType: noteType,
+      invoiceNumber,
+      date,
+      partyLedgerId: party.id,
+      partyName: party.name,
+      salesLedgerId: salesLedger?.id || null,
+      warehouseId: source.warehouseId,
+      warehouseName: source.warehouseName,
+      narration,
+      reason: reason || '',
+      lines: builtLines,
+      subtotal,
+      taxTotal,
+      grandTotal,
+      costTotal: noteType === INVOICE_TYPES.CREDIT_NOTE ? costTotal : 0,
+      voucherId: main.voucher.id,
+      stockVoucherIds,
+      inventoryTxnIds,
+      status: INVOICE_STATUS.POSTED,
+      sourceInvoiceId: source.id,
+      sourceInvoiceNumber: source.invoiceNumber,
+      returnInvoiceIds: [],
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    await invoiceRepository.create(note);
+
+    // Update source returned quantities + status
+    const updatedSourceLines = (source.lines || []).map((l) => {
+      const ret = builtLines.find((b) => b.sourceLineNo === l.lineNo);
+      if (!ret) return l;
+      return {
+        ...l,
+        returnedQuantity: roundQty((Number(l.returnedQuantity) || 0) + ret.quantity),
+      };
+    });
+    const returnInvoiceIds = [...(source.returnInvoiceIds || []), note.id];
+    const updatedSource = {
+      ...source,
+      lines: updatedSourceLines,
+      returnInvoiceIds,
+      status: computeSourceStatus(updatedSourceLines),
+      updatedAt: now,
+    };
+    await invoiceRepository.save(updatedSource);
+
+    await auditLogRepository.log({
+      bookId,
+      entity: 'Invoice',
+      recordId: note.id,
+      operation: 'Create',
+      detail: {
+        invoiceType: noteType,
+        invoiceNumber,
+        grandTotal,
+        sourceInvoiceId: source.id,
+        sourceInvoiceNumber: source.invoiceNumber,
+      },
+    });
+    emit(EVENTS.INVOICE_CHANGED, { bookId, id: note.id, operation: 'Create' });
+    emit(EVENTS.VOUCHER_CHANGED, { bookId });
+    emit(EVENTS.INVENTORY_CHANGED, { bookId });
+    return normalizeInvoice(note);
+  } catch (err) {
+    for (const id of [...inventoryTxnIds].reverse()) {
+      try {
+        await inventoryService.deleteMovement(id);
+      } catch {
+        /* ignore */
+      }
+    }
+    for (const id of [...stockVoucherIds].reverse()) {
+      try {
+        await voucherService.deleteVoucher(id);
+      } catch {
+        /* ignore */
+      }
+    }
+    throw err;
+  }
+}
+
+/**
+ * Cancel a Sales/Purchase invoice by returning all remaining quantities.
+ * @param {string} id
+ * @param {{ date?: string, reason?: string }} [opts]
+ */
+export async function cancelInvoice(id, opts = {}) {
+  const source = await getInvoice(id);
+  if (!source) throw new Error('Invoice not found');
+  if (!isSourceInvoice(source)) {
+    throw new Error('Only Sales or Purchase invoices can be cancelled');
+  }
+  if (source.status === INVOICE_STATUS.CANCELLED) {
+    throw new Error('Invoice is already cancelled');
+  }
+
+  const remaining = getReturnableLines(source);
+  if (remaining.length === 0) {
+    throw new Error('Nothing left to cancel — all quantities already returned');
+  }
+
+  const reason = String(opts.reason || '').trim() || `Cancellation of ${source.invoiceNumber}`;
+  const note = await createReturnNote({
+    sourceInvoiceId: id,
+    date: opts.date,
+    reason,
+    narration: reason,
+    lines: remaining.map((l) => ({ lineNo: l.lineNo, quantity: l.returnableQuantity })),
+  });
+
+  const refreshed = await getInvoice(id);
+  if (refreshed) {
+    refreshed.status = INVOICE_STATUS.CANCELLED;
+    refreshed.cancelledAt = nowIso();
+    refreshed.cancelReason = reason;
+    refreshed.updatedAt = nowIso();
+    await invoiceRepository.save(refreshed);
+  }
+
+  await auditLogRepository.log({
+    bookId: source.bookId,
+    entity: 'Invoice',
+    recordId: id,
+    operation: 'Cancel',
+    detail: { invoiceNumber: source.invoiceNumber, returnNoteId: note.id, reason },
+  });
+  emit(EVENTS.INVOICE_CHANGED, { bookId: source.bookId, id, operation: 'Cancel' });
+  return { invoice: await getInvoice(id), returnNote: note };
+}
+
+/**
+ * @param {any[]} lines
+ */
+function computeSourceStatus(lines) {
+  let anyReturned = false;
+  let allReturned = true;
+  for (const l of lines || []) {
+    const returned = roundQty(Number(l.returnedQuantity) || 0);
+    if (returned > 0.0001) anyReturned = true;
+    if (returned + 0.0001 < roundQty(l.quantity)) allReturned = false;
+  }
+  if (allReturned && anyReturned) return INVOICE_STATUS.CANCELLED;
+  if (anyReturned) return INVOICE_STATUS.PARTIALLY_RETURNED;
+  return INVOICE_STATUS.POSTED;
+}
+
+/**
  * @param {string} id
  */
 export async function deleteInvoice(id) {
-  const invoice = await invoiceRepository.findById(id);
+  const invoice = await getInvoice(id);
   if (!invoice) throw new Error('Invoice not found');
+
+  if (isSourceInvoice(invoice) && (invoice.returnInvoiceIds || []).length > 0) {
+    throw new Error(
+      'This invoice has credit/debit notes. Delete the return notes first, or keep the invoice for audit.'
+    );
+  }
 
   for (const txnId of invoice.inventoryTxnIds || []) {
     try {
@@ -355,13 +799,41 @@ export async function deleteInvoice(id) {
     }
   }
 
+  if (isReturnNote(invoice) && invoice.sourceInvoiceId) {
+    const source = await getInvoice(invoice.sourceInvoiceId);
+    if (source) {
+      const noteLinesBySource = new Map(
+        (invoice.lines || []).map((l) => [l.sourceLineNo, l.quantity])
+      );
+      const updatedLines = (source.lines || []).map((l) => {
+        const qty = noteLinesBySource.get(l.lineNo) || 0;
+        if (!qty) return l;
+        return {
+          ...l,
+          returnedQuantity: roundQty(Math.max(0, (Number(l.returnedQuantity) || 0) - qty)),
+        };
+      });
+      const returnInvoiceIds = (source.returnInvoiceIds || []).filter((rid) => rid !== invoice.id);
+      const updated = {
+        ...source,
+        lines: updatedLines,
+        returnInvoiceIds,
+        status: computeSourceStatus(updatedLines),
+        cancelledAt: undefined,
+        cancelReason: undefined,
+        updatedAt: nowIso(),
+      };
+      await invoiceRepository.save(updated);
+    }
+  }
+
   await invoiceRepository.delete(id);
   await auditLogRepository.log({
     bookId: invoice.bookId,
     entity: 'Invoice',
     recordId: invoice.id,
     operation: 'Delete',
-    detail: { invoiceNumber: invoice.invoiceNumber },
+    detail: { invoiceNumber: invoice.invoiceNumber, invoiceType: invoice.invoiceType },
   });
   emit(EVENTS.INVOICE_CHANGED, { bookId: invoice.bookId, id: invoice.id, operation: 'Delete' });
   return true;
@@ -397,15 +869,23 @@ export async function buildInvoicePrintHtml(invoice, ctx = {}) {
   return `
     <div class="invoice-print">
       <div class="invoice-print__brand">PicoERP</div>
-      <h1 class="invoice-print__title">${escape(invoice.invoiceType)} Invoice</h1>
+      <h1 class="invoice-print__title">${escape(invoice.invoiceType)}${
+        isReturnNote(invoice) ? '' : ' Invoice'
+      }</h1>
       <p class="invoice-print__meta">
         <strong>${escape(invoice.invoiceNumber)}</strong>
         · ${escape(formatDisplayDate(invoice.date))}
         · ${escape(book?.name || '')}
+        ${invoice.status && invoice.status !== 'Posted' ? ` · ${escape(invoice.status)}` : ''}
       </p>
       <div class="invoice-print__party">
         <div><span class="muted">Party</span><br><strong>${escape(invoice.partyName)}</strong></div>
         <div><span class="muted">Warehouse</span><br>${escape(invoice.warehouseName || '—')}</div>
+        ${
+          invoice.sourceInvoiceNumber
+            ? `<div><span class="muted">Against</span><br>${escape(invoice.sourceInvoiceNumber)}</div>`
+            : ''
+        }
       </div>
       ${invoice.narration ? `<p class="invoice-print__narration">${escape(invoice.narration)}</p>` : ''}
       <table class="data-table">
