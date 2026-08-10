@@ -178,7 +178,7 @@ const CHAPTERS = [
         title: 'All invoices',
         path: '/invoices',
         body: `
-          <p>Lists Sales and Purchase invoices for the active book. Open one for print/PDF, Word/ODT fill, or void/delete actions where available.</p>`,
+          <p>Lists Sales, Purchase, Credit Notes, and Debit Notes for the active book. Filter by type, open one for print/PDF, returns, cancel, or delete.</p>`,
       },
       {
         id: 'inv-sales',
@@ -206,15 +206,37 @@ const CHAPTERS = [
           <p>Same line workflow as sales: item, quantity, rate, tax. Use purchase rates from the item master when available.</p>`,
       },
       {
+        id: 'inv-return',
+        title: 'Return / reject items',
+        path: '/invoices',
+        body: `
+          <p>From a posted Sales or Purchase invoice, use <strong>Return / reject</strong> to post a linked note:</p>
+          <ul>
+            <li><strong>Credit Note</strong> — customer returns / rejected sold goods (restocks inventory, reverses sales + output tax + COGS)</li>
+            <li><strong>Debit Note</strong> — purchase returns to supplier (reduces stock, reverses payable + input tax)</li>
+          </ul>
+          <p>Enter a quantity per line (0 to skip). Partial returns are supported; remaining quantities stay returnable. Status becomes <em>Partially returned</em> until everything is returned.</p>`,
+      },
+      {
+        id: 'inv-cancel',
+        title: 'Cancel invoice',
+        path: '/invoices',
+        body: `
+          <p><strong>Cancel invoice</strong> returns all remaining quantities in one step (full credit or debit note) and marks the invoice <em>Cancelled</em>.</p>
+          <p>Prefer cancel/return over delete when you need an audit trail. Delete is for mistakes and is blocked if credit/debit notes already exist — delete those notes first.</p>`,
+      },
+      {
         id: 'inv-detail',
         title: 'Invoice detail',
         path: '/invoices',
         body: `
           <p>After posting, open an invoice to:</p>
           <ul>
-            <li>Review lines and linked voucher</li>
+            <li>Review lines, returned quantities, and linked voucher</li>
+            <li>Open related credit/debit notes</li>
             <li><strong>Print / PDF</strong> via the in-app preview</li>
             <li><strong>Fill Word/ODT template</strong> if you uploaded a template with placeholders</li>
+            <li><strong>Return / reject</strong> or <strong>Cancel invoice</strong> when applicable</li>
           </ul>`,
       },
       {
