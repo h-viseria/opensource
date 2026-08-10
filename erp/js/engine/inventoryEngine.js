@@ -12,6 +12,8 @@ export const INVENTORY_TYPE_LIST = Object.freeze([
   INVENTORY_TXN_TYPES.OPENING,
   INVENTORY_TXN_TYPES.PURCHASE,
   INVENTORY_TXN_TYPES.SALE,
+  INVENTORY_TXN_TYPES.SALES_RETURN,
+  INVENTORY_TXN_TYPES.PURCHASE_RETURN,
   INVENTORY_TXN_TYPES.ADJUSTMENT,
   INVENTORY_TXN_TYPES.TRANSFER,
 ]);
@@ -101,14 +103,18 @@ export function applyTransaction(buckets, txn) {
   if (!buckets.has(key)) buckets.set(key, emptyBucket());
   const bucket = /** @type {StockBucket} */ (buckets.get(key));
 
-  if (type === INVENTORY_TXN_TYPES.OPENING || type === INVENTORY_TXN_TYPES.PURCHASE) {
+  if (
+    type === INVENTORY_TXN_TYPES.OPENING ||
+    type === INVENTORY_TXN_TYPES.PURCHASE ||
+    type === INVENTORY_TXN_TYPES.SALES_RETURN
+  ) {
     const rate = roundMoney(txn.rate);
     const value = roundMoney(txn.value != null ? txn.value : qty * rate);
     addIn(bucket, qty, value);
     return { ok: true, costValue: value, costRate: rate };
   }
 
-  if (type === INVENTORY_TXN_TYPES.SALE) {
+  if (type === INVENTORY_TXN_TYPES.SALE || type === INVENTORY_TXN_TYPES.PURCHASE_RETURN) {
     if (qty > bucket.quantity + 0.0001) {
       return {
         ok: false,
@@ -229,6 +235,7 @@ export function validateNewPosting(existing, input) {
   const needsRate =
     type === INVENTORY_TXN_TYPES.OPENING ||
     type === INVENTORY_TXN_TYPES.PURCHASE ||
+    type === INVENTORY_TXN_TYPES.SALES_RETURN ||
     (type === INVENTORY_TXN_TYPES.ADJUSTMENT && (input.adjustmentSign ?? 1) > 0);
 
   if (needsRate) {
