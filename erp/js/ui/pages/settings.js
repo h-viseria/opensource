@@ -5,11 +5,13 @@
 import * as settingsService from '../../services/settingsService.js';
 import * as bookService from '../../services/bookService.js';
 import * as backupService from '../../services/backupService.js';
+import * as driveSyncService from '../../services/driveSyncService.js';
 import * as backupActions from '../backupActions.js';
 import { escapeHtml, confirmModal } from '../modal.js';
 import { showToast } from '../toast.js';
 import { deleteDatabase } from '../../db/database.js';
-
+import { formatDisplayDate } from '../../utils/date.js';
+import { DRIVE_SYNC_INTERVAL_MS } from '../../data/googleDriveConfig.js';
 /**
  * @param {import('../../core/router.js').RouteContext} ctx
  * @param {HTMLElement} outlet
@@ -87,12 +89,10 @@ export async function renderSettings(ctx, outlet, opts = {}) {
     </div>
 
     <div class="panel">
-      <h2 class="panel__title">Google Drive</h2>
-      <p class="panel__desc">
-        Use the Drive icon in the top bar (or the buttons above). PicoERP downloads a compressed backup and opens Google Drive
-        so you can upload it with <strong>+ New → File upload</strong>. Restore: download the file from Drive, then choose it here.
-        No technical setup is required for everyday use.
-      </p>
+      <h2 class="panel__title">Google Drive sync</h2>
+      <div id="gdrive-sync-panel">
+        <p class="panel__desc">Loading…</p>
+      </div>
     </div>
 
     <div class="panel">
@@ -235,4 +235,138 @@ export async function renderSettings(ctx, outlet, opts = {}) {
       showToast(err instanceof Error ? err.message : 'Reset failed', 'error');
     }
   });
+
+  await refreshDriveSyncPanel(outlet);
+}
+
+/**
+ * @param {HTMLElement} outlet
+ */
+async function refreshDriveSyncPanel(outlet) {
+  const host = outlet.querySelector('#gdrive-sync-panel');
+  if (!host) return;
+
+  const configured = await driveSyncService.isDriveApiConfigured();
+  const state = await driveSyncService.getSyncState();
+  const localAt = await driveSyncService.getLocalDataUpdatedAt();
+  const intervalMin = Math.round(DRIVE_SYNC_INTERVAL_MS / 60000);
+
+  if (!configured) {
+    host.innerHTML = `
+      <p class="panel__desc">
+        Automatic folder sync needs a Google Cloud Client ID and API key in
+        <span class="mono">js/data/googleDriveConfig.js</span>. Until then, the Drive button uses
+        download + open Drive (manual upload).
+      </p>`;
+    return;
+  }
+
+  if (!state.enabled || !state.folderId) {
+    host.innerHTML = `
+      <p class="panel__desc">
+        Choose a Google Drive folder once. PicoERP looks for (or creates)
+        <span class="mono">PicoERPBackup</span> inside it, keeps
+        <span class="mono">PicoERP_sync.erp.zip</span> there, checks it on launch,
+        and uploads about every ${intervalMin} minutes while this tab is open.
+      </p>
+      <div class="form-actions" style="justify-content:flex-start;border:0;padding:0;margin-top:0.75rem;flex-wrap:wrap">
+        <button type="button" class="btn btn--primary" id="btn-drive-connect">Connect Drive folder</button>
+      </div>`;
+    host.querySelector('#btn-drive-connect')?.addEventListener('click', async () => {
+      const btn = /** @type {HTMLButtonElement} */ (host.querySelector('#btn-drive-connect'));
+      btn.disabled = true;
+      try {
+        await backupActions.reconnectDriveSyncFolder();
+        await refreshDriveSyncPanel(outlet);
+      } catch (err) {
+        showToast(err instanceof Error ? err.message : 'Could not connect Drive', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+    return;
+  }
+
+  host.innerHTML = `
+    <p class="panel__desc">
+      Syncing to <strong>${escapeHtml(
+        state.parentFolderName
+          ? `${state.parentFolderName} / ${state.folderName}`
+          : state.folderName || 'Drive'
+      )}</strong>
+      · file <span class="mono">${escapeHtml(state.fileName || 'PicoERP_sync.erp.zip')}</span>
+    </p>
+    <table style="font-size:var(--text-sm);margin-top:0.5rem">
+      <tbody>
+        <tr><td class="muted" style="padding:0.35rem 1rem 0.35rem 0;width:11rem">Last upload</td>
+          <td>${state.lastUploadedAt ? escapeHtml(formatIso(state.lastUploadedAt)) : '—'}</td></tr>
+        <tr><td class="muted" style="padding:0.35rem 1rem 0.35rem 0">Drive modified</td>
+          <td>${state.lastDriveModifiedAt ? escapeHtml(formatIso(state.lastDriveModifiedAt)) : '—'}</td></tr>
+        <tr><td class="muted" style="padding:0.35rem 1rem 0.35rem 0">Local data changed</td>
+          <td>${localAt ? escapeHtml(formatIso(localAt)) : '—'}</td></tr>
+        <tr><td class="muted" style="padding:0.35rem 1rem 0.35rem 0">Last checked</td>
+          <td>${state.lastCheckedAt ? escapeHtml(formatIso(state.lastCheckedAt)) : '—'}</td></tr>
+        ${
+          state.lastError
+            ? `<tr><td class="muted" style="padding:0.35rem 1rem 0.35rem 0">Last error</td>
+                 <td class="badge badge--danger">${escapeHtml(state.lastError)}</td></tr>`
+            : ''
+        }
+      </tbody>
+    </table>
+    <div class="form-actions" style="justify-content:flex-start;border:0;padding:0;margin-top:0.75rem;flex-wrap:wrap">
+      <button type="button" class="btn btn--primary" id="btn-drive-sync-now">Sync now</button>
+      <button type="button" class="btn btn--secondary" id="btn-drive-change-folder">Change folder</button>
+      <button type="button" class="btn btn--ghost" id="btn-drive-disconnect">Disconnect</button>
+    </div>
+    <p class="muted" style="margin-top:0.75rem;font-size:var(--text-sm)">
+      On launch, if Drive is newer than this browser, PicoERP asks before replacing local data.
+      Credentials stay in <span class="mono">js/data/googleDriveConfig.js</span>.
+    </p>
+  `;
+
+  host.querySelector('#btn-drive-sync-now')?.addEventListener('click', async () => {
+    const btn = /** @type {HTMLButtonElement} */ (host.querySelector('#btn-drive-sync-now'));
+    btn.disabled = true;
+    try {
+      await backupActions.uploadFullBackupToGoogleDrive();
+      await refreshDriveSyncPanel(outlet);
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Sync failed', 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  host.querySelector('#btn-drive-change-folder')?.addEventListener('click', async () => {
+    try {
+      await backupActions.reconnectDriveSyncFolder();
+      await refreshDriveSyncPanel(outlet);
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Could not change folder', 'error');
+    }
+  });
+
+  host.querySelector('#btn-drive-disconnect')?.addEventListener('click', async () => {
+    const ok = await confirmModal({
+      title: 'Disconnect Drive sync?',
+      confirmLabel: 'Disconnect',
+      bodyHtml: `<p>Stops automatic uploads. The file on Google Drive is kept.</p>`,
+    });
+    if (!ok) return;
+    await driveSyncService.disconnectSync();
+    showToast('Google Drive sync disconnected', 'info');
+    await refreshDriveSyncPanel(outlet);
+  });
+}
+
+/** @param {string} iso */
+function formatIso(iso) {
+  try {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return iso;
+    return `${formatDisplayDate(d.toISOString().slice(0, 10))} ${d.toLocaleTimeString()}`;
+  } catch {
+    return iso;
+  }
 }
