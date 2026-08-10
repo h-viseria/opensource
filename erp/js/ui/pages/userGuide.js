@@ -490,7 +490,12 @@ const CHAPTERS = [
           <h4>Restore</h4>
           <p>Choose a local <code>.json</code> / <code>.zip</code> file, or restore from Google Drive. Full backups replace all local data; book backups replace that book. Schema is validated first.</p>
           <h4>Google Drive</h4>
-          <p>Click the Drive icon: PicoERP downloads a compressed backup and opens Google Drive. Use <strong>+ New → File upload</strong> and pick the downloaded file. To restore, download that backup from Drive, then choose it under Settings → Restore (or Restore from Google Drive for step-by-step help). No Client ID or technical setup is needed.</p>
+          <p>With Client ID / API key in <code>js/data/googleDriveConfig.js</code>, the Drive button asks you to pick a folder once.
+          PicoERP looks for (or creates) a <code>PicoERPBackup</code> subfolder there, uploads <code>PicoERP_sync.erp.zip</code>
+          (updated in place), checks Drive on launch
+          (prompts to replace local data if Drive is newer), and re-uploads periodically while the tab is open.
+          Manage connect / sync now / disconnect under Settings → Google Drive sync.</p>
+          <p>Without those credentials, the Drive button still downloads a zip and opens Drive for a manual upload.</p>
           <h4>PWA / updates</h4>
           <p>Install ${escapeHtml(APP_NAME)} from the browser menu for offline use. Use <strong>Check for updates</strong> after a new version is deployed.</p>
           <h4>Danger zone</h4>
