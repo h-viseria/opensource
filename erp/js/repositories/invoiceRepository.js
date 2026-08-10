@@ -24,7 +24,7 @@ export class InvoiceRepository extends BaseRepository {
 
   /**
    * @param {string} bookId
-   * @param {'Sales'|'Purchase'} invoiceType
+   * @param {string} invoiceType
    */
   async maxSequence(bookId, invoiceType) {
     const rows = (await this.findByBook(bookId)).filter((r) => r.invoiceType === invoiceType);
