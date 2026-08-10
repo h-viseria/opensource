@@ -241,7 +241,7 @@ export async function pickDriveFolder() {
       .enableFeature(google.picker.Feature.NAV_HIDDEN)
       .setOAuthToken(token)
       .setDeveloperKey(creds.apiKey)
-      .setTitle('Choose a Google Drive folder for the backup')
+      .setTitle('Choose a Drive folder — PicoERP will use/create PicoERPBackup inside it')
       .setCallback((data) => {
         if (data.action === google.picker.Action.CANCEL) {
           resolve(null);
@@ -315,9 +315,10 @@ export async function pickDriveBackupFile() {
  * @param {Blob} blob
  * @param {string} fileName
  * @param {string} [folderId]
- * @returns {Promise<{ id: string, name: string, webViewLink?: string }>}
+ * @param {{ exportedAt?: string }} [opts]
+ * @returns {Promise<{ id: string, name: string, webViewLink?: string, modifiedTime?: string }>}
  */
-export async function uploadBackupFile(blob, fileName, folderId) {
+export async function uploadBackupFile(blob, fileName, folderId, opts = {}) {
   const token = await getAccessToken();
   /** @type {Record<string, unknown>} */
   const metadata = {
@@ -325,23 +326,13 @@ export async function uploadBackupFile(blob, fileName, folderId) {
     mimeType: blob.type || 'application/zip',
   };
   if (folderId) metadata.parents = [folderId];
+  if (opts.exportedAt) {
+    metadata.appProperties = { picoerpExportedAt: String(opts.exportedAt) };
+  }
 
-  const boundary = `picoerp_${Date.now()}`;
-  const metaPart =
-    `--${boundary}\r\n` +
-    `Content-Type: application/json; charset=UTF-8\r\n\r\n` +
-    `${JSON.stringify(metadata)}\r\n`;
-  const fileHeader =
-    `--${boundary}\r\n` +
-    `Content-Type: ${metadata.mimeType}\r\n\r\n`;
-  const footer = `\r\n--${boundary}--`;
-
-  const body = new Blob([metaPart, fileHeader, blob, footer], {
-    type: `multipart/related; boundary=${boundary}`,
-  });
-
+  const body = buildMultipartBody(metadata, blob);
   const res = await fetch(
-    'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink',
+    'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink,modifiedTime,appProperties',
     {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
@@ -354,6 +345,207 @@ export async function uploadBackupFile(blob, fileName, folderId) {
     throw new Error(detail || `Google Drive upload failed (${res.status})`);
   }
   return res.json();
+}
+
+/**
+ * Overwrite an existing Drive file (keeps id; updates modifiedTime).
+ * @param {string} fileId
+ * @param {Blob} blob
+ * @param {{ fileName?: string, exportedAt?: string }} [opts]
+ */
+export async function updateBackupFile(fileId, blob, opts = {}) {
+  const token = await getAccessToken();
+  /** @type {Record<string, unknown>} */
+  const metadata = {
+    mimeType: blob.type || 'application/zip',
+  };
+  if (opts.fileName) metadata.name = opts.fileName;
+  if (opts.exportedAt) {
+    metadata.appProperties = { picoerpExportedAt: String(opts.exportedAt) };
+  }
+
+  const body = buildMultipartBody(metadata, blob);
+  const res = await fetch(
+    `https://www.googleapis.com/upload/drive/v3/files/${encodeURIComponent(fileId)}?uploadType=multipart&fields=id,name,webViewLink,modifiedTime,appProperties`,
+    {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}` },
+      body,
+    }
+  );
+  if (!res.ok) {
+    const detail = await safeError(res);
+    if (res.status === 401) clearGoogleDriveToken();
+    throw new Error(detail || `Google Drive update failed (${res.status})`);
+  }
+  return res.json();
+}
+
+/**
+ * Create or update the sync backup in a folder (stable filename).
+ * @param {Blob} blob
+ * @param {string} fileName
+ * @param {string} folderId
+ * @param {{ existingFileId?: string|null, exportedAt?: string }} [opts]
+ */
+export async function uploadOrUpdateBackupFile(blob, fileName, folderId, opts = {}) {
+  if (opts.existingFileId) {
+    try {
+      return await updateBackupFile(opts.existingFileId, blob, {
+        fileName,
+        exportedAt: opts.exportedAt,
+      });
+    } catch (err) {
+      // File may have been deleted — fall through to create
+      console.warn('[Drive] update failed, creating new file', err);
+    }
+  }
+
+  const existing = await findFileInFolder(folderId, fileName);
+  if (existing?.id) {
+    return updateBackupFile(existing.id, blob, { fileName, exportedAt: opts.exportedAt });
+  }
+  return uploadBackupFile(blob, fileName, folderId, { exportedAt: opts.exportedAt });
+}
+
+/**
+ * Find a child folder by exact name under a parent.
+ * @param {string} parentId
+ * @param {string} folderName
+ * @returns {Promise<{ id: string, name: string }|null>}
+ */
+export async function findFolderInParent(parentId, folderName) {
+  const token = await getAccessToken();
+  const safeName = String(folderName).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  const q = [
+    `'${parentId}' in parents`,
+    `name = '${safeName}'`,
+    `mimeType = 'application/vnd.google-apps.folder'`,
+    'trashed = false',
+  ].join(' and ');
+  const url =
+    'https://www.googleapis.com/drive/v3/files?' +
+    new URLSearchParams({
+      q,
+      spaces: 'drive',
+      pageSize: '5',
+      fields: 'files(id,name)',
+      orderBy: 'createdTime',
+    }).toString();
+
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) {
+    const detail = await safeError(res);
+    if (res.status === 401) clearGoogleDriveToken();
+    throw new Error(detail || `Could not search Drive folders (${res.status})`);
+  }
+  const data = await res.json();
+  const files = Array.isArray(data.files) ? data.files : [];
+  return files[0] ? { id: String(files[0].id), name: String(files[0].name || folderName) } : null;
+}
+
+/**
+ * Create a folder under a parent.
+ * @param {string} parentId
+ * @param {string} folderName
+ * @returns {Promise<{ id: string, name: string }>}
+ */
+export async function createFolder(parentId, folderName) {
+  const token = await getAccessToken();
+  const res = await fetch('https://www.googleapis.com/drive/v3/files?fields=id,name', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: folderName,
+      mimeType: 'application/vnd.google-apps.folder',
+      parents: [parentId],
+    }),
+  });
+  if (!res.ok) {
+    const detail = await safeError(res);
+    if (res.status === 401) clearGoogleDriveToken();
+    throw new Error(detail || `Could not create Drive folder (${res.status})`);
+  }
+  const data = await res.json();
+  return { id: String(data.id), name: String(data.name || folderName) };
+}
+
+/**
+ * Ensure a named backup subfolder exists under the picked parent folder.
+ * Finds an existing match or creates one.
+ * @param {string} parentId
+ * @param {string} folderName
+ * @returns {Promise<{ id: string, name: string, created: boolean }>}
+ */
+export async function ensureChildFolder(parentId, folderName) {
+  const existing = await findFolderInParent(parentId, folderName);
+  if (existing) return { ...existing, created: false };
+  const created = await createFolder(parentId, folderName);
+  return { ...created, created: true };
+}
+
+/**
+ * Find a file by exact name under a folder.
+ * @param {string} folderId
+ * @param {string} fileName
+ * @returns {Promise<{ id: string, name: string, modifiedTime?: string, appProperties?: Record<string, string> }|null>}
+ */
+export async function findFileInFolder(folderId, fileName) {
+  const token = await getAccessToken();
+  const safeName = String(fileName).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  const q = [
+    `'${folderId}' in parents`,
+    `name = '${safeName}'`,
+    'trashed = false',
+  ].join(' and ');
+  const url =
+    'https://www.googleapis.com/drive/v3/files?' +
+    new URLSearchParams({
+      q,
+      spaces: 'drive',
+      pageSize: '5',
+      fields: 'files(id,name,modifiedTime,appProperties)',
+      orderBy: 'modifiedTime desc',
+    }).toString();
+
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) {
+    const detail = await safeError(res);
+    if (res.status === 401) clearGoogleDriveToken();
+    throw new Error(detail || `Could not list Drive folder (${res.status})`);
+  }
+  const data = await res.json();
+  const files = Array.isArray(data.files) ? data.files : [];
+  return files[0] || null;
+}
+
+/**
+ * @param {string} fileId
+ * @returns {Promise<{ id: string, name: string, modifiedTime?: string, appProperties?: Record<string, string>, webViewLink?: string }>}
+ */
+export async function getFileMetadata(fileId) {
+  const token = await getAccessToken();
+  const res = await fetch(
+    `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?fields=id,name,modifiedTime,appProperties,webViewLink`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  if (!res.ok) {
+    const detail = await safeError(res);
+    if (res.status === 401) clearGoogleDriveToken();
+    throw new Error(detail || `Could not read Drive file (${res.status})`);
+  }
+  return res.json();
+}
+
+/**
+ * Cached token only — does not open a sign-in popup.
+ * @returns {string|null}
+ */
+export function getCachedAccessToken() {
+  return readCachedToken();
 }
 
 /**
@@ -372,6 +564,26 @@ export async function downloadDriveFile(fileId) {
     throw new Error(detail || `Could not download Drive file (${res.status})`);
   }
   return res.blob();
+}
+
+/**
+ * @param {Record<string, unknown>} metadata
+ * @param {Blob} blob
+ */
+function buildMultipartBody(metadata, blob) {
+  const boundary = `picoerp_${Date.now()}`;
+  const mime = blob.type || metadata.mimeType || 'application/zip';
+  const metaPart =
+    `--${boundary}\r\n` +
+    `Content-Type: application/json; charset=UTF-8\r\n\r\n` +
+    `${JSON.stringify(metadata)}\r\n`;
+  const fileHeader =
+    `--${boundary}\r\n` +
+    `Content-Type: ${mime}\r\n\r\n`;
+  const footer = `\r\n--${boundary}--`;
+  return new Blob([metaPart, fileHeader, blob, footer], {
+    type: `multipart/related; boundary=${boundary}`,
+  });
 }
 
 /**
