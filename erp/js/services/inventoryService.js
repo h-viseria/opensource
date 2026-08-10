@@ -665,11 +665,16 @@ export async function postMovement(input) {
   // Outflows use WA cost from validation
   if (
     type === INVENTORY_TXN_TYPES.SALE ||
+    type === INVENTORY_TXN_TYPES.PURCHASE_RETURN ||
     type === INVENTORY_TXN_TYPES.TRANSFER ||
     (type === INVENTORY_TXN_TYPES.ADJUSTMENT && (input.adjustmentSign ?? 1) < 0)
   ) {
     rate = roundMoney(validation.costRate || 0);
     value = roundMoney(validation.costValue || 0);
+  } else if (type === INVENTORY_TXN_TYPES.SALES_RETURN) {
+    // Restock at the provided cost (usually original sale COGS rate)
+    rate = roundMoney(validation.rate || 0);
+    value = roundMoney(validation.value || qty * rate);
   }
 
   /** @type {import('../models/types.js').InventoryTransaction} */
@@ -746,7 +751,10 @@ async function maybeCreateStockVoucher(opts) {
   let lines = null;
   let voucherType = VOUCHER_TYPES.JOURNAL;
 
-  if (txn.type === INVENTORY_TXN_TYPES.OPENING || txn.type === INVENTORY_TXN_TYPES.PURCHASE) {
+  if (
+    txn.type === INVENTORY_TXN_TYPES.OPENING ||
+    txn.type === INVENTORY_TXN_TYPES.PURCHASE
+  ) {
     if (value <= 0) return null;
     const counterId = opts.counterLedgerId;
     if (!counterId) {
@@ -761,14 +769,38 @@ async function maybeCreateStockVoucher(opts) {
     ];
     voucherType =
       txn.type === INVENTORY_TXN_TYPES.PURCHASE ? VOUCHER_TYPES.PURCHASE : VOUCHER_TYPES.OPENING;
-  } else if (txn.type === INVENTORY_TXN_TYPES.SALE) {
+  } else if (txn.type === INVENTORY_TXN_TYPES.SALES_RETURN) {
     if (value <= 0) return null;
-    // Perpetual inventory: Dr COGS Cr Stock (sales revenue is a separate voucher)
+    // Reverse COGS: Dr Stock Cr COGS
     lines = [
-      { ledgerId: cogs.id, debit: value, credit: 0 },
-      { ledgerId: stock.id, debit: 0, credit: value },
+      { ledgerId: stock.id, debit: value, credit: 0 },
+      { ledgerId: cogs.id, debit: 0, credit: value },
     ];
     voucherType = VOUCHER_TYPES.JOURNAL;
+  } else if (
+    txn.type === INVENTORY_TXN_TYPES.SALE ||
+    txn.type === INVENTORY_TXN_TYPES.PURCHASE_RETURN
+  ) {
+    if (value <= 0) return null;
+    if (txn.type === INVENTORY_TXN_TYPES.PURCHASE_RETURN) {
+      const counterId = opts.counterLedgerId;
+      if (!counterId) {
+        throw new Error('Select a counter ledger (Cash / Bank / Payable) for purchase return accounting');
+      }
+      if (counterId === stock.id) throw new Error('Counter ledger cannot be Stock');
+      lines = [
+        { ledgerId: counterId, debit: value, credit: 0 },
+        { ledgerId: stock.id, debit: 0, credit: value },
+      ];
+      voucherType = VOUCHER_TYPES.DEBIT_NOTE;
+    } else {
+      // Perpetual inventory: Dr COGS Cr Stock (sales revenue is a separate voucher)
+      lines = [
+        { ledgerId: cogs.id, debit: value, credit: 0 },
+        { ledgerId: stock.id, debit: 0, credit: value },
+      ];
+      voucherType = VOUCHER_TYPES.JOURNAL;
+    }
   } else if (txn.type === INVENTORY_TXN_TYPES.ADJUSTMENT) {
     if (value <= 0) return null;
     const sign = txn.adjustmentSign === -1 ? -1 : 1;
