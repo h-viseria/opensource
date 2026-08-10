@@ -9,7 +9,7 @@ Orchestrate repositories + engines, emit events, write audit logs. Called by UI 
 | `bookService.js` | Create/open books; seeds COA via templateId + inventory/tax masters |
 | `coaService.js` | Groups/ledgers; `seedDefaultChartOfAccounts(bookId, templateId)` |
 | `voucherService.js` | Post/list vouchers |
-| `invoiceService.js` | Sales/Purchase: GL + stock + tax |
+| `invoiceService.js` | Sales/Purchase + Credit/Debit notes (returns/cancel); GL + stock + tax |
 | `inventoryService.js` | Items, movements, WA valuation, master seeding |
 | `catalogueService.js` | Catalogue types + SKU attribute helpers |
 | `taxService.js` | Tax codes + reports |
