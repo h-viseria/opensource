@@ -6,7 +6,7 @@ Static data only (no I/O).
 |------|---------|
 | `coaTemplate.js` | Default/general `DEFAULT_COA_TEMPLATE` tree |
 | `bookTemplates.js` | Industry templates (personal, housing society, textile, electronics, grocery, restaurant, pharmacy, freelancer, general) — COA + optional catalogue/units/categories |
-| `googleDriveConfig.js` | Optional baked-in Google OAuth Client ID + API key for Drive picker |
+| `googleDriveConfig.js` | OAuth Client ID + API key + sync folder/file names + intervals (publisher fills credentials) |
 | `inventoryDefaults.js` | Default units, categories, warehouse |
 | `taxDefaults.js` | Default tax codes / ledger names |
 | `financeDefaults.js` | Goal template hints |
