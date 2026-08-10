@@ -56,7 +56,7 @@ export async function renderInventoryMovements(ctx, outlet) {
         <p class="page-eyebrow"><a href="#/inventory">Inventory</a> / Movements</p>
         <h1 class="page-header__title">Stock movements</h1>
         <p class="page-header__desc">
-          Opening, purchase, sale, adjustment, and transfer. Cost uses weighted average.
+          Opening, purchase, sale, sales/purchase return, adjustment, and transfer. Cost uses weighted average.
         </p>
       </div>
       <div class="page-header__actions">
