@@ -12,7 +12,7 @@ Hash SPA UI. No IndexedDB here — call services.
 | `reportHelpers.js` | Shared report filters / FY / amount cells |
 | `reportExport.js` | CSV + in-app PDF/print preview (avoid popup/`noopener` traps) |
 | `csvImport.js` | Reusable CSV import panel wiring |
-| `backupActions.js` | Full backup download, Google Drive zip upload, restore preview |
+| `backupActions.js` | Full backup download, Drive folder sync / guided upload, launch restore prompt |
 | `picoscanFab.js` | Floating PicoScan iframe FAB (`../picoscan/widget.html`) |
 
 ## Rules
