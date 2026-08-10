@@ -1,12 +1,13 @@
 /**
  * Shared backup / restore UI helpers (topbar + Settings).
  *
- * Google Drive for end users: guided zip download + open Drive (no Client ID).
- * Optional seamless picker only if the publisher filled js/data/googleDriveConfig.js.
+ * With credentials in js/data/googleDriveConfig.js: folder pick + sync upload.
+ * Without credentials: guided zip download + open Drive.
  */
 
 import * as backupService from '../services/backupService.js';
 import * as googleDriveService from '../services/googleDriveService.js';
+import * as driveSyncService from '../services/driveSyncService.js';
 import { confirmModal, formModal, escapeHtml } from './modal.js';
 import { showToast } from './toast.js';
 import { formatDisplayDate } from '../utils/date.js';
@@ -26,44 +27,89 @@ export async function downloadFullBackupLocal() {
 /**
  * True when publisher baked credentials into googleDriveConfig (or Settings advanced).
  */
-async function hasPublisherDriveIntegration() {
-  const creds = await googleDriveService.getDriveCredentials();
-  return Boolean(creds.clientId && creds.apiKey);
+export async function hasPublisherDriveIntegration() {
+  return driveSyncService.isDriveApiConfigured();
 }
 
 /**
- * Zip full backup and send to Google Drive.
- * - Seamless (sign-in + folder picker) only if publisher configured Drive.
- * - Otherwise: download .erp.zip and open Drive with plain-language steps.
+ * Top-bar / Settings Drive action:
+ * - If sync folder connected → upload/update zip in that folder
+ * - Else if API configured → connect folder (pick) then upload
+ * - Else → guided download + open Drive
  */
 export async function uploadFullBackupToGoogleDrive() {
-  showToast('Preparing compressed backup…', 'info');
-  const { payload, fileName, summary } = await backupService.exportFullBackup();
-  const { blob, zipFileName } = await backupService.buildBackupZip(payload, fileName);
-
-  if (await hasPublisherDriveIntegration()) {
+  if (await driveSyncService.isDriveApiConfigured()) {
     try {
+      const state = await driveSyncService.getSyncState();
+      if (state.enabled && state.folderId) {
+        const pathLabel = state.parentFolderName
+          ? `${state.parentFolderName} / ${state.folderName}`
+          : state.folderName || 'Drive';
+        showToast(`Uploading to “${pathLabel}”…`, 'info');
+        const result = await driveSyncService.uploadNow({ force: true, reason: 'manual' });
+        if (result.skipped) {
+          showToast('Drive backup already up to date', 'success');
+        } else {
+          const syncedPath = result.state.parentFolderName
+            ? `${result.state.parentFolderName} / ${result.state.folderName}`
+            : result.state.folderName;
+          showToast(
+            `Synced to “${syncedPath}” (${result.summary?.totalRecords ?? '—'} records)`,
+            'success'
+          );
+        }
+        return { ...result, mode: 'sync' };
+      }
+
       showToast('Opening Google sign-in…', 'info');
       await googleDriveService.getAccessToken();
-      showToast('Choose a Drive folder…', 'info');
-      const folder = await googleDriveService.pickDriveFolder();
-      if (!folder) {
+      showToast('Choose a Drive folder for automatic backups…', 'info');
+      await driveSyncService.connectSyncFolder();
+      const connected = await driveSyncService.getSyncState();
+      const pathLabel = connected.parentFolderName
+        ? `${connected.parentFolderName} / ${connected.folderName}`
+        : connected.folderName;
+      showToast(
+        `Connected “${pathLabel}” — backups will update there automatically`,
+        'success'
+      );
+      return { state: connected, mode: 'connect' };
+    } catch (err) {
+      if (err instanceof Error && /cancelled/i.test(err.message)) {
         showToast('Folder selection cancelled', 'info');
         return null;
       }
-      showToast(`Uploading to “${folder.name}”…`, 'info');
-      const uploaded = await googleDriveService.uploadBackupFile(blob, zipFileName, folder.id);
-      showToast(
-        `Saved ${zipFileName} in “${folder.name}” (${summary.totalRecords} records)`,
-        'success'
-      );
-      return { uploaded, summary, zipFileName, folder, mode: 'api' };
-    } catch (err) {
-      // Fall through to guided flow if API path fails (ad blockers, misconfig, etc.)
       console.warn('[Drive API]', err);
       showToast('Opening the simple Google Drive upload steps instead…', 'info');
     }
   }
+
+  return guidedUploadToDrive();
+}
+
+/**
+ * Force reconnect (pick a different folder).
+ */
+export async function reconnectDriveSyncFolder() {
+  if (!(await driveSyncService.isDriveApiConfigured())) {
+    throw new Error('Fill clientId and apiKey in js/data/googleDriveConfig.js first');
+  }
+  showToast('Opening Google sign-in…', 'info');
+  await googleDriveService.getAccessToken();
+  showToast('Choose a Drive folder…', 'info');
+  await driveSyncService.connectSyncFolder();
+  const state = await driveSyncService.getSyncState();
+  const pathLabel = state.parentFolderName
+    ? `${state.parentFolderName} / ${state.folderName}`
+    : state.folderName;
+  showToast(`Sync folder set to “${pathLabel}”`, 'success');
+  return state;
+}
+
+async function guidedUploadToDrive() {
+  showToast('Preparing compressed backup…', 'info');
+  const { payload, fileName, summary } = await backupService.exportFullBackup();
+  const { blob, zipFileName } = await backupService.buildBackupZip(payload, fileName);
 
   backupService.downloadBlob(blob, zipFileName);
   window.open(DRIVE_MY_DRIVE, '_blank', 'noopener,noreferrer');
@@ -84,13 +130,74 @@ export async function uploadFullBackupToGoogleDrive() {
           <li>Optional: move it into any folder you like.</li>
         </ol>
         <p class="field__hint" style="margin-top:0.75rem">
-          Tip: keep this file safe — you can restore it later from Settings → Restore.
+          Tip: for automatic sync, fill <span class="mono">js/data/googleDriveConfig.js</span> with your Client ID and API key, then use this button again to pick a folder.
         </p>
       </div>`,
   });
 
   showToast('Follow the steps in Drive to finish uploading', 'success');
   return { summary, zipFileName, mode: 'guided' };
+}
+
+/**
+ * On app launch: if synced Drive backup is newer than local data, prompt to restore.
+ * @returns {Promise<boolean>} true if restore ran
+ */
+export async function checkDriveSyncOnLaunch() {
+  try {
+    const state = await driveSyncService.initDriveSync();
+    if (!state.enabled || !state.folderId) return false;
+    if (!(await driveSyncService.isDriveApiConfigured())) return false;
+    if (!navigator.onLine) return false;
+
+    const comparison = await driveSyncService.compareWithDrive();
+    if (comparison.status !== 'remote-newer' || !comparison.fileId) return false;
+
+    const remoteLabel = comparison.remoteAt
+      ? formatDisplayDate(String(comparison.remoteAt).slice(0, 10))
+      : 'a newer copy';
+    const localLabel = comparison.localAt
+      ? formatDisplayDate(String(comparison.localAt).slice(0, 10))
+      : 'this browser';
+
+    const ok = await confirmModal({
+      title: 'Newer backup on Google Drive',
+      confirmLabel: 'Replace local data',
+      danger: true,
+      bodyHtml: `
+        <p>Google Drive has a newer PicoERP backup than this browser.</p>
+        <ul style="margin:0.75rem 0;padding-left:1.25rem;font-size:var(--text-sm)">
+          <li>Drive: <strong>${escapeHtml(remoteLabel)}</strong>
+            ${comparison.fileName ? ` (<span class="mono">${escapeHtml(comparison.fileName)}</span>)` : ''}</li>
+          <li>This browser: <strong>${escapeHtml(localLabel)}</strong></li>
+          <li>Folder: <strong>${escapeHtml(comparison.state.folderName || '—')}</strong></li>
+        </ul>
+        <p>Replace <strong>all local data</strong> with the Drive backup?</p>`,
+    });
+    if (!ok) return false;
+
+    showToast('Downloading Drive backup…', 'info');
+    const parsed = await driveSyncService.downloadSyncedBackup(comparison.fileId);
+    if (!parsed.ok || !parsed.raw) {
+      showToast(parsed.errors?.[0] || 'Invalid Drive backup', 'error');
+      return false;
+    }
+    if (parsed.scope !== 'full') {
+      showToast('Synced Drive file must be a full backup', 'error');
+      return false;
+    }
+
+    await backupService.restoreFullBackup(parsed.raw);
+    await driveSyncService.markRestoredFromDrive(
+      String(parsed.exportedAt || comparison.remoteAt || '')
+    );
+    showToast('Local data replaced from Google Drive', 'success');
+    setTimeout(() => location.reload(), 500);
+    return true;
+  } catch (err) {
+    console.warn('[Drive sync launch]', err);
+    return false;
+  }
 }
 
 /**
@@ -154,6 +261,7 @@ export function showRestorePreview(preview, parsed, opts = {}) {
     try {
       if (isFull) {
         await backupService.restoreFullBackup(pendingBackup);
+        await driveSyncService.markRestoredFromDrive(String(pendingBackup.exportedAt || ''));
         showToast('Full backup restored', 'success');
       } else {
         const result = await backupService.restoreBookBackup(pendingBackup);
@@ -178,6 +286,20 @@ export function showRestorePreview(preview, parsed, opts = {}) {
 export async function pickAndParseGoogleDriveBackup() {
   if (await hasPublisherDriveIntegration()) {
     try {
+      const state = await driveSyncService.getSyncState();
+      if (state.enabled && state.fileId) {
+        const useSynced = await confirmModal({
+          title: 'Restore from Google Drive',
+          confirmLabel: 'Use synced backup',
+          cancelLabel: 'Pick another file',
+          bodyHtml: `<p>Use the synced file in <strong>${escapeHtml(state.folderName || 'Drive')}</strong>
+            (<span class="mono">${escapeHtml(state.fileName || 'PicoERP_sync.erp.zip')}</span>)?</p>`,
+        });
+        if (useSynced) {
+          showToast('Downloading synced backup…', 'info');
+          return driveSyncService.downloadSyncedBackup(state.fileId);
+        }
+      }
       showToast('Opening Google sign-in…', 'info');
       await googleDriveService.getAccessToken();
       showToast('Choose a backup file on Drive…', 'info');
