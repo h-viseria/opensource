@@ -46,6 +46,7 @@ import { renderGnuCashImport } from './ui/pages/gnuCashImport.js';
 import { renderInvoices } from './ui/pages/invoices.js';
 import { renderInvoiceNew } from './ui/pages/invoiceForm.js';
 import { renderInvoiceDetail } from './ui/pages/invoiceDetail.js';
+import { renderInvoiceReturn } from './ui/pages/invoiceReturn.js';
 import { renderInvoiceTemplates } from './ui/pages/invoiceTemplates.js';
 import { renderUserGuide } from './ui/pages/userGuide.js';
 
@@ -166,6 +167,12 @@ export function registerRoutes(outlet, hooks = {}) {
     title: 'New invoice',
     requiresBook: true,
     render: wrap(renderInvoiceNew),
+  });
+
+  router.register('/invoices/:id/return', {
+    title: 'Return items',
+    requiresBook: true,
+    render: wrap(renderInvoiceReturn),
   });
 
   router.register('/invoices/:id', {
