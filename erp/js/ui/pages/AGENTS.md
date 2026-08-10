@@ -16,7 +16,7 @@ Each file exports `renderX(ctx, outlet, hooks?)`. Register in `js/routes.js`.
 | Books / settings / guide | `books.js`, `settings.js`, `userGuide.js`, `portfolio.js`, `dashboard.js` |
 | Masters | `masters.js`, `chartOfAccounts.js`, `ledgerGroups.js`, `ledgers.js`, `gnuCashImport.js` |
 | Vouchers | `transactions.js`, `voucherList.js`, `voucherForm.js` |
-| Invoices | `invoices.js`, `invoiceForm.js`, `invoiceDetail.js`, `invoiceTemplates.js` |
+| Invoices | `invoices.js`, `invoiceForm.js`, `invoiceDetail.js`, `invoiceReturn.js`, `invoiceTemplates.js` |
 | Inventory | `inventory.js`, `catalogueTypes.js`, `inventoryItems.js`, `inventoryMovements.js`, … |
 | Tax / finance | `tax.js`, `taxCodes.js`, `finance.js`, `budgets.js`, `goals.js` |
 | Reports | `trialBalance.js`, `profitAndLoss.js`, `balanceSheet.js`, `ledgerReport.js`, `ledgerDetailReport.js`, `accountSummary.js`, … |
