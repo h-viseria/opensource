@@ -11,7 +11,9 @@ import { escapeHtml, confirmModal } from '../modal.js';
 import { showToast } from '../toast.js';
 import { deleteDatabase } from '../../db/database.js';
 import { formatDisplayDate } from '../../utils/date.js';
-import { DRIVE_SYNC_INTERVAL_MS } from '../../data/googleDriveConfig.js';
+import {
+  DRIVE_SYNC_INTERVAL_HOURS,
+} from '../../data/googleDriveConfig.js';
 /**
  * @param {import('../../core/router.js').RouteContext} ctx
  * @param {HTMLElement} outlet
@@ -249,7 +251,6 @@ async function refreshDriveSyncPanel(outlet) {
   const configured = await driveSyncService.isDriveApiConfigured();
   const state = await driveSyncService.getSyncState();
   const localAt = await driveSyncService.getLocalDataUpdatedAt();
-  const intervalMin = Math.round(DRIVE_SYNC_INTERVAL_MS / 60000);
 
   if (!configured) {
     host.innerHTML = `
@@ -266,8 +267,7 @@ async function refreshDriveSyncPanel(outlet) {
       <p class="panel__desc">
         Choose a Google Drive folder once. PicoERP looks for (or creates)
         <span class="mono">PicoERPBackup</span> inside it, keeps
-        <span class="mono">PicoERP_sync.erp.zip</span> there, checks it on launch,
-        and uploads about every ${intervalMin} minutes while this tab is open.
+        <span class="mono">PicoERP_sync.erp.zip</span> there, and checks it on launch.
       </p>
       <div class="form-actions" style="justify-content:flex-start;border:0;padding:0;margin-top:0.75rem;flex-wrap:wrap">
         <button type="button" class="btn btn--primary" id="btn-drive-connect">Connect Drive folder</button>
@@ -286,6 +286,10 @@ async function refreshDriveSyncPanel(outlet) {
     });
     return;
   }
+
+  const intervalHours = driveSyncService.normalizeIntervalHours(state.autoSyncIntervalHours);
+  const dailyTime = driveSyncService.normalizeDailyTime(state.autoSyncDailyTime);
+  const mode = state.autoSyncMode === 'daily' ? 'daily' : 'interval';
 
   host.innerHTML = `
     <p class="panel__desc">
@@ -314,16 +318,92 @@ async function refreshDriveSyncPanel(outlet) {
         }
       </tbody>
     </table>
+
+    <div class="panel" style="margin-top:1rem;padding:0.85rem 1rem;box-shadow:none">
+      <h3 class="panel__title" style="font-size:var(--text-base);margin:0 0 0.5rem">Auto sync / backup</h3>
+      <label class="field" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem">
+        <input type="checkbox" id="drive-auto-enabled" ${state.autoSyncEnabled ? 'checked' : ''} />
+        <span>Enable automatic upload while this tab is open</span>
+      </label>
+      <div class="form-grid" id="drive-auto-options" ${state.autoSyncEnabled ? '' : 'hidden'}>
+        <label class="field">
+          <span class="field__label">Schedule</span>
+          <select class="select" id="drive-auto-mode">
+            <option value="interval" ${mode === 'interval' ? 'selected' : ''}>Every X hours</option>
+            <option value="daily" ${mode === 'daily' ? 'selected' : ''}>Once a day at a fixed time</option>
+          </select>
+        </label>
+        <label class="field" id="wrap-drive-interval" ${mode === 'interval' ? '' : 'hidden'}>
+          <span class="field__label">Every</span>
+          <select class="select" id="drive-auto-interval">
+            ${DRIVE_SYNC_INTERVAL_HOURS.map(
+              (h) =>
+                `<option value="${h}" ${h === intervalHours ? 'selected' : ''}>${h} hours</option>`
+            ).join('')}
+          </select>
+        </label>
+        <label class="field" id="wrap-drive-daily" ${mode === 'daily' ? '' : 'hidden'}>
+          <span class="field__label">Daily at (local time)</span>
+          <input class="input" type="time" id="drive-auto-daily" value="${escapeHtml(dailyTime)}" />
+        </label>
+      </div>
+      <p class="muted" style="margin:0.75rem 0 0;font-size:var(--text-sm)">
+        On launch: if Drive is newer you can replace local data; if local is newer you can upload to Drive.
+      </p>
+      <p style="margin:0.75rem 0 0">
+        <a href="#/settings/drive-activity">Compare activity logs (local vs Drive)</a>
+      </p>
+    </div>
+
     <div class="form-actions" style="justify-content:flex-start;border:0;padding:0;margin-top:0.75rem;flex-wrap:wrap">
       <button type="button" class="btn btn--primary" id="btn-drive-sync-now">Sync now</button>
       <button type="button" class="btn btn--secondary" id="btn-drive-change-folder">Change folder</button>
       <button type="button" class="btn btn--ghost" id="btn-drive-disconnect">Disconnect</button>
     </div>
-    <p class="muted" style="margin-top:0.75rem;font-size:var(--text-sm)">
-      On launch, if Drive is newer than this browser, PicoERP asks before replacing local data.
-      Credentials stay in <span class="mono">js/data/googleDriveConfig.js</span>.
-    </p>
   `;
+
+  const syncModeUi = () => {
+    const enabled = /** @type {HTMLInputElement} */ (host.querySelector('#drive-auto-enabled')).checked;
+    const modeEl = /** @type {HTMLSelectElement} */ (host.querySelector('#drive-auto-mode'));
+    host.querySelector('#drive-auto-options')?.toggleAttribute('hidden', !enabled);
+    const isDaily = modeEl.value === 'daily';
+    host.querySelector('#wrap-drive-interval')?.toggleAttribute('hidden', !enabled || isDaily);
+    host.querySelector('#wrap-drive-daily')?.toggleAttribute('hidden', !enabled || !isDaily);
+  };
+
+  const persistSchedule = async () => {
+    const enabled = /** @type {HTMLInputElement} */ (host.querySelector('#drive-auto-enabled')).checked;
+    const modeVal =
+      /** @type {HTMLSelectElement} */ (host.querySelector('#drive-auto-mode')).value === 'daily'
+        ? 'daily'
+        : 'interval';
+    const hours = Number(
+      /** @type {HTMLSelectElement} */ (host.querySelector('#drive-auto-interval')).value
+    );
+    const time = /** @type {HTMLInputElement} */ (host.querySelector('#drive-auto-daily')).value;
+    try {
+      await driveSyncService.updateAutoSyncSchedule({
+        autoSyncEnabled: enabled,
+        autoSyncMode: modeVal,
+        autoSyncIntervalHours: hours,
+        autoSyncDailyTime: time,
+      });
+      showToast('Auto sync settings saved', 'success');
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Could not save schedule', 'error');
+    }
+  };
+
+  host.querySelector('#drive-auto-enabled')?.addEventListener('change', async () => {
+    syncModeUi();
+    await persistSchedule();
+  });
+  host.querySelector('#drive-auto-mode')?.addEventListener('change', async () => {
+    syncModeUi();
+    await persistSchedule();
+  });
+  host.querySelector('#drive-auto-interval')?.addEventListener('change', () => persistSchedule());
+  host.querySelector('#drive-auto-daily')?.addEventListener('change', () => persistSchedule());
 
   host.querySelector('#btn-drive-sync-now')?.addEventListener('click', async () => {
     const btn = /** @type {HTMLButtonElement} */ (host.querySelector('#btn-drive-sync-now'));
