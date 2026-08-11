@@ -492,9 +492,10 @@ const CHAPTERS = [
           <h4>Google Drive</h4>
           <p>With Client ID / API key in <code>js/data/googleDriveConfig.js</code>, the Drive button asks you to pick a folder once.
           PicoERP looks for (or creates) a <code>PicoERPBackup</code> subfolder there, uploads <code>PicoERP_sync.erp.zip</code>
-          (updated in place), checks Drive on launch
-          (prompts to replace local data if Drive is newer), and re-uploads periodically while the tab is open.
-          Manage connect / sync now / disconnect under Settings → Google Drive sync.</p>
+          (updated in place; includes a rolling activity log of the last 10 actions), and on launch compares Drive vs local
+          (prompts to replace local if Drive is newer, or upload if local is newer).
+          Under Settings → Google Drive sync you can enable auto sync, and open
+          <a href="#/settings/drive-activity">Compare activity logs</a> to review local vs Drive recent activity.</p>
           <p>Without those credentials, the Drive button still downloads a zip and opens Drive for a manual upload.</p>
           <h4>PWA / updates</h4>
           <p>Install ${escapeHtml(APP_NAME)} from the browser menu for offline use. Use <strong>Check for updates</strong> after a new version is deployed.</p>
