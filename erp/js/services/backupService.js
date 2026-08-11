@@ -9,6 +9,7 @@ import { getDatabase, withTransaction, closeDatabase, deleteDatabase } from '../
 import * as idb from '../db/idb.js';
 import { nowIso, toDateInput } from '../utils/date.js';
 import { auditLogRepository } from '../repositories/auditLogRepository.js';
+import * as activityLogService from './activityLogService.js';
 
 export const BACKUP_FORMAT = 'picoerp.erp.json';
 /** Accepted legacy formats from the former LedgerForge branding. */
@@ -112,6 +113,7 @@ export function backupFileName(baseName) {
 export async function exportFullBackup() {
   const stores = await dumpAllStores();
   const { counts, totalRecords } = countStores(stores);
+  const activityLog = await activityLogService.getActivityLog();
   const payload = {
     format: BACKUP_FORMAT,
     schemaVersion: BACKUP_SCHEMA_VERSION,
@@ -120,6 +122,7 @@ export async function exportFullBackup() {
     dbVersion: DB_VERSION,
     scope: 'full',
     exportedAt: nowIso(),
+    activityLog,
     stores,
     meta: { counts, totalRecords },
   };
@@ -339,6 +342,19 @@ export async function restoreFullBackup(backup) {
   const stores = /** @type {Record<string, unknown[]>} */ (backup.stores);
   await clearAllStores();
   await writeStores(stores);
+
+  try {
+    const fromBackup = activityLogService.extractActivityLogFromBackup(backup);
+    if (fromBackup.length) {
+      await activityLogService.replaceActivityLog(fromBackup);
+    }
+    await activityLogService.recordActivity({
+      category: 'Backup',
+      message: 'Restored full backup into this browser',
+    });
+  } catch {
+    /* ignore activity log failures */
+  }
 
   try {
     await auditLogRepository.log({
