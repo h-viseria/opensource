@@ -23,6 +23,7 @@ import { warehouseRepository } from '../repositories/warehouseRepository.js';
 import { taxCodeRepository } from '../repositories/taxCodeRepository.js';
 import { inventoryTransactionRepository } from '../repositories/inventoryTransactionRepository.js';
 import { auditLogRepository } from '../repositories/auditLogRepository.js';
+import * as activityLogService from './activityLogService.js';
 import * as bookService from './bookService.js';
 import * as voucherService from './voucherService.js';
 import * as inventoryService from './inventoryService.js';
@@ -368,6 +369,16 @@ export async function createInvoice(input) {
         voucherId: main.voucher.id,
       },
     });
+    try {
+      const book = await bookService.getBook(bookId);
+      await activityLogService.recordActivity({
+        category: 'Invoice',
+        bookName: book?.name,
+        message: `Posted ${invoiceType.toLowerCase()} invoice ${invoiceNumber} · ${party.name} · ${formatMoney(grandTotal, book?.currency || 'INR')}`,
+      });
+    } catch {
+      /* ignore */
+    }
     emit(EVENTS.INVOICE_CHANGED, { bookId, id: invoice.id, operation: 'Create' });
     emit(EVENTS.VOUCHER_CHANGED, { bookId });
     emit(EVENTS.INVENTORY_CHANGED, { bookId });
@@ -676,6 +687,16 @@ export async function createReturnNote(input) {
         sourceInvoiceNumber: source.invoiceNumber,
       },
     });
+    try {
+      const book = await bookService.getBook(bookId);
+      await activityLogService.recordActivity({
+        category: 'Return',
+        bookName: book?.name,
+        message: `Posted ${noteType.toLowerCase()} ${invoiceNumber} against ${source.invoiceNumber} · ${source.partyName} · ${formatMoney(grandTotal, book?.currency || 'INR')}`,
+      });
+    } catch {
+      /* ignore */
+    }
     emit(EVENTS.INVOICE_CHANGED, { bookId, id: note.id, operation: 'Create' });
     emit(EVENTS.VOUCHER_CHANGED, { bookId });
     emit(EVENTS.INVENTORY_CHANGED, { bookId });
@@ -744,6 +765,16 @@ export async function cancelInvoice(id, opts = {}) {
     operation: 'Cancel',
     detail: { invoiceNumber: source.invoiceNumber, returnNoteId: note.id, reason },
   });
+  try {
+    const book = await bookService.getBook(source.bookId);
+    await activityLogService.recordActivity({
+      category: 'Invoice',
+      bookName: book?.name,
+      message: `Cancelled ${source.invoiceType.toLowerCase()} invoice ${source.invoiceNumber} (via ${note.invoiceNumber})`,
+    });
+  } catch {
+    /* ignore */
+  }
   emit(EVENTS.INVOICE_CHANGED, { bookId: source.bookId, id, operation: 'Cancel' });
   return { invoice: await getInvoice(id), returnNote: note };
 }
@@ -835,6 +866,16 @@ export async function deleteInvoice(id) {
     operation: 'Delete',
     detail: { invoiceNumber: invoice.invoiceNumber, invoiceType: invoice.invoiceType },
   });
+  try {
+    const book = await bookService.getBook(invoice.bookId);
+    await activityLogService.recordActivity({
+      category: 'Invoice',
+      bookName: book?.name,
+      message: `Deleted ${String(invoice.invoiceType || 'invoice').toLowerCase()} ${invoice.invoiceNumber}`,
+    });
+  } catch {
+    /* ignore */
+  }
   emit(EVENTS.INVOICE_CHANGED, { bookId: invoice.bookId, id: invoice.id, operation: 'Delete' });
   return true;
 }
