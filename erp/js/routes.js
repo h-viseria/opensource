@@ -6,6 +6,7 @@ import * as router from './core/router.js';
 import { renderDashboard } from './ui/pages/dashboard.js';
 import { renderBooks } from './ui/pages/books.js';
 import { renderSettings } from './ui/pages/settings.js';
+import { renderDriveActivityCompare } from './ui/pages/driveActivityCompare.js';
 import { renderMasters } from './ui/pages/masters.js';
 import { renderChartOfAccounts } from './ui/pages/chartOfAccounts.js';
 import { renderLedgerGroups } from './ui/pages/ledgerGroups.js';
@@ -88,6 +89,12 @@ export function registerRoutes(outlet, hooks = {}) {
     render: wrap(async (ctx, el) => {
       await renderSettings(ctx, el, { onReset: hooks.onReset });
     }),
+  });
+
+  router.register('/settings/drive-activity', {
+    title: 'Drive activity compare',
+    requiresBook: false,
+    render: wrap(renderDriveActivityCompare),
   });
 
   router.register('/guide', {
