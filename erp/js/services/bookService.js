@@ -17,6 +17,7 @@ import { bookRepository } from '../repositories/bookRepository.js';
 import { financialYearRepository } from '../repositories/financialYearRepository.js';
 import { settingsRepository } from '../repositories/settingsRepository.js';
 import { auditLogRepository } from '../repositories/auditLogRepository.js';
+import * as activityLogService from './activityLogService.js';
 import * as coaService from './coaService.js';
 import { getBookTemplate, DEFAULT_BOOK_TEMPLATE_ID } from '../data/bookTemplates.js';
 
@@ -110,6 +111,16 @@ export async function createBook(input) {
     detail: { name: book.name, templateId: template.id, templateName: template.name },
   });
 
+  try {
+    await activityLogService.recordActivity({
+      category: 'Book',
+      bookName: book.name,
+      message: `Created book “${book.name}” (${template.name})`,
+    });
+  } catch {
+    /* ignore */
+  }
+
   await setActiveBook(bookId, fy.id);
   emit(EVENTS.BOOK_CREATED, { book, financialYear: fy });
   return { book, financialYear: fy };
@@ -186,6 +197,16 @@ export async function deleteBook(bookId) {
     operation: 'Delete',
     detail: { name: book.name },
   });
+
+  try {
+    await activityLogService.recordActivity({
+      category: 'Book',
+      bookName: book.name,
+      message: `Deleted book “${book.name}”`,
+    });
+  } catch {
+    /* ignore */
+  }
 
   const activeId = await getActiveBookId();
   if (activeId === bookId) {
