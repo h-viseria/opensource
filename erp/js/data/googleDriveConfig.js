@@ -13,9 +13,9 @@
  */
 export const GOOGLE_DRIVE_DEFAULTS = Object.freeze({
   /** @type {string} OAuth 2.0 Web Client ID */
-  clientId: '927225206545-jv3pa4k2u5upjl0vf8e829pgeuer84ld.apps.googleusercontent.com',
+  clientId: '360191098183-cknkgqadrgpada5c3ir0ug6tstjsb7a1.apps.googleusercontent.com',
   /** @type {string} Browser API key for Google Picker */
-  apiKey: 'AIzaSyCQ2zt4Exa52n5jBcaj9gIEXgBiojIvj5s',
+  apiKey: 'AIzaSyAYGiSItMgqYwi47pjkDNmgBQ7kJp29lt0',
   /** @type {string} Cloud project number (optional, for Picker appId) */
   appId: '',
 });
