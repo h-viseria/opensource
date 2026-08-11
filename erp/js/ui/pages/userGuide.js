@@ -494,7 +494,8 @@ const CHAPTERS = [
           PicoERP looks for (or creates) a <code>PicoERPBackup</code> subfolder there, uploads <code>PicoERP_sync.erp.zip</code>
           (updated in place; includes a rolling activity log of the last 10 actions), and on launch compares Drive vs local
           (prompts to replace local if Drive is newer, or upload if local is newer).
-          Under Settings → Google Drive sync you can enable auto sync, and open
+          Under Settings → Google Drive sync you can choose auto sync from one schedule list
+          (No Auto Backup, Once a day, Every 2/4/6/8 hours), and open
           <a href="#/settings/drive-activity">Compare activity logs</a> to review local vs Drive recent activity.</p>
           <p>Without those credentials, the Drive button still downloads a zip and opens Drive for a manual upload.</p>
           <h4>PWA / updates</h4>
