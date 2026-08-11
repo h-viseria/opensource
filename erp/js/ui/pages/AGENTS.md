@@ -13,7 +13,7 @@ Each file exports `renderX(ctx, outlet, hooks?)`. Register in `js/routes.js`.
 
 | Area | Files |
 |------|--------|
-| Books / settings / guide | `books.js`, `settings.js`, `userGuide.js`, `portfolio.js`, `dashboard.js` |
+| Books / settings / guide | `books.js`, `settings.js`, `driveActivityCompare.js`, `userGuide.js`, `portfolio.js`, `dashboard.js` |
 | Masters | `masters.js`, `chartOfAccounts.js`, `ledgerGroups.js`, `ledgers.js`, `gnuCashImport.js` |
 | Vouchers | `transactions.js`, `voucherList.js`, `voucherForm.js` |
 | Invoices | `invoices.js`, `invoiceForm.js`, `invoiceDetail.js`, `invoiceReturn.js`, `invoiceTemplates.js` |
