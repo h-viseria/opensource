@@ -132,7 +132,13 @@ async function boot() {
     // If no active book, send user to portfolio (unless on books/settings)
     if (!hasActiveBook) {
       const path = router.getLocation().path;
-      if (path !== '/books' && path !== '/settings' && path !== '/portfolio') {
+      if (
+        path !== '/books' &&
+        path !== '/settings' &&
+        path !== '/settings/drive-activity' &&
+        path !== '/portfolio' &&
+        path !== '/guide'
+      ) {
         router.navigate('/portfolio', { replace: true });
       }
     }
