@@ -7,7 +7,7 @@ import { EVENTS, STORES, VOUCHER_TYPES } from '../core/constants.js';
 import { emit } from '../core/eventBus.js';
 import { uuid } from '../core/uuid.js';
 import { nowIso, toDateInput } from '../utils/date.js';
-import { roundMoney } from '../utils/money.js';
+import { roundMoney, formatMoney } from '../utils/money.js';
 import {
   validateVoucherLines,
   formatVoucherNumber,
@@ -21,6 +21,7 @@ import { auditLogRepository } from '../repositories/auditLogRepository.js';
 import { withTransaction } from '../db/database.js';
 import * as idb from '../db/idb.js';
 import * as bookService from './bookService.js';
+import * as activityLogService from './activityLogService.js';
 
 export { VOUCHER_TYPE_LIST, VOUCHER_TYPES };
 
@@ -162,6 +163,17 @@ export async function createVoucher(input) {
     detail: { voucherType, voucherNumber, debitTotal: voucher.debitTotal },
   });
 
+  try {
+    const book = await bookService.getBook(bookId);
+    await activityLogService.recordActivity({
+      category: 'Voucher',
+      bookName: book?.name,
+      message: `Posted ${voucherType.toLowerCase()} voucher ${voucherNumber} · ${formatMoney(voucher.debitTotal, book?.currency || 'INR')}`,
+    });
+  } catch {
+    /* ignore */
+  }
+
   emit(EVENTS.VOUCHER_CHANGED, { bookId, voucherId, operation: 'Create' });
   return { voucher, lines: lineRows, warnings: validation.warnings };
 }
@@ -277,6 +289,17 @@ export async function deleteVoucher(id) {
     operation: 'Delete',
     detail: { voucherType: existing.voucherType, voucherNumber: existing.voucherNumber },
   });
+
+  try {
+    const book = await bookService.getBook(existing.bookId);
+    await activityLogService.recordActivity({
+      category: 'Voucher',
+      bookName: book?.name,
+      message: `Deleted ${String(existing.voucherType || 'voucher').toLowerCase()} voucher ${existing.voucherNumber}`,
+    });
+  } catch {
+    /* ignore */
+  }
 
   emit(EVENTS.VOUCHER_CHANGED, {
     bookId: existing.bookId,
