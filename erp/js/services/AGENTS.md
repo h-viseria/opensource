@@ -14,7 +14,8 @@ Orchestrate repositories + engines, emit events, write audit logs. Called by UI 
 | `catalogueService.js` | Catalogue types + SKU attribute helpers |
 | `taxService.js` | Tax codes + reports |
 | `reportService.js` | Loads data → reporting engine |
-| `backupService.js` | `*.erp.json` export/import; zip via `buildBackupZip` / `parseBackupFile` |
+| `backupService.js` | `*.erp.json` export/import; zip via `buildBackupZip` / `parseBackupFile`; embeds activity log |
+| `activityLogService.js` | Rolling last-10 user-facing activity log for Drive compare |
 | `googleDriveService.js` | OAuth (`drive.file`) upload/update/list/download; Client ID in `googleDriveConfig.js` |
 | `driveSyncService.js` | Folder-linked sync, launch compare, periodic upload |
 | `gnuCashImportService.js` | Accounts + transactions CSV round-trip |
