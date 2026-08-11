@@ -26,8 +26,17 @@ export const DRIVE_SYNC_FILE_NAME = 'PicoERP_sync.erp.zip';
 /** Subfolder created/used inside the folder the user picks. */
 export const DRIVE_SYNC_FOLDER_NAME = 'PicoERPBackup';
 
-/** How often to push a backup while the app tab is open (ms). */
-export const DRIVE_SYNC_INTERVAL_MS = 15 * 60 * 1000;
+/** Allowed auto-sync interval choices (hours). */
+export const DRIVE_SYNC_INTERVAL_HOURS = Object.freeze([2, 4, 6, 8]);
+
+/** Default auto-sync interval when mode is “every X hours”. */
+export const DRIVE_SYNC_DEFAULT_INTERVAL_HOURS = 4;
+
+/** Default local time (HH:MM) for once-a-day auto sync. */
+export const DRIVE_SYNC_DEFAULT_DAILY_TIME = '18:00';
+
+/** How often the auto-sync scheduler wakes to check (ms). */
+export const DRIVE_SYNC_TICK_MS = 60 * 1000;
 
 /** Minimum gap between automatic uploads even if data keeps changing (ms). */
 export const DRIVE_SYNC_MIN_GAP_MS = 2 * 60 * 1000;
