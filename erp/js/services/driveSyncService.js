@@ -1,22 +1,27 @@
 /**
- * Google Drive sync — folder-linked zip backup, launch compare, periodic upload.
+ * Google Drive sync — folder-linked zip backup, launch compare, scheduled upload.
  * Credentials live in js/data/googleDriveConfig.js (publisher fills Client ID / API key).
  */
 
 import { EVENTS, SETTINGS_KEYS } from '../core/constants.js';
 import { emit, on } from '../core/eventBus.js';
-import { nowIso } from '../utils/date.js';
+import { nowIso, toDateInput } from '../utils/date.js';
 import { settingsRepository } from '../repositories/settingsRepository.js';
 import {
+  DRIVE_SYNC_DEFAULT_DAILY_TIME,
+  DRIVE_SYNC_DEFAULT_INTERVAL_HOURS,
   DRIVE_SYNC_FILE_NAME,
   DRIVE_SYNC_FOLDER_NAME,
-  DRIVE_SYNC_INTERVAL_MS,
+  DRIVE_SYNC_INTERVAL_HOURS,
   DRIVE_SYNC_MIN_GAP_MS,
+  DRIVE_SYNC_TICK_MS,
 } from '../data/googleDriveConfig.js';
 import * as googleDriveService from './googleDriveService.js';
 import * as backupService from './backupService.js';
 
 /**
+ * @typedef {'interval'|'daily'} AutoSyncMode
+ *
  * @typedef {{
  *   enabled: boolean,
  *   folderId: string|null,
@@ -25,6 +30,11 @@ import * as backupService from './backupService.js';
  *   parentFolderName: string,
  *   fileId: string|null,
  *   fileName: string,
+ *   autoSyncEnabled: boolean,
+ *   autoSyncMode: AutoSyncMode,
+ *   autoSyncIntervalHours: number,
+ *   autoSyncDailyTime: string,
+ *   lastAutoSyncDay: string|null,
  *   lastUploadedAt: string|null,
  *   lastDriveModifiedAt: string|null,
  *   lastDriveExportedAt: string|null,
@@ -51,6 +61,29 @@ export async function isDriveApiConfigured() {
 }
 
 /**
+ * @param {unknown} hours
+ */
+export function normalizeIntervalHours(hours) {
+  const n = Number(hours);
+  if (DRIVE_SYNC_INTERVAL_HOURS.includes(/** @type {any} */ (n))) return n;
+  return DRIVE_SYNC_DEFAULT_INTERVAL_HOURS;
+}
+
+/**
+ * @param {unknown} time
+ */
+export function normalizeDailyTime(time) {
+  const raw = String(time || '').trim();
+  if (/^\d{2}:\d{2}$/.test(raw)) {
+    const [hh, mm] = raw.split(':').map(Number);
+    if (hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59) {
+      return `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+    }
+  }
+  return DRIVE_SYNC_DEFAULT_DAILY_TIME;
+}
+
+/**
  * @returns {DriveSyncState}
  */
 function emptySyncState() {
@@ -62,6 +95,11 @@ function emptySyncState() {
     parentFolderName: '',
     fileId: null,
     fileName: DRIVE_SYNC_FILE_NAME,
+    autoSyncEnabled: true,
+    autoSyncMode: 'interval',
+    autoSyncIntervalHours: DRIVE_SYNC_DEFAULT_INTERVAL_HOURS,
+    autoSyncDailyTime: DRIVE_SYNC_DEFAULT_DAILY_TIME,
+    lastAutoSyncDay: null,
     lastUploadedAt: null,
     lastDriveModifiedAt: null,
     lastDriveExportedAt: null,
@@ -77,6 +115,7 @@ export async function getSyncState() {
   const raw = await settingsRepository.getValue(SETTINGS_KEYS.GOOGLE_DRIVE_SYNC);
   if (!raw || typeof raw !== 'object') return emptySyncState();
   const base = emptySyncState();
+  const mode = raw.autoSyncMode === 'daily' ? 'daily' : 'interval';
   return {
     ...base,
     ...raw,
@@ -86,6 +125,11 @@ export async function getSyncState() {
     parentFolderName: String(raw.parentFolderName || ''),
     fileId: raw.fileId || null,
     fileName: String(raw.fileName || DRIVE_SYNC_FILE_NAME),
+    autoSyncEnabled: raw.autoSyncEnabled !== false,
+    autoSyncMode: mode,
+    autoSyncIntervalHours: normalizeIntervalHours(raw.autoSyncIntervalHours),
+    autoSyncDailyTime: normalizeDailyTime(raw.autoSyncDailyTime),
+    lastAutoSyncDay: raw.lastAutoSyncDay ? String(raw.lastAutoSyncDay) : null,
   };
 }
 
@@ -95,9 +139,39 @@ export async function getSyncState() {
  */
 export async function saveSyncState(patch) {
   const current = await getSyncState();
-  const next = { ...current, ...patch };
+  /** @type {Partial<DriveSyncState>} */
+  const normalized = { ...patch };
+  if (patch.autoSyncIntervalHours !== undefined) {
+    normalized.autoSyncIntervalHours = normalizeIntervalHours(patch.autoSyncIntervalHours);
+  }
+  if (patch.autoSyncDailyTime !== undefined) {
+    normalized.autoSyncDailyTime = normalizeDailyTime(patch.autoSyncDailyTime);
+  }
+  if (patch.autoSyncMode !== undefined) {
+    normalized.autoSyncMode = patch.autoSyncMode === 'daily' ? 'daily' : 'interval';
+  }
+  const next = { ...current, ...normalized };
   await settingsRepository.setValue(SETTINGS_KEYS.GOOGLE_DRIVE_SYNC, next);
   emit(EVENTS.DRIVE_SYNC_CHANGED, next);
+  return next;
+}
+
+/**
+ * Persist schedule options and restart the auto-sync timer.
+ * @param {{
+ *   autoSyncEnabled?: boolean,
+ *   autoSyncMode?: AutoSyncMode,
+ *   autoSyncIntervalHours?: number,
+ *   autoSyncDailyTime?: string,
+ * }} opts
+ */
+export async function updateAutoSyncSchedule(opts) {
+  const next = await saveSyncState(opts);
+  if (next.enabled && next.folderId && next.autoSyncEnabled) {
+    startPeriodicSync();
+  } else {
+    stopPeriodicSync();
+  }
   return next;
 }
 
@@ -159,6 +233,7 @@ export async function connectSyncFolder() {
     DRIVE_SYNC_FOLDER_NAME
   );
 
+  const prev = await getSyncState();
   await saveSyncState({
     enabled: true,
     folderId: backupFolder.id,
@@ -167,10 +242,14 @@ export async function connectSyncFolder() {
     parentFolderName: parent.name,
     fileId: null,
     fileName: DRIVE_SYNC_FILE_NAME,
+    autoSyncEnabled: prev.autoSyncEnabled !== false,
+    autoSyncMode: prev.autoSyncMode || 'interval',
+    autoSyncIntervalHours: normalizeIntervalHours(prev.autoSyncIntervalHours),
+    autoSyncDailyTime: normalizeDailyTime(prev.autoSyncDailyTime),
     lastError: null,
   });
 
-  const result = await uploadNow({ reason: 'connect' });
+  const result = await uploadNow({ reason: 'connect', force: true });
   startPeriodicSync();
   return result.state;
 }
@@ -233,6 +312,7 @@ export async function uploadNow(opts = {}) {
     );
 
     lastAutoUploadMs = Date.now();
+    const today = toDateInput(new Date());
     await markLocalDataChanged(exportedAt);
     const next = await saveSyncState({
       enabled: true,
@@ -246,8 +326,23 @@ export async function uploadNow(opts = {}) {
       lastDriveModifiedAt: uploaded.modifiedTime || exportedAt,
       lastDriveExportedAt: exportedAt,
       lastCheckedAt: nowIso(),
+      lastAutoSyncDay:
+        opts.reason === 'periodic' || opts.reason === 'connect' ? today : state.lastAutoSyncDay,
       lastError: null,
     });
+
+    try {
+      const { recordActivity } = await import('./activityLogService.js');
+      const pathLabel = state.parentFolderName
+        ? `${state.parentFolderName} / ${state.folderName}`
+        : state.folderName || 'Google Drive';
+      await recordActivity({
+        category: 'Sync',
+        message: `Uploaded backup to Google Drive (${pathLabel})`,
+      });
+    } catch {
+      /* ignore */
+    }
 
     return { skipped: false, uploaded, summary, exportedAt, state: next };
   } catch (err) {
@@ -300,7 +395,6 @@ export async function compareWithDrive() {
 
   try {
     if (!googleDriveService.getCachedAccessToken()) {
-      // Soft sign-in — may show a brief consent if needed
       await googleDriveService.getAccessToken();
     }
 
@@ -347,7 +441,6 @@ export async function compareWithDrive() {
       meta.appProperties?.picoerpExportedAt || meta.modifiedTime || null;
     const remoteMs = remoteAt ? Date.parse(remoteAt) : 0;
     const localMs = localAt ? Date.parse(localAt) : 0;
-    // Prefer lastUploadedAt as "what we know we have" when localAt missing
     const baselineMs = localMs || (refreshed.lastUploadedAt ? Date.parse(refreshed.lastUploadedAt) : 0);
 
     let status = 'same';
@@ -415,6 +508,27 @@ export async function downloadSyncedBackup(fileId) {
 }
 
 /**
+ * Load activity log embedded in the synced Drive backup zip.
+ * @returns {Promise<{ activityLog: import('./activityLogService.js').ActivityLogEntry[], exportedAt: string|null, fileName: string }>}
+ */
+export async function loadDriveActivityLog() {
+  const state = await getSyncState();
+  if (!state.enabled || !state.folderId) {
+    throw new Error('Google Drive sync folder is not connected');
+  }
+  const parsed = await downloadSyncedBackup(state.fileId || undefined);
+  if (!parsed.ok || !parsed.raw) {
+    throw new Error(parsed.errors?.[0] || 'Could not read Drive backup');
+  }
+  const { extractActivityLogFromBackup } = await import('./activityLogService.js');
+  return {
+    activityLog: extractActivityLogFromBackup(parsed.raw),
+    exportedAt: parsed.exportedAt ? String(parsed.exportedAt) : null,
+    fileName: state.fileName || DRIVE_SYNC_FILE_NAME,
+  };
+}
+
+/**
  * After restoring from Drive, align local timestamps so we do not loop prompts.
  * @param {string} [exportedAt]
  */
@@ -429,11 +543,39 @@ export async function markRestoredFromDrive(exportedAt) {
   });
 }
 
+/**
+ * Whether the scheduler should upload now based on mode / last run.
+ * @param {DriveSyncState} state
+ */
+export function shouldRunAutoSync(state) {
+  if (!state.enabled || !state.folderId || !state.autoSyncEnabled) return false;
+
+  if (state.autoSyncMode === 'daily') {
+    const today = toDateInput(new Date());
+    if (state.lastAutoSyncDay === today) return false;
+    const [hh, mm] = normalizeDailyTime(state.autoSyncDailyTime).split(':').map(Number);
+    const now = new Date();
+    const minutesNow = now.getHours() * 60 + now.getMinutes();
+    const minutesTarget = hh * 60 + mm;
+    return minutesNow >= minutesTarget;
+  }
+
+  const hours = normalizeIntervalHours(state.autoSyncIntervalHours);
+  const gapMs = hours * 60 * 60 * 1000;
+  const lastMs = state.lastUploadedAt ? Date.parse(state.lastUploadedAt) : 0;
+  if (!lastMs) return true;
+  return Date.now() - lastMs >= gapMs;
+}
+
 export function startPeriodicSync() {
   stopPeriodicSync();
   periodicTimer = setInterval(() => {
-    runPeriodicUpload().catch((err) => console.warn('[Drive sync]', err));
-  }, DRIVE_SYNC_INTERVAL_MS);
+    runScheduledUpload().catch((err) => console.warn('[Drive sync]', err));
+  }, DRIVE_SYNC_TICK_MS);
+  // Opportunistic check shortly after start (e.g. daily time already passed)
+  setTimeout(() => {
+    runScheduledUpload().catch((err) => console.warn('[Drive sync]', err));
+  }, 5_000);
 }
 
 export function stopPeriodicSync() {
@@ -443,21 +585,24 @@ export function stopPeriodicSync() {
   }
 }
 
-async function runPeriodicUpload() {
+async function runScheduledUpload() {
   const state = await getSyncState();
-  if (!state.enabled || !state.folderId) return;
+  if (!shouldRunAutoSync(state)) return;
   if (!navigator.onLine) return;
   if (!googleDriveService.getCachedAccessToken()) return;
-  await uploadNow({ reason: 'periodic' });
+  const result = await uploadNow({ reason: 'periodic' });
+  if (!result.skipped) {
+    await saveSyncState({ lastAutoSyncDay: toDateInput(new Date()) });
+  }
 }
 
 /**
- * Call once after app boot: track changes, start timer, return launch compare result.
+ * Call once after app boot: track changes, start timer when auto-sync is on.
  */
 export async function initDriveSync() {
   bindLocalChangeTracking();
   const state = await getSyncState();
-  if (state.enabled && state.folderId) {
+  if (state.enabled && state.folderId && state.autoSyncEnabled) {
     startPeriodicSync();
   }
   return state;
