@@ -3,7 +3,7 @@
  */
 
 /**
- * @param {{ title: string, bodyHtml: string, confirmLabel?: string, cancelLabel?: string, danger?: boolean }} opts
+ * @param {{ title: string, bodyHtml: string, confirmLabel?: string, cancelLabel?: string, danger?: boolean, onReady?: (root: HTMLElement) => void }} opts
  * @returns {Promise<boolean>}
  */
 export function confirmModal(opts) {
@@ -44,6 +44,13 @@ export function confirmModal(opts) {
 
     document.addEventListener('keydown', onKey);
     document.body.appendChild(overlay);
+    if (typeof opts.onReady === 'function') {
+      try {
+        opts.onReady(overlay);
+      } catch {
+        /* ignore */
+      }
+    }
     overlay.querySelector('[data-action="confirm"]')?.focus();
   });
 }
