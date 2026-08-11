@@ -289,7 +289,11 @@ async function refreshDriveSyncPanel(outlet) {
 
   const intervalHours = driveSyncService.normalizeIntervalHours(state.autoSyncIntervalHours);
   const dailyTime = driveSyncService.normalizeDailyTime(state.autoSyncDailyTime);
-  const mode = state.autoSyncMode === 'daily' ? 'daily' : 'interval';
+  const scheduleValue = !state.autoSyncEnabled
+    ? 'off'
+    : state.autoSyncMode === 'daily'
+      ? 'daily'
+      : String(intervalHours);
 
   host.innerHTML = `
     <p class="panel__desc">
@@ -321,34 +325,25 @@ async function refreshDriveSyncPanel(outlet) {
 
     <div class="panel" style="margin-top:1rem;padding:0.85rem 1rem;box-shadow:none">
       <h3 class="panel__title" style="font-size:var(--text-base);margin:0 0 0.5rem">Auto sync / backup</h3>
-      <label class="field" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem">
-        <input type="checkbox" id="drive-auto-enabled" ${state.autoSyncEnabled ? 'checked' : ''} />
-        <span>Enable automatic upload while this tab is open</span>
-      </label>
-      <div class="form-grid" id="drive-auto-options" ${state.autoSyncEnabled ? '' : 'hidden'}>
+      <div class="form-grid">
         <label class="field">
           <span class="field__label">Schedule</span>
-          <select class="select" id="drive-auto-mode">
-            <option value="interval" ${mode === 'interval' ? 'selected' : ''}>Every X hours</option>
-            <option value="daily" ${mode === 'daily' ? 'selected' : ''}>Once a day at a fixed time</option>
-          </select>
-        </label>
-        <label class="field" id="wrap-drive-interval" ${mode === 'interval' ? '' : 'hidden'}>
-          <span class="field__label">Every</span>
-          <select class="select" id="drive-auto-interval">
+          <select class="select" id="drive-auto-schedule">
+            <option value="off" ${scheduleValue === 'off' ? 'selected' : ''}>No Auto Backup</option>
+            <option value="daily" ${scheduleValue === 'daily' ? 'selected' : ''}>Once a day</option>
             ${DRIVE_SYNC_INTERVAL_HOURS.map(
               (h) =>
-                `<option value="${h}" ${h === intervalHours ? 'selected' : ''}>${h} hours</option>`
+                `<option value="${h}" ${scheduleValue === String(h) ? 'selected' : ''}>Every ${h} hours</option>`
             ).join('')}
           </select>
         </label>
-        <label class="field" id="wrap-drive-daily" ${mode === 'daily' ? '' : 'hidden'}>
+        <label class="field" id="wrap-drive-daily" ${scheduleValue === 'daily' ? '' : 'hidden'}>
           <span class="field__label">Daily at (local time)</span>
           <input class="input" type="time" id="drive-auto-daily" value="${escapeHtml(dailyTime)}" />
         </label>
       </div>
       <p class="muted" style="margin:0.75rem 0 0;font-size:var(--text-sm)">
-        On launch: if Drive is newer you can replace local data; if local is newer you can upload to Drive.
+        Runs while this tab is open. On launch: if Drive is newer you can replace local data; if local is newer you can upload to Drive.
       </p>
       <p style="margin:0.75rem 0 0">
         <a href="#/settings/drive-activity">Compare activity logs (local vs Drive)</a>
@@ -363,46 +358,43 @@ async function refreshDriveSyncPanel(outlet) {
   `;
 
   const syncModeUi = () => {
-    const enabled = /** @type {HTMLInputElement} */ (host.querySelector('#drive-auto-enabled')).checked;
-    const modeEl = /** @type {HTMLSelectElement} */ (host.querySelector('#drive-auto-mode'));
-    host.querySelector('#drive-auto-options')?.toggleAttribute('hidden', !enabled);
-    const isDaily = modeEl.value === 'daily';
-    host.querySelector('#wrap-drive-interval')?.toggleAttribute('hidden', !enabled || isDaily);
-    host.querySelector('#wrap-drive-daily')?.toggleAttribute('hidden', !enabled || !isDaily);
+    const scheduleEl = /** @type {HTMLSelectElement} */ (host.querySelector('#drive-auto-schedule'));
+    host.querySelector('#wrap-drive-daily')?.toggleAttribute('hidden', scheduleEl.value !== 'daily');
   };
 
   const persistSchedule = async () => {
-    const enabled = /** @type {HTMLInputElement} */ (host.querySelector('#drive-auto-enabled')).checked;
-    const modeVal =
-      /** @type {HTMLSelectElement} */ (host.querySelector('#drive-auto-mode')).value === 'daily'
-        ? 'daily'
-        : 'interval';
-    const hours = Number(
-      /** @type {HTMLSelectElement} */ (host.querySelector('#drive-auto-interval')).value
-    );
+    const schedule = /** @type {HTMLSelectElement} */ (host.querySelector('#drive-auto-schedule')).value;
     const time = /** @type {HTMLInputElement} */ (host.querySelector('#drive-auto-daily')).value;
-    try {
-      await driveSyncService.updateAutoSyncSchedule({
-        autoSyncEnabled: enabled,
-        autoSyncMode: modeVal,
-        autoSyncIntervalHours: hours,
+    /** @type {{ autoSyncEnabled: boolean, autoSyncMode: 'interval'|'daily', autoSyncIntervalHours?: number, autoSyncDailyTime?: string }} */
+    let patch;
+    if (schedule === 'off') {
+      patch = { autoSyncEnabled: false, autoSyncMode: 'interval', autoSyncDailyTime: time };
+    } else if (schedule === 'daily') {
+      patch = {
+        autoSyncEnabled: true,
+        autoSyncMode: 'daily',
         autoSyncDailyTime: time,
-      });
+      };
+    } else {
+      patch = {
+        autoSyncEnabled: true,
+        autoSyncMode: 'interval',
+        autoSyncIntervalHours: Number(schedule),
+        autoSyncDailyTime: time,
+      };
+    }
+    try {
+      await driveSyncService.updateAutoSyncSchedule(patch);
       showToast('Auto sync settings saved', 'success');
     } catch (err) {
       showToast(err instanceof Error ? err.message : 'Could not save schedule', 'error');
     }
   };
 
-  host.querySelector('#drive-auto-enabled')?.addEventListener('change', async () => {
+  host.querySelector('#drive-auto-schedule')?.addEventListener('change', async () => {
     syncModeUi();
     await persistSchedule();
   });
-  host.querySelector('#drive-auto-mode')?.addEventListener('change', async () => {
-    syncModeUi();
-    await persistSchedule();
-  });
-  host.querySelector('#drive-auto-interval')?.addEventListener('change', () => persistSchedule());
   host.querySelector('#drive-auto-daily')?.addEventListener('change', () => persistSchedule());
 
   host.querySelector('#btn-drive-sync-now')?.addEventListener('click', async () => {
