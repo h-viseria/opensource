@@ -272,18 +272,8 @@ export async function uploadFullBackupToGoogleDrive() {
         return { ...result, mode: 'sync' };
       }
 
-      showToast('Opening Google sign-in…', 'info');
-      await googleDriveService.getAccessToken();
-      showToast('Choose a Drive folder for automatic backups…', 'info');
-      await driveSyncService.connectSyncFolder();
-      const connected = await driveSyncService.getSyncState();
-      const pathLabel = connected.parentFolderName
-        ? `${connected.parentFolderName} / ${connected.folderName}`
-        : connected.folderName;
-      showToast(
-        `Connected “${pathLabel}” — backups will update there automatically`,
-        'success'
-      );
+      const connected = await reconnectDriveSyncFolder();
+      if (!connected) return null;
       return { state: connected, mode: 'connect' };
     } catch (err) {
       if (err instanceof Error && /cancelled/i.test(err.message)) {
@@ -299,22 +289,74 @@ export async function uploadFullBackupToGoogleDrive() {
 }
 
 /**
- * Force reconnect (pick a different folder).
+ * Connect or change the Drive sync folder.
+ * If PicoERP_sync.erp.zip already exists in PicoERPBackup, ask whether to
+ * change folder (default), use that backup (replace local), or overwrite it.
+ * @returns {Promise<import('../services/driveSyncService.js').DriveSyncState|null>}
  */
 export async function reconnectDriveSyncFolder() {
   if (!(await driveSyncService.isDriveApiConfigured())) {
     throw new Error('Fill clientId and apiKey in js/data/googleDriveConfig.js first');
   }
+  const previouslyConnected = (await driveSyncService.getSyncState()).enabled;
   showToast('Opening Google sign-in…', 'info');
   await googleDriveService.getAccessToken();
-  showToast('Choose a Drive folder…', 'info');
-  await driveSyncService.connectSyncFolder();
-  const state = await driveSyncService.getSyncState();
-  const pathLabel = state.parentFolderName
-    ? `${state.parentFolderName} / ${state.folderName}`
-    : state.folderName;
-  showToast(`Sync folder set to “${pathLabel}”`, 'success');
-  return state;
+
+  while (true) {
+    showToast('Choose a Drive folder…', 'info');
+    const target = await driveSyncService.inspectPickedSyncFolder();
+    const pathLabel = target.backupFolder
+      ? `${target.parent.name} / ${target.backupFolder.name}`
+      : `${target.parent.name} / PicoERPBackup`;
+
+    if (!target.existingFile?.id) {
+      const linked = await driveSyncService.linkSyncFolder(target, { mode: 'overwrite' });
+      showToast(`Connected “${pathLabel}” — backups will update there automatically`, 'success');
+      return linked.state;
+    }
+
+    const remoteStamp =
+      target.existingFile.appProperties?.picoerpExportedAt || target.existingFile.modifiedTime;
+    const choice = await actionModal({
+      title: 'Backup already in this folder',
+      bodyHtml: `
+        <p>Google Drive already has a PicoERP backup at
+        <strong>${escapeHtml(pathLabel)}</strong>.</p>
+        <ul style="margin:0.75rem 0;padding-left:1.25rem;font-size:var(--text-sm)">
+          <li>File: <span class="mono">${escapeHtml(target.existingFile.name || 'PicoERP_sync.erp.zip')}</span></li>
+          <li>Drive backup: <strong>${escapeHtml(formatSyncStamp(remoteStamp))}</strong></li>
+        </ul>
+        <p style="margin:0;font-size:var(--text-sm)">
+          <strong>Use this backup</strong> replaces all local data.
+          <strong>Overwrite</strong> replaces the Drive file with this browser’s data.
+        </p>`,
+      actions: [
+        { id: 'use', label: 'Use this backup', danger: true },
+        { id: 'overwrite', label: 'Overwrite Drive backup' },
+        { id: 'change', label: 'Change folder', primary: true },
+      ],
+      cancelLabel: 'Cancel',
+    });
+
+    if (!choice) {
+      showToast(
+        previouslyConnected ? 'Kept the current Drive folder' : 'Folder selection cancelled',
+        'info'
+      );
+      return null;
+    }
+    if (choice === 'change') continue;
+
+    if (choice === 'use') {
+      const linked = await driveSyncService.linkSyncFolder(target, { mode: 'use' });
+      await pullSyncedBackupFromDrive(target.existingFile.id, remoteStamp);
+      return linked.state;
+    }
+
+    const linked = await driveSyncService.linkSyncFolder(target, { mode: 'overwrite' });
+    showToast(`Connected “${pathLabel}” — Drive backup overwritten`, 'success');
+    return linked.state;
+  }
 }
 
 async function guidedUploadToDrive() {
