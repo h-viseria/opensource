@@ -3,7 +3,7 @@
  * Columns are matched by header label (not position).
  *
  * Accounts (GNUCash export):
- *   Account Type, Full Account Name, Account Name, Account ShortCode,
+ *   Account Type (or Type), Full Account Name, Account Name, Account ShortCode,
  *   Description, Placeholder, …
  *
  * Transactions (GNUCash export):
@@ -27,6 +27,7 @@ import * as voucherService from './voucherService.js';
 
 export const GNUCASH_ACCOUNT_LABELS = Object.freeze([
   'Account Type',
+  'Type',
   'Full Account Name',
   'Account Name',
   'Account ShortCode',
@@ -99,6 +100,29 @@ const NATURE_TO_TYPE = Object.freeze({
  */
 function cell(row, label) {
   return String(row[label] ?? '').trim();
+}
+
+/**
+ * Account type from a parsed row — accepts “Account Type” or “Type”.
+ * @param {Record<string, string>} row
+ */
+export function accountTypeFromRow(row) {
+  return cell(row, 'Account Type') || cell(row, 'Type');
+}
+
+/**
+ * Required account columns, treating Type / Account Type as equivalents.
+ * @param {string[]} missingLabels
+ * @param {string[]} matchedLabels
+ */
+function missingRequiredAccountLabels(missingLabels, matchedLabels) {
+  const matched = new Set(matchedLabels);
+  return GNUCASH_ACCOUNT_REQUIRED.filter((l) => {
+    if (l === 'Account Type') {
+      return !matched.has('Account Type') && !matched.has('Type');
+    }
+    return missingLabels.includes(l);
+  });
 }
 
 /**
@@ -354,20 +378,21 @@ export async function ensureFyForDate(bookId, dateIso, fyStartMonth = 4) {
  * @param {string} text
  */
 export function previewAccounts(text) {
-  const { rows, missingLabels } = parseCsvByLabels(text, GNUCASH_ACCOUNT_LABELS);
-  const missingRequired = GNUCASH_ACCOUNT_REQUIRED.filter((l) =>
-    missingLabels.includes(l)
-  );
+  const { rows, missingLabels, matchedLabels } = parseCsvByLabels(text, GNUCASH_ACCOUNT_LABELS);
+  const missingRequired = missingRequiredAccountLabels(missingLabels, matchedLabels);
   if (missingRequired.length) {
-    throw new Error(`Missing GNUCash account columns: ${missingRequired.join(', ')}`);
+    throw new Error(
+      `Missing GNUCash account columns: ${missingRequired.join(', ')} (Account Type or Type is accepted)`
+    );
   }
 
   const accounts = [];
   for (const row of rows) {
     const fullName = cell(row, 'Full Account Name');
     if (!fullName) continue;
+    const accountType = accountTypeFromRow(row);
     accounts.push({
-      accountType: cell(row, 'Account Type'),
+      accountType,
       fullName,
       name: cell(row, 'Account Name') || leafName(fullName),
       shortCode: cell(row, 'Account ShortCode'),
@@ -375,7 +400,7 @@ export function previewAccounts(text) {
       placeholder: isTrueFlag(cell(row, 'Placeholder')),
       hidden: isTrueFlag(cell(row, 'Hidden')),
       notes: cell(row, 'Notes'),
-      nature: natureFromGnuCashType(cell(row, 'Account Type')),
+      nature: natureFromGnuCashType(accountType),
     });
   }
 
@@ -472,12 +497,19 @@ export function previewTransactions(text) {
  *
  * @param {string} bookId
  * @param {string} csvText
- * @param {{ onProgress?: (msg: string) => void }} [opts]
+ * @param {{
+ *   onProgress?: (msg: string) => void,
+ *   mode?: 'merge'|'override',
+ * }} [opts]
  */
 export async function importGnuCashAccounts(bookId, csvText, opts = {}) {
+  const mode = opts.mode === 'override' ? 'override' : 'merge';
   const preview = previewAccounts(csvText);
   const accounts = preview.accounts;
   const result = {
+    mode,
+    purgedGroups: 0,
+    purgedLedgers: 0,
     createdGroups: 0,
     createdLedgers: 0,
     reusedGroups: 0,
@@ -486,6 +518,19 @@ export async function importGnuCashAccounts(bookId, csvText, opts = {}) {
     errors: /** @type {string[]} */ ([]),
     pathToLedgerId: /** @type {Map<string, string>} */ (new Map()),
   };
+
+  if (mode === 'override') {
+    const vouchers = await voucherRepository.findByBook(bookId);
+    if (vouchers.length > 0) {
+      throw new Error(
+        `Cannot replace the chart of accounts while ${vouchers.length} voucher(s) exist. Delete vouchers first, or use Merge.`
+      );
+    }
+    opts.onProgress?.('Removing existing chart of accounts…');
+    const purged = await coaService.purgeChartOfAccounts(bookId);
+    result.purgedGroups = purged.groups || 0;
+    result.purgedLedgers = purged.ledgers || 0;
+  }
 
   const allPaths = new Set(accounts.map((a) => a.fullName));
   const parentPaths = new Set();
@@ -552,7 +597,7 @@ export async function importGnuCashAccounts(bookId, csvText, opts = {}) {
     return name;
   }
 
-  opts.onProgress?.(`Importing ${accounts.length} GNUCash accounts…`);
+  opts.onProgress?.(`Importing ${accounts.length} GNUCash accounts (${mode})…`);
 
   /**
    * Root-level ledgers (e.g. Imbalance-INR) have no parent path — attach under
@@ -771,6 +816,20 @@ export async function importGnuCashAccounts(bookId, csvText, opts = {}) {
   }
 
   result.pathToLedgerId = pathToLedgerId;
+
+  // After a full replace, restore system inventory/tax ledgers if the CSV omitted them
+  if (mode === 'override') {
+    try {
+      opts.onProgress?.('Ensuring inventory and tax system ledgers…');
+      await (await import('./inventoryService.js')).ensureInventoryMasters(bookId);
+      await (await import('./taxService.js')).ensureTaxMasters(bookId);
+    } catch (err) {
+      result.errors.push(
+        `System masters: ${err instanceof Error ? err.message : String(err)}`
+      );
+    }
+  }
+
   opts.onProgress?.(
     `Accounts done — ${result.createdGroups} groups, ${result.createdLedgers} ledgers created`
   );
