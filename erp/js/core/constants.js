@@ -3,7 +3,7 @@
  */
 
 export const APP_NAME = 'PicoERP';
-export const APP_VERSION = '0.18.1';
+export const APP_VERSION = '0.18.3';
 
 /** IndexedDB database name. */
 export const DB_NAME = 'erpDataStore';
