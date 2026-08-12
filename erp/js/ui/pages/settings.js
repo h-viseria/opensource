@@ -267,7 +267,8 @@ async function refreshDriveSyncPanel(outlet) {
       <p class="panel__desc">
         Choose a Google Drive folder once. PicoERP looks for (or creates)
         <span class="mono">PicoERPBackup</span> inside it, keeps
-        <span class="mono">PicoERP_sync.erp.zip</span> there, and checks it on launch.
+        <span class="mono">PicoERP_sync.erp.zip</span> there, and compares local vs Drive
+        on the top-bar icon, Sync now, and launch.
       </p>
       <div class="form-actions" style="justify-content:flex-start;border:0;padding:0;margin-top:0.75rem;flex-wrap:wrap">
         <button type="button" class="btn btn--primary" id="btn-drive-connect">Connect Drive folder</button>
