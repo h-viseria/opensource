@@ -498,6 +498,9 @@ const CHAPTERS = [
           <p>With Client ID / API key in <code>js/data/googleDriveConfig.js</code>, the Drive button asks you to pick a folder once.
           PicoERP looks for (or creates) a <code>PicoERPBackup</code> subfolder there and keeps <code>PicoERP_sync.erp.zip</code>
           there (includes a rolling activity log of the last 10 actions).
+          If that file already exists when you connect or change folder, you are asked to
+          <strong>Change folder</strong> (default), <strong>Use this backup</strong> (replace local data),
+          or <strong>Overwrite</strong> the Drive file.
           The top-bar Drive icon, Settings → Sync now, and launch all <strong>compare</strong> local vs Drive timestamps first:
           if they match you get a toast; if they differ you choose
           <strong>Upload local → Drive</strong> or <strong>Download Drive → local</strong> (download replaces all local data).
