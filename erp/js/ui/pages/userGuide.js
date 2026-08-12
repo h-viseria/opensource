@@ -122,7 +122,12 @@ const CHAPTERS = [
         body: `
           <p>Round-trip with GNUCash CSV exports.</p>
           <ol>
-            <li>Import <strong>accounts</strong> first (builds groups and ledgers from Full Account Name paths).</li>
+            <li>Import <strong>accounts</strong> first (builds groups and ledgers from Full Account Name paths).
+              Choose <strong>Merge</strong> to keep the existing chart and add/reuse matching paths, or
+              <strong>Replace</strong> to delete the current chart and import only the CSV
+              (blocked if vouchers already exist).</li>
+            <li>Account type column may be labeled <span class="mono">Account Type</span> or
+              <span class="mono">Type</span>.</li>
             <li>Then import <strong>transactions</strong> (creates balanced vouchers mapped to those ledgers).</li>
             <li>Export from ${escapeHtml(APP_NAME)} when you need CSV back out for GNUCash or archive.</li>
           </ol>
@@ -486,14 +491,16 @@ const CHAPTERS = [
         path: '/settings',
         body: `
           <h4>Backup</h4>
-          <p>Download a full <code>.erp.json</code> backup (all books) or the active book only. Top-bar icons next to Active book also download a full backup or upload a compressed <code>.erp.zip</code> to Google Drive.</p>
+          <p>Download a full <code>.erp.json</code> backup (all books) or the active book only. Top-bar icons next to Active book also download a full backup or sync a compressed <code>.erp.zip</code> with Google Drive.</p>
           <h4>Restore</h4>
           <p>Choose a local <code>.json</code> / <code>.zip</code> file, or restore from Google Drive. Full backups replace all local data; book backups replace that book. Schema is validated first.</p>
           <h4>Google Drive</h4>
           <p>With Client ID / API key in <code>js/data/googleDriveConfig.js</code>, the Drive button asks you to pick a folder once.
-          PicoERP looks for (or creates) a <code>PicoERPBackup</code> subfolder there, uploads <code>PicoERP_sync.erp.zip</code>
-          (updated in place; includes a rolling activity log of the last 10 actions), and on launch compares Drive vs local
-          (prompts to replace local if Drive is newer, or upload if local is newer).
+          PicoERP looks for (or creates) a <code>PicoERPBackup</code> subfolder there and keeps <code>PicoERP_sync.erp.zip</code>
+          there (includes a rolling activity log of the last 10 actions).
+          The top-bar Drive icon, Settings → Sync now, and launch all <strong>compare</strong> local vs Drive timestamps first:
+          if they match you get a toast; if they differ you choose
+          <strong>Upload local → Drive</strong> or <strong>Download Drive → local</strong> (download replaces all local data).
           Under Settings → Google Drive sync you can choose auto sync from one schedule list
           (No Auto Backup, Once a day, Every 2/4/6/8 hours), and open
           <a href="#/settings/drive-activity">Compare activity logs</a> to review local vs Drive recent activity.</p>
