@@ -8,7 +8,7 @@
 import * as backupService from '../services/backupService.js';
 import * as googleDriveService from '../services/googleDriveService.js';
 import * as driveSyncService from '../services/driveSyncService.js';
-import { confirmModal, formModal, escapeHtml } from './modal.js';
+import { confirmModal, formModal, actionModal, escapeHtml } from './modal.js';
 import { showToast } from './toast.js';
 import { formatDisplayDate } from '../utils/date.js';
 import * as router from '../core/router.js';
@@ -35,6 +35,212 @@ function activityCompareLinkHtml() {
 }
 
 /**
+ * Date + time for sync compare dialogs.
+ * @param {string|null|undefined} iso
+ */
+function formatSyncStamp(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return formatDisplayDate(String(iso).slice(0, 10));
+  return d.toLocaleString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+/**
+ * @param {Awaited<ReturnType<typeof driveSyncService.compareWithDrive>>} comparison
+ */
+function syncCompareSummaryHtml(comparison) {
+  const folderLabel = comparison.state.parentFolderName
+    ? `${comparison.state.parentFolderName} / ${comparison.state.folderName}`
+    : comparison.state.folderName || '—';
+  const statusHint =
+    comparison.status === 'remote-newer'
+      ? 'Drive looks newer than this browser.'
+      : comparison.status === 'local-newer'
+        ? 'This browser looks newer than Drive.'
+        : comparison.status === 'no-remote'
+          ? 'No synced backup file found on Drive yet.'
+          : comparison.status === 'same'
+            ? 'Local and Drive timestamps match.'
+            : 'Could not fully compare copies.';
+
+  return `
+    <p>${escapeHtml(statusHint)}</p>
+    <ul style="margin:0.75rem 0;padding-left:1.25rem;font-size:var(--text-sm)">
+      <li>This browser: <strong>${escapeHtml(formatSyncStamp(comparison.localAt))}</strong></li>
+      <li>Google Drive: <strong>${escapeHtml(
+        comparison.status === 'no-remote' ? 'no backup yet' : formatSyncStamp(comparison.remoteAt)
+      )}</strong>
+        ${
+          comparison.fileName
+            ? ` (<span class="mono">${escapeHtml(comparison.fileName)}</span>)`
+            : ''
+        }</li>
+      <li>Folder: <strong>${escapeHtml(folderLabel)}</strong></li>
+    </ul>
+    ${activityCompareLinkHtml()}
+  `;
+}
+
+/**
+ * Download synced Drive backup and replace all local data.
+ * @param {string} fileId
+ * @param {string|null|undefined} remoteAt
+ */
+async function pullSyncedBackupFromDrive(fileId, remoteAt) {
+  showToast('Downloading Drive backup…', 'info');
+  const parsed = await driveSyncService.downloadSyncedBackup(fileId);
+  if (!parsed.ok || !parsed.raw) {
+    showToast(parsed.errors?.[0] || 'Invalid Drive backup', 'error');
+    return false;
+  }
+  if (parsed.scope !== 'full') {
+    showToast('Synced Drive file must be a full backup', 'error');
+    return false;
+  }
+
+  await backupService.restoreFullBackup(parsed.raw);
+  await driveSyncService.markRestoredFromDrive(String(parsed.exportedAt || remoteAt || ''));
+  showToast('Local data replaced from Google Drive', 'success');
+  setTimeout(() => location.reload(), 500);
+  return true;
+}
+
+/**
+ * Upload local backup to the synced Drive file.
+ * @param {string} [reason]
+ */
+async function pushLocalBackupToDrive(reason = 'manual') {
+  showToast('Uploading local backup to Google Drive…', 'info');
+  const result = await driveSyncService.uploadNow({ force: true, reason });
+  if (result.skipped) {
+    showToast('Drive backup already up to date', 'success');
+  } else {
+    const syncedPath = result.state.parentFolderName
+      ? `${result.state.parentFolderName} / ${result.state.folderName}`
+      : result.state.folderName;
+    showToast(
+      `Uploaded to “${syncedPath}” (${result.summary?.totalRecords ?? '—'} records)`,
+      'success'
+    );
+  }
+  return result;
+}
+
+/**
+ * Compare local vs Drive, then let the user choose direction (or skip if same).
+ * Used by top-bar sync, Settings “Sync now”, and launch check.
+ *
+ * @param {{ reason?: string, quietSame?: boolean }} [opts]
+ * @returns {Promise<{
+ *   outcome: 'same'|'pushed'|'pulled'|'cancelled'|'skipped'|'error'|'connect',
+ *   comparison?: Awaited<ReturnType<typeof driveSyncService.compareWithDrive>>,
+ *   result?: unknown,
+ * }>}
+ */
+export async function syncWithGoogleDriveInteractive(opts = {}) {
+  const reason = opts.reason || 'manual';
+  const state = await driveSyncService.getSyncState();
+  if (!state.enabled || !state.folderId) {
+    return { outcome: 'skipped' };
+  }
+  if (!(await driveSyncService.isDriveApiConfigured())) {
+    throw new Error('Google Drive API is not configured');
+  }
+  if (!navigator.onLine) {
+    showToast('You are offline — cannot sync with Google Drive', 'error');
+    return { outcome: 'skipped' };
+  }
+
+  showToast('Comparing with Google Drive…', 'info');
+  const comparison = await driveSyncService.compareWithDrive();
+
+  if (comparison.status === 'offline') {
+    showToast('You are offline — cannot sync with Google Drive', 'error');
+    return { outcome: 'skipped', comparison };
+  }
+  if (comparison.status === 'no-token') {
+    showToast(comparison.message || 'Sign in to Google Drive to sync', 'error');
+    return { outcome: 'error', comparison };
+  }
+  if (comparison.status === 'error') {
+    showToast(comparison.message || 'Could not compare with Google Drive', 'error');
+    return { outcome: 'error', comparison };
+  }
+
+  if (comparison.status === 'same') {
+    if (!opts.quietSame) {
+      showToast('Local and Google Drive backups match', 'success');
+    }
+    return { outcome: 'same', comparison };
+  }
+
+  /** @type {Array<{ id: string, label: string, primary?: boolean, danger?: boolean }>} */
+  const actions = [];
+  if (comparison.status === 'no-remote') {
+    actions.push({ id: 'push', label: 'Upload to Google Drive', primary: true });
+  } else {
+    const recommendPush = comparison.status === 'local-newer';
+    const recommendPull = comparison.status === 'remote-newer';
+    actions.push({
+      id: 'push',
+      label: 'Upload local → Drive',
+      primary: recommendPush,
+    });
+    actions.push({
+      id: 'pull',
+      label: 'Download Drive → local',
+      primary: recommendPull,
+      danger: true,
+    });
+  }
+
+  const title =
+    comparison.status === 'remote-newer'
+      ? 'Drive backup is newer'
+      : comparison.status === 'local-newer'
+        ? 'Local data is newer'
+        : comparison.status === 'no-remote'
+          ? 'No Drive backup yet'
+          : 'Local and Drive differ';
+
+  const choice = await actionModal({
+    title,
+    bodyHtml: `
+      ${syncCompareSummaryHtml(comparison)}
+      <p style="margin:0.75rem 0 0;font-size:var(--text-sm)">
+        Choose which way to move data. Downloading replaces <strong>all local data</strong>.
+      </p>`,
+    actions,
+    cancelLabel: 'Not now',
+    onReady: wireActivityCompareLink,
+  });
+
+  if (!choice) return { outcome: 'cancelled', comparison };
+
+  if (choice === 'pull') {
+    if (!comparison.fileId) {
+      showToast('No Drive backup file to download', 'error');
+      return { outcome: 'error', comparison };
+    }
+    const ok = await pullSyncedBackupFromDrive(comparison.fileId, comparison.remoteAt);
+    return { outcome: ok ? 'pulled' : 'error', comparison };
+  }
+
+  if (choice === 'push') {
+    const result = await pushLocalBackupToDrive(reason);
+    return { outcome: 'pushed', comparison, result };
+  }
+
+  return { outcome: 'cancelled', comparison };
+}
+
+/**
  * Download full backup as .erp.json (same as Settings).
  */
 export async function downloadFullBackupLocal() {
@@ -53,7 +259,7 @@ export async function hasPublisherDriveIntegration() {
 
 /**
  * Top-bar / Settings Drive action:
- * - If sync folder connected → upload/update zip in that folder
+ * - If sync folder connected → compare then prompt for local↔Drive direction
  * - Else if API configured → connect folder (pick) then upload
  * - Else → guided download + open Drive
  */
@@ -62,22 +268,7 @@ export async function uploadFullBackupToGoogleDrive() {
     try {
       const state = await driveSyncService.getSyncState();
       if (state.enabled && state.folderId) {
-        const pathLabel = state.parentFolderName
-          ? `${state.parentFolderName} / ${state.folderName}`
-          : state.folderName || 'Drive';
-        showToast(`Uploading to “${pathLabel}”…`, 'info');
-        const result = await driveSyncService.uploadNow({ force: true, reason: 'manual' });
-        if (result.skipped) {
-          showToast('Drive backup already up to date', 'success');
-        } else {
-          const syncedPath = result.state.parentFolderName
-            ? `${result.state.parentFolderName} / ${result.state.folderName}`
-            : result.state.folderName;
-          showToast(
-            `Synced to “${syncedPath}” (${result.summary?.totalRecords ?? '—'} records)`,
-            'success'
-          );
-        }
+        const result = await syncWithGoogleDriveInteractive({ reason: 'manual' });
         return { ...result, mode: 'sync' };
       }
 
@@ -160,9 +351,7 @@ async function guidedUploadToDrive() {
 }
 
 /**
- * On app launch: compare Drive vs local.
- * - Drive newer → prompt to replace local
- * - Local newer → prompt to upload to Drive
+ * On app launch: compare Drive vs local (same prompts as the top-bar sync icon).
  * @returns {Promise<boolean>} true if restore/upload ran
  */
 export async function checkDriveSyncOnLaunch() {
@@ -172,88 +361,11 @@ export async function checkDriveSyncOnLaunch() {
     if (!(await driveSyncService.isDriveApiConfigured())) return false;
     if (!navigator.onLine) return false;
 
-    const comparison = await driveSyncService.compareWithDrive();
-    const folderLabel = comparison.state.parentFolderName
-      ? `${comparison.state.parentFolderName} / ${comparison.state.folderName}`
-      : comparison.state.folderName || '—';
-
-    const remoteLabel = comparison.remoteAt
-      ? formatDisplayDate(String(comparison.remoteAt).slice(0, 10))
-      : 'Drive';
-    const localLabel = comparison.localAt
-      ? formatDisplayDate(String(comparison.localAt).slice(0, 10))
-      : 'this browser';
-
-    if (comparison.status === 'remote-newer' && comparison.fileId) {
-      const ok = await confirmModal({
-        title: 'Newer backup on Google Drive',
-        confirmLabel: 'Replace local data',
-        danger: true,
-        bodyHtml: `
-          <p>Google Drive has a newer PicoERP backup than this browser.</p>
-          <ul style="margin:0.75rem 0;padding-left:1.25rem;font-size:var(--text-sm)">
-            <li>Drive: <strong>${escapeHtml(remoteLabel)}</strong>
-              ${comparison.fileName ? ` (<span class="mono">${escapeHtml(comparison.fileName)}</span>)` : ''}</li>
-            <li>This browser: <strong>${escapeHtml(localLabel)}</strong></li>
-            <li>Folder: <strong>${escapeHtml(folderLabel)}</strong></li>
-          </ul>
-          <p>Replace <strong>all local data</strong> with the Drive backup?</p>
-          ${activityCompareLinkHtml()}`,
-        onReady: wireActivityCompareLink,
-      });
-      if (!ok) return false;
-
-      showToast('Downloading Drive backup…', 'info');
-      const parsed = await driveSyncService.downloadSyncedBackup(comparison.fileId);
-      if (!parsed.ok || !parsed.raw) {
-        showToast(parsed.errors?.[0] || 'Invalid Drive backup', 'error');
-        return false;
-      }
-      if (parsed.scope !== 'full') {
-        showToast('Synced Drive file must be a full backup', 'error');
-        return false;
-      }
-
-      await backupService.restoreFullBackup(parsed.raw);
-      await driveSyncService.markRestoredFromDrive(
-        String(parsed.exportedAt || comparison.remoteAt || '')
-      );
-      showToast('Local data replaced from Google Drive', 'success');
-      setTimeout(() => location.reload(), 500);
-      return true;
-    }
-
-    if (comparison.status === 'local-newer' || comparison.status === 'no-remote') {
-      const ok = await confirmModal({
-        title: 'Local data is newer',
-        confirmLabel: 'Upload to Google Drive',
-        cancelLabel: 'Not now',
-        bodyHtml: `
-          <p>This browser has newer PicoERP data than the synced Google Drive backup.</p>
-          <ul style="margin:0.75rem 0;padding-left:1.25rem;font-size:var(--text-sm)">
-            <li>This browser: <strong>${escapeHtml(localLabel)}</strong></li>
-            <li>Drive: <strong>${escapeHtml(
-              comparison.status === 'no-remote' ? 'no backup yet' : remoteLabel
-            )}</strong></li>
-            <li>Folder: <strong>${escapeHtml(folderLabel)}</strong></li>
-          </ul>
-          <p>Upload the local backup to Google Drive now?</p>
-          ${activityCompareLinkHtml()}`,
-        onReady: wireActivityCompareLink,
-      });
-      if (!ok) return false;
-
-      showToast('Uploading local backup to Google Drive…', 'info');
-      const result = await driveSyncService.uploadNow({ force: true, reason: 'launch' });
-      if (result.skipped) {
-        showToast('Drive backup already up to date', 'success');
-      } else {
-        showToast('Local backup uploaded to Google Drive', 'success');
-      }
-      return true;
-    }
-
-    return false;
+    const result = await syncWithGoogleDriveInteractive({
+      reason: 'launch',
+      quietSame: true,
+    });
+    return result.outcome === 'pushed' || result.outcome === 'pulled';
   } catch (err) {
     console.warn('[Drive sync launch]', err);
     return false;
