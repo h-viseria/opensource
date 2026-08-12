@@ -213,10 +213,24 @@ export function bindLocalChangeTracking() {
 }
 
 /**
- * Pick a Drive parent folder, ensure PicoERPBackup inside it, then enable sync.
- * @returns {Promise<DriveSyncState>}
+ * @typedef {{
+ *   parent: { id: string, name: string },
+ *   backupFolder: { id: string, name: string }|null,
+ *   existingFile: {
+ *     id: string,
+ *     name: string,
+ *     modifiedTime?: string,
+ *     appProperties?: Record<string, string>,
+ *   }|null,
+ * }} SyncFolderTarget
  */
-export async function connectSyncFolder() {
+
+/**
+ * Pick a Drive parent folder and look for an existing PicoERP backup
+ * without linking or uploading yet.
+ * @returns {Promise<SyncFolderTarget>}
+ */
+export async function inspectPickedSyncFolder() {
   if (!(await isDriveApiConfigured())) {
     throw new Error(
       'Google Drive API is not configured. Fill clientId and apiKey in js/data/googleDriveConfig.js'
@@ -228,30 +242,83 @@ export async function connectSyncFolder() {
     throw new Error('Folder selection cancelled');
   }
 
-  const backupFolder = await googleDriveService.ensureChildFolder(
+  const backupFolder = await googleDriveService.findFolderInParent(
     parent.id,
     DRIVE_SYNC_FOLDER_NAME
   );
+  const existingFile = backupFolder
+    ? await googleDriveService.findFileInFolder(
+        backupFolder.id,
+        DRIVE_SYNC_FILE_NAME
+      )
+    : null;
+
+  return { parent, backupFolder, existingFile };
+}
+
+/**
+ * Link the picked folder as the sync target.
+ * @param {SyncFolderTarget} target
+ * @param {{ mode?: 'overwrite'|'use' }} [opts]
+ *   overwrite — upload local backup (creates PicoERPBackup if needed)
+ *   use — keep the existing Drive file; caller restores local from it
+ * @returns {Promise<{ state: DriveSyncState, mode: 'overwrite'|'use' }>}
+ */
+export async function linkSyncFolder(target, opts = {}) {
+  const mode = opts.mode === 'use' ? 'use' : 'overwrite';
+  if (mode === 'use' && !target.existingFile?.id) {
+    throw new Error('No existing Drive backup to use in that folder');
+  }
+
+  let backupFolder = target.backupFolder;
+  if (!backupFolder) {
+    backupFolder = await googleDriveService.ensureChildFolder(
+      target.parent.id,
+      DRIVE_SYNC_FOLDER_NAME
+    );
+  }
 
   const prev = await getSyncState();
+  const existing = target.existingFile;
+  const exportedAt = existing?.appProperties?.picoerpExportedAt || existing?.modifiedTime || null;
+
   await saveSyncState({
     enabled: true,
     folderId: backupFolder.id,
     folderName: backupFolder.name || DRIVE_SYNC_FOLDER_NAME,
-    parentFolderId: parent.id,
-    parentFolderName: parent.name,
-    fileId: null,
-    fileName: DRIVE_SYNC_FILE_NAME,
+    parentFolderId: target.parent.id,
+    parentFolderName: target.parent.name,
+    fileId: existing?.id || null,
+    fileName: existing?.name || DRIVE_SYNC_FILE_NAME,
     autoSyncEnabled: prev.autoSyncEnabled !== false,
     autoSyncMode: prev.autoSyncMode || 'interval',
     autoSyncIntervalHours: normalizeIntervalHours(prev.autoSyncIntervalHours),
     autoSyncDailyTime: normalizeDailyTime(prev.autoSyncDailyTime),
+    lastDriveModifiedAt: existing?.modifiedTime || null,
+    lastDriveExportedAt: exportedAt,
     lastError: null,
   });
 
-  const result = await uploadNow({ reason: 'connect', force: true });
+  if (mode === 'overwrite') {
+    const result = await uploadNow({ reason: 'connect', force: true });
+    startPeriodicSync();
+    return { state: result.state, mode };
+  }
+
   startPeriodicSync();
-  return result.state;
+  return { state: await getSyncState(), mode };
+}
+
+/**
+ * Pick a Drive parent folder, ensure PicoERPBackup inside it, then enable sync
+ * and upload (no prompt). Prefer inspectPickedSyncFolder + linkSyncFolder when
+ * an existing backup may already be in the path.
+ * @returns {Promise<DriveSyncState>}
+ */
+export async function connectSyncFolder() {
+  const target = await inspectPickedSyncFolder();
+  const linked = await linkSyncFolder(target, { mode: 'overwrite' });
+  return linked.state;
 }
 
 /**
