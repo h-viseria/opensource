@@ -12,7 +12,7 @@ import {
   exportGnuCashTransactions,
 } from '../../services/gnuCashImportService.js';
 import { readFileAsText, downloadCsv } from '../../utils/csv.js';
-import { escapeHtml } from '../modal.js';
+import { escapeHtml, confirmModal } from '../modal.js';
 import { showToast } from '../toast.js';
 
 /**
@@ -61,7 +61,7 @@ export async function renderGnuCashImport(_ctx, outlet) {
       <ol class="gnu-steps">
         <li>
           <strong>Accounts:</strong> File → Export → Export Accounts → CSV
-          (Account Type, Full Account Name, Placeholder, …).
+          (Account Type or Type, Full Account Name, Placeholder, …).
         </li>
         <li>
           <strong>Transactions:</strong> Reports → Transaction Report → Export → CSV
@@ -80,7 +80,17 @@ export async function renderGnuCashImport(_ctx, outlet) {
       <p class="panel__desc">
         Placeholder accounts become groups; leaf (and posting parent) accounts become ledgers.
         Hierarchy follows Full Account Name (<span class="mono">Assets:Current Assets:…</span>).
+        Column <span class="mono">Account Type</span> or <span class="mono">Type</span> is accepted.
       </p>
+      <div class="form-grid" style="margin-bottom:0.75rem">
+        <label class="field field--full">
+          <span class="field__label">If accounts already exist</span>
+          <select class="select" id="coa-import-mode">
+            <option value="merge" selected>Merge — keep existing, add / reuse matching accounts</option>
+            <option value="override">Replace — delete current chart of accounts, then import CSV</option>
+          </select>
+        </label>
+      </div>
       <div class="csv-import__actions">
         <button type="button" class="btn btn--secondary" id="btn-accounts">Choose accounts.csv</button>
         <input type="file" id="file-accounts" accept=".csv,text/csv" hidden />
@@ -238,11 +248,31 @@ export async function renderGnuCashImport(_ctx, outlet) {
 
   btnImportAccounts.addEventListener('click', async () => {
     if (!accountsText) return;
+    const modeEl = /** @type {HTMLSelectElement} */ (outlet.querySelector('#coa-import-mode'));
+    const mode = modeEl?.value === 'override' ? 'override' : 'merge';
+
+    if (mode === 'override') {
+      const ok = await confirmModal({
+        title: 'Replace chart of accounts?',
+        danger: true,
+        confirmLabel: 'Delete existing & import',
+        bodyHtml: `
+          <p>This <strong>deletes all ledger groups and ledgers</strong> in
+          <strong>${escapeHtml(book.name)}</strong>, then imports the CSV.</p>
+          <p class="muted" style="font-size:var(--text-sm)">
+            Not allowed if vouchers already exist (delete vouchers first, or choose Merge).
+            Inventory/tax system ledgers are recreated after import if missing.
+          </p>`,
+      });
+      if (!ok) return;
+    }
+
     btnImportAccounts.disabled = true;
     accountsResult.hidden = false;
-    accountsResult.textContent = 'Importing accounts…';
+    accountsResult.textContent = mode === 'override' ? 'Replacing chart of accounts…' : 'Importing accounts…';
     try {
       const result = await importGnuCashAccounts(book.id, accountsText, {
+        mode,
         onProgress: (msg) => {
           accountsResult.textContent = msg;
         },
@@ -256,6 +286,11 @@ export async function renderGnuCashImport(_ctx, outlet) {
           : '';
       accountsResult.innerHTML = `
         <p>
+          ${
+            result.mode === 'override'
+              ? `Replaced COA (removed ${result.purgedGroups || 0} groups / ${result.purgedLedgers || 0} ledgers). `
+              : ''
+          }
           Created <strong>${result.createdGroups}</strong> groups,
           <strong>${result.createdLedgers}</strong> ledgers
           ${
@@ -269,7 +304,10 @@ export async function renderGnuCashImport(_ctx, outlet) {
         <p><a href="#/masters/chart">Open Chart of Accounts</a></p>
       `;
       if (result.createdGroups + result.createdLedgers > 0) {
-        showToast('GNUCash accounts imported', 'success');
+        showToast(
+          result.mode === 'override' ? 'Chart of accounts replaced' : 'GNUCash accounts imported',
+          'success'
+        );
       } else if (result.failed) {
         showToast('Accounts import had errors', 'error');
       } else {
