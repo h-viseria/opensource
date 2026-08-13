@@ -43,6 +43,17 @@ export async function buildReportRows() {
         const investedValue = toNumber(holding.investedValue);
         const currentValue = latestNav === null ? null : latestNav * units;
 
+        // Compute absolute returns for different time periods
+        const oneDayNav = toNumber(snapshot?.prev1Day?.nav);
+        const oneMonthNav = toNumber(snapshot?.oneMonth?.nav);
+        const jan1Nav = toNumber(snapshot?.jan1?.nav);
+        const oneYearNav = toNumber(snapshot?.oneYear?.nav);
+
+        const absReturn1Day = (latestNav !== null && oneDayNav !== null) ? (latestNav - oneDayNav) * units : null;
+        const absReturn1Month = (latestNav !== null && oneMonthNav !== null) ? (latestNav - oneMonthNav) * units : null;
+        const absReturnVsJan1 = (latestNav !== null && jan1Nav !== null) ? (latestNav - jan1Nav) * units : null;
+        const absReturn1Year = (latestNav !== null && oneYearNav !== null) ? (latestNav - oneYearNav) * units : null;
+
         return {
             amcName: holding.amcName || deriveAmcFromSchemeName(codeItem?.apiSchemeName || holding.schemeName) || '-',
             schemeName: holding.schemeName,
@@ -58,15 +69,18 @@ export async function buildReportRows() {
             valueDeltaPct: (currentValue !== null && toNumber(holding.currentValueXls) !== null && toNumber(holding.currentValueXls) !== 0)
                 ? ((currentValue - toNumber(holding.currentValueXls)) / toNumber(holding.currentValueXls)) * 100
                 : null,
-            oneDayNav: toNumber(snapshot?.prev1Day?.nav),
-            oneMonthNav: toNumber(snapshot?.oneMonth?.nav),
-            jan1Nav: toNumber(snapshot?.jan1?.nav),
-            oneYearNav: toNumber(snapshot?.oneYear?.nav),
+            oneDayNav,
+            oneMonthNav,
+            jan1Nav,
+            oneYearNav,
             pctVs1Day: toNumber(snapshot?.pctVs1Day),
             pctVs1Month: toNumber(snapshot?.pctVs1Month),
             pctVsJan1: toNumber(snapshot?.pctVsJan1),
             pctVs1Year: toNumber(snapshot?.pctVs1Year),
+            absReturn1Day,
+            absReturn1Month,
+            absReturnVsJan1,
+            absReturn1Year,
         };
     });
 }
-
