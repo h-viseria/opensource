@@ -21,3 +21,5 @@ Hash SPA UI. No IndexedDB here — call services.
 - Modals: keep content in `.modal__body` (CSS scrolls); don’t rely on overlay-only scroll.
 - After book switch, app remounts shell via `BOOK_CHANGED`.
 - New top-level nav: add to `NAV` in `layout.js` **and** register in `js/routes.js`.
+- Bulk Load (`#/bulk-load`) lives under This book (below Reports); Bank Statement logic is in
+  `bankStatementImportService.js` + `bankStatementImport.js`.
