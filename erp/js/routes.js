@@ -50,6 +50,8 @@ import { renderInvoiceDetail } from './ui/pages/invoiceDetail.js';
 import { renderInvoiceReturn } from './ui/pages/invoiceReturn.js';
 import { renderInvoiceTemplates } from './ui/pages/invoiceTemplates.js';
 import { renderUserGuide } from './ui/pages/userGuide.js';
+import { renderBulkLoad } from './ui/pages/bulkLoad.js';
+import { renderBankStatementImport } from './ui/pages/bankStatementImport.js';
 
 /**
  * @param {HTMLElement} outlet
@@ -246,6 +248,18 @@ export function registerRoutes(outlet, hooks = {}) {
     title: 'Stock Summary',
     requiresBook: true,
     render: wrap(renderStockSummary),
+  });
+
+  router.register('/bulk-load', {
+    title: 'Bulk Load',
+    requiresBook: true,
+    render: wrap(renderBulkLoad),
+  });
+
+  router.register('/bulk-load/bank-statement', {
+    title: 'Bank Statement',
+    requiresBook: true,
+    render: wrap(renderBankStatementImport),
   });
 
   router.register('/inventory', {
