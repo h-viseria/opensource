@@ -1,0 +1,83 @@
+:root {
+  --color-ink: #13251f;
+  --color-forest: #14332b;
+  --color-forest-2: #1c4439;
+  --color-teal: #1f7a6a;
+  --color-teal-strong: #165e52;
+  --color-paper: #f3f6f4;
+  --color-elev: #ffffff;
+  --color-muted-bg: #e4ebe7;
+  --color-text: #1a2421;
+  --color-text-muted: #5c6b66;
+  --color-text-faint: #88948f;
+  --color-on-forest: #eef6f2;
+  --color-on-forest-muted: rgba(238, 246, 242, 0.7);
+  --color-line: #cdd8d3;
+  --color-focus: #1f7a6a;
+  --color-in: #2d6a4f;
+  --color-in-bg: #e4f0e9;
+  --color-out: #c44536;
+  --color-out-bg: #f8e8e6;
+  --color-xfer: #3d5a80;
+  --color-warn: #9a6b12;
+  --color-warn-bg: #f6edd6;
+  --color-danger: #9b2c2c;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --font-sans: "Segoe UI", "Avenir Next", "Helvetica Neue", sans-serif;
+  --font-mono: "Cascadia Mono", "IBM Plex Mono", ui-monospace, monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.2rem;
+  --text-xl: 1.55rem;
+  --text-2xl: 2rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --sidebar-width: 15rem;
+  --topbar-height: 3.4rem;
+  --bottom-nav: 4.25rem;
+  --radius: 0.35rem;
+  --z-sidebar: 20;
+  --z-modal: 40;
+  --z-toast: 50;
+  --z-fab: 30;
+}
+
+[data-theme='dark'] {
+  --color-paper: #101816;
+  --color-elev: #18221e;
+  --color-muted-bg: #1e2a26;
+  --color-text: #e8f0ec;
+  --color-text-muted: #9aaba4;
+  --color-text-faint: #6d7c76;
+  --color-line: #2c3b36;
+  --color-ink: #e8f0ec;
+  --color-forest: #0c1c18;
+  --color-in-bg: #1a3328;
+  --color-out-bg: #3a1e1c;
+  --color-warn-bg: #3a3018;
+}
+
+.is-large-text { font-size: 18px; }
+.is-high-contrast {
+  --color-line: #000;
+  --color-text-muted: var(--color-text);
+}
+.is-reduced-motion *,
+.is-reduced-motion *::before,
+.is-reduced-motion *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
