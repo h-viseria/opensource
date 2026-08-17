@@ -11,7 +11,10 @@
 
 import { DOCUMENT_CONTEXT_BEGIN, DOCUMENT_CONTEXT_END } from './prompts.js';
 
-const WEBLLM_CDN = 'https://esm.run/@mlc-ai/web-llm';
+/** Pin a known-good WebLLM build (esm.run → jsDelivr). Avoid floating "latest". */
+const WEBLLM_VERSION = '0.2.79';
+const WEBLLM_CDN = `https://esm.run/@mlc-ai/web-llm@${WEBLLM_VERSION}`;
+const WEBLLM_CDN_FALLBACK = `https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm@${WEBLLM_VERSION}/+esm`;
 
 /** @type {typeof import('@mlc-ai/web-llm')|null} */
 let webllmModule = null;
@@ -22,15 +25,108 @@ let webllmModule = null;
  */
 async function loadWebLlm() {
   if (webllmModule) return webllmModule;
-  try {
-    webllmModule = await import(/* @vite-ignore */ WEBLLM_CDN);
-    return webllmModule;
-  } catch (err) {
-    const detail = err instanceof Error ? err.message : String(err);
+  const errors = [];
+  for (const url of [WEBLLM_CDN, WEBLLM_CDN_FALLBACK]) {
+    try {
+      webllmModule = await import(/* @vite-ignore */ url);
+      return webllmModule;
+    } catch (err) {
+      errors.push(`${url}: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+  throw new Error(
+    `Failed to load WebLLM. Check network / CSP. Tried:\n${errors.join('\n')}\n` +
+      `You can continue in Demo mode without downloading a model.`,
+  );
+}
+
+/**
+ * Resolve CreateMLCEngine from various ESM shapes.
+ * @param {any} mod
+ */
+function resolveCreateEngine(mod) {
+  return (
+    mod?.CreateMLCEngine ||
+    mod?.default?.CreateMLCEngine ||
+    mod?.default?.default?.CreateMLCEngine ||
+    null
+  );
+}
+
+/**
+ * Ensure WebGPU exists before attempting a multi-GB download.
+ * @returns {Promise<void>}
+ */
+async function assertWebGpuAvailable() {
+  if (typeof navigator === 'undefined' || !navigator.gpu) {
     throw new Error(
-      `Failed to load WebLLM from ${WEBLLM_CDN}. Check network access or use DemoLLMProvider offline. (${detail})`,
+      'WebGPU is not available in this browser. Use Chrome/Edge 113+ (or enable WebGPU), ' +
+        'or continue with Demo mode (no model download).',
     );
   }
+  let adapter = null;
+  try {
+    adapter = await navigator.gpu.requestAdapter();
+  } catch (err) {
+    throw new Error(
+      `WebGPU adapter request failed: ${err instanceof Error ? err.message : String(err)}. ` +
+        `Continue with Demo mode, or update GPU drivers.`,
+    );
+  }
+  if (!adapter) {
+    throw new Error(
+      'No WebGPU adapter found. On-device LLM download needs a working GPU path. Use Demo mode instead.',
+    );
+  }
+}
+
+/**
+ * Confirm modelId exists in the loaded WebLLM prebuilt catalog.
+ * @param {any} webllm
+ * @param {string} modelId
+ */
+function assertKnownModelId(webllm, modelId) {
+  const list = webllm?.prebuiltAppConfig?.model_list;
+  if (!Array.isArray(list) || !list.length) return;
+  const hit = list.some((m) => m?.model_id === modelId);
+  if (!hit) {
+    const sample = list
+      .slice(0, 8)
+      .map((m) => m.model_id)
+      .join(', ');
+    throw new Error(
+      `Model "${modelId}" is not in WebLLM ${WEBLLM_VERSION} prebuilt catalog. ` +
+        `Update js/data/modelRegistry.js. Examples: ${sample}…`,
+    );
+  }
+}
+
+/**
+ * Humanize common WebLLM / network failures.
+ * @param {unknown} err
+ * @param {string} modelId
+ */
+function wrapInitError(err, modelId) {
+  const raw = err instanceof Error ? err.message : String(err);
+  const lower = raw.toLowerCase();
+  if (lower.includes('shader-f16') || lower.includes('shader_f16')) {
+    return new Error(
+      `This GPU/browser lacks WebGPU shader-f16 required by ${modelId}. ` +
+        `Try the LITE q4f32 model, or use Demo mode.`,
+    );
+  }
+  if (lower.includes('failed to fetch') || lower.includes('networkerror') || lower.includes('csp')) {
+    return new Error(
+      `Network/CSP blocked fetching model assets for ${modelId}. ` +
+        `Weights come from Hugging Face + WASM from raw.githubusercontent.com. Detail: ${raw}`,
+    );
+  }
+  if (lower.includes('out of memory') || lower.includes('oom') || lower.includes('vram')) {
+    return new Error(
+      `Not enough GPU/system memory for ${modelId}. Try LITE, close other tabs, or use Demo mode. (${raw})`,
+    );
+  }
+  return err instanceof Error ? err : new Error(raw);
 }
 
 /**
@@ -58,11 +154,19 @@ export class WebLLMProvider {
    */
   async initialize({ modelId, onProgress } = {}) {
     if (!modelId) throw new Error('WebLLMProvider.initialize requires modelId');
+
+    await assertWebGpuAvailable();
+    if (typeof onProgress === 'function') {
+      onProgress({ progress: 0.02, text: 'Loading WebLLM runtime…' });
+    }
+
     const webllm = await loadWebLlm();
-    const CreateMLCEngine = webllm.CreateMLCEngine || webllm.default?.CreateMLCEngine;
+    const CreateMLCEngine = resolveCreateEngine(webllm);
     if (typeof CreateMLCEngine !== 'function') {
       throw new Error('WebLLM module loaded but CreateMLCEngine is missing.');
     }
+
+    assertKnownModelId(webllm, modelId);
 
     if (this._engine && this._modelId === modelId) return;
 
@@ -70,9 +174,14 @@ export class WebLLMProvider {
       await this.dispose();
     }
 
-    this._engine = await CreateMLCEngine(modelId, {
-      initProgressCallback: (report) => {
-        if (typeof onProgress === 'function') {
+    if (typeof onProgress === 'function') {
+      onProgress({ progress: 0.05, text: `Downloading ${modelId}…` });
+    }
+
+    try {
+      this._engine = await CreateMLCEngine(modelId, {
+        initProgressCallback: (report) => {
+          if (typeof onProgress !== 'function') return;
           const progress =
             typeof report?.progress === 'number'
               ? report.progress
@@ -83,10 +192,14 @@ export class WebLLMProvider {
             progress: Math.min(1, Math.max(0, progress)),
             text: report?.text || `Loading ${modelId}…`,
           });
-        }
-      },
-    });
-    this._modelId = modelId;
+        },
+      });
+      this._modelId = modelId;
+    } catch (err) {
+      this._engine = null;
+      this._modelId = null;
+      throw wrapInitError(err, modelId);
+    }
   }
 
   /**
