@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PicoExpense tests</title>
+  <style>body { font-family: sans-serif; padding: 1.5rem; } .ok { color: #2d6a4f; } .fail { color: #c44536; }</style>
+</head>
+<body>
+  <h1>PicoExpense tests</h1>
+  <pre id="out">Running…</pre>
+  <script type="module">
+    import { runAll } from './suite.js';
+    const { failed, lines } = await runAll();
+    const out = document.getElementById('out');
+    out.textContent = lines.join('\n');
+    out.className = failed ? 'fail' : 'ok';
+  </script>
+</body>
+</html>
