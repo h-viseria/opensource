@@ -179,7 +179,19 @@ function bind(root) {
       copyBtn.disabled = false;
       copyFieldsBtn.disabled = false;
       renderPanel(root);
-      showToast('Scan complete — copy into PicoERP', 'success');
+      try {
+        window.parent?.postMessage(
+          {
+            source: 'picoscan',
+            type: 'picoscan:result',
+            document: exportService.documentToJson(current),
+          },
+          window.location.origin
+        );
+      } catch {
+        /* ignore */
+      }
+      showToast('Scan complete', 'success');
     } catch (err) {
       showToast(err instanceof Error ? err.message : 'Scan failed', 'error');
       setStatus('Scan failed');
