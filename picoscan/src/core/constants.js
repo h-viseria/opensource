@@ -3,7 +3,7 @@
  */
 
 export const APP_NAME = 'PicoScan';
-export const APP_VERSION = '0.2.2';
+export const APP_VERSION = '0.2.3';
 export const DB_NAME = 'picoscanDataStore';
 export const DB_VERSION = 2;
 
