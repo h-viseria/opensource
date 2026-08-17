@@ -482,6 +482,39 @@ const CHAPTERS = [
     ],
   },
   {
+    id: 'bulk-load',
+    title: 'Bulk Load',
+    sections: [
+      {
+        id: 'bulk-load-hub',
+        title: 'Bulk Load hub',
+        path: '/bulk-load',
+        body: `
+          <p>Import many transactions from external files into the active book.
+          Start with <a href="#/bulk-load/bank-statement">Bank Statement</a>.</p>`,
+      },
+      {
+        id: 'bank-statement',
+        title: 'Bank Statement',
+        path: '/bulk-load/bank-statement',
+        body: `
+          <p>Skip top lines, then map each <span class="mono">Column N</span> from the grid dropdowns
+          (Date, Amount <em>or</em> Deposit+Withdrawal, optional Target account, Details).
+          No CSV header is required — leftover title/header/**** rows with blank or invalid dates
+          appear under <strong>Ignored rows</strong> after validate.</p>
+          <ul>
+            <li>Preview every row; pick or correct the <strong>target ledger</strong> per line.</li>
+            <li>CSV target labels are matched as full paths when they contain <code>:</code>
+              (e.g. <code>Expenses:Office</code>), otherwise by ledger name; mappings are
+              <strong>remembered</strong> for later imports.</li>
+            <li>If 5 or more rows already look posted (same date, direction, amount on that bank ledger),
+              you get a duplicate warning — you can skip those rows or import anyway.</li>
+            <li>Confirmed rows post as <strong>Receipt</strong> (money in) or <strong>Payment</strong> (money out) vouchers.</li>
+          </ul>`,
+      },
+    ],
+  },
+  {
     id: 'system',
     title: 'System',
     sections: [
