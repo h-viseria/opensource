@@ -438,6 +438,14 @@ a:hover {
   color: var(--color-text-muted);
 }
 
+.site-footer .disclaimer {
+  margin: 0.35rem 0 0;
+  max-width: 46rem;
+  font-size: 0.68rem;
+  line-height: 1.45;
+  color: var(--color-text-faint);
+}
+
 .footer-links {
   display: flex;
   flex-wrap: wrap;
