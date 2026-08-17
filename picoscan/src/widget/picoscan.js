@@ -38,6 +38,18 @@ export function closeWidget() {
  */
 export async function scan(file, opts) {
   lastDoc = await scanFile(file, opts);
+  try {
+    window.parent?.postMessage(
+      {
+        source: 'picoscan',
+        type: 'picoscan:result',
+        document: exportService.documentToJson(lastDoc),
+      },
+      window.location.origin
+    );
+  } catch {
+    /* ignore */
+  }
   return lastDoc;
 }
 
