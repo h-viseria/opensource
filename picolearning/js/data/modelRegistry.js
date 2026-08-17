@@ -26,17 +26,18 @@ import { AI_PROFILES } from '../core/constants.js';
 /** @type {readonly ModelRegistryEntry[]} */
 export const MODEL_REGISTRY = Object.freeze([
   // —— LITE ——
+  // Prefer q4f32: works without WebGPU shader-f16 (common failure on older GPUs / some drivers).
   Object.freeze({
     profile: AI_PROFILES.LITE,
-    modelId: 'Llama-3.2-1B-Instruct-q4f16_1-MLC',
+    modelId: 'Llama-3.2-1B-Instruct-q4f32_1-MLC',
     modelType: 'llm',
-    sizeLabel: '~0.9 GB',
-    quantization: 'q4f16_1',
-    approxDownloadMB: 900,
+    sizeLabel: '~1.1 GB',
+    quantization: 'q4f32_1',
+    approxDownloadMB: 1100,
     minRamGB: 4,
     recommendedRamGB: 6,
     webgpuRecommended: true,
-    fallbackId: 'Phi-3.5-mini-instruct-q4f16_1-MLC',
+    fallbackId: 'Llama-3.2-1B-Instruct-q4f16_1-MLC',
     capabilities: ['chat', 'rag', 'summarize', 'flashcards', 'mcq'],
   }),
   Object.freeze({
@@ -56,15 +57,15 @@ export const MODEL_REGISTRY = Object.freeze([
   // —— STANDARD ——
   Object.freeze({
     profile: AI_PROFILES.STANDARD,
-    modelId: 'Llama-3.2-3B-Instruct-q4f16_1-MLC',
+    modelId: 'Llama-3.2-3B-Instruct-q4f32_1-MLC',
     modelType: 'llm',
-    sizeLabel: '~2.3 GB',
-    quantization: 'q4f16_1',
-    approxDownloadMB: 2300,
+    sizeLabel: '~2.9 GB',
+    quantization: 'q4f32_1',
+    approxDownloadMB: 2900,
     minRamGB: 8,
     recommendedRamGB: 12,
     webgpuRecommended: true,
-    fallbackId: 'Llama-3.2-1B-Instruct-q4f16_1-MLC',
+    fallbackId: 'Llama-3.2-1B-Instruct-q4f32_1-MLC',
     capabilities: ['chat', 'rag', 'summarize', 'flashcards', 'mcq', 'deeper-reasoning'],
   }),
   Object.freeze({
@@ -84,15 +85,15 @@ export const MODEL_REGISTRY = Object.freeze([
   // —— ADVANCED ——
   Object.freeze({
     profile: AI_PROFILES.ADVANCED,
-    modelId: 'Llama-3.1-8B-Instruct-q4f16_1-MLC',
+    modelId: 'Llama-3.1-8B-Instruct-q4f32_1-MLC',
     modelType: 'llm',
-    sizeLabel: '~4.5 GB',
-    quantization: 'q4f16_1',
-    approxDownloadMB: 4500,
+    sizeLabel: '~5.0 GB',
+    quantization: 'q4f32_1',
+    approxDownloadMB: 5000,
     minRamGB: 16,
     recommendedRamGB: 24,
     webgpuRecommended: true,
-    fallbackId: 'Llama-3.2-3B-Instruct-q4f16_1-MLC',
+    fallbackId: 'Llama-3.2-3B-Instruct-q4f32_1-MLC',
     capabilities: ['chat', 'rag', 'summarize', 'flashcards', 'mcq', 'deeper-reasoning', 'long-context'],
   }),
   Object.freeze({
