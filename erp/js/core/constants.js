@@ -3,7 +3,7 @@
  */
 
 export const APP_NAME = 'PicoERP';
-export const APP_VERSION = '0.18.4';
+export const APP_VERSION = '0.19.7';
 
 /** IndexedDB database name. */
 export const DB_NAME = 'erpDataStore';
@@ -53,6 +53,8 @@ export const SETTINGS_KEYS = Object.freeze({
   LOCAL_DATA_UPDATED_AT: 'localDataUpdatedAt',
   /** Rolling user-facing activity log (last N entries) */
   ACTIVITY_LOG: 'activityLog',
+  /** Bank statement CSV import prefs + target account mappings (per book) */
+  BANK_STATEMENT_IMPORT: 'bankStatementImport',
 });
 
 /** Event bus channel names. */
