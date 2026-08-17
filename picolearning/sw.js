@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'pl-v0.1.1';
+const CACHE_VERSION = 'pl-v0.1.2';
 const SHELL_CACHE = CACHE_VERSION + '-shell';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 
