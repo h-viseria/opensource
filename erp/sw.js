@@ -3,7 +3,7 @@
  * Spec section 20: Offline mode, auto-update detection.
  */
 
-const CACHE_VERSION = 'pe-v0.18.4';
+const CACHE_VERSION = 'pe-v0.19.7';
 const SHELL_CACHE = CACHE_VERSION + '-shell';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 
