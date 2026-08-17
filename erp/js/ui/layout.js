@@ -119,6 +119,13 @@ const NAV = [
           { path: '/reports/stock-summary', label: 'Stock Summary' },
         ],
       },
+      {
+        path: '/bulk-load',
+        label: 'Bulk Load',
+        icon: '⇩',
+        requiresBook: true,
+        children: [{ path: '/bulk-load/bank-statement', label: 'Bank Statement' }],
+      },
     ],
   },
   {
