@@ -1,0 +1,52 @@
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  font-family: var(--font-sans);
+  background: var(--color-paper);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+h1, h2, h3, .brand-mark, .sidebar__title, .hero-amount {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+h1 { font-size: var(--text-2xl); margin: 0 0 var(--space-3); }
+h2 { font-size: var(--text-xl); margin: 0 0 var(--space-3); }
+h3 { font-size: var(--text-lg); margin: var(--space-6) 0 var(--space-3); }
+a { color: var(--color-teal-strong); }
+.muted { color: var(--color-text-muted); font-size: var(--text-sm); }
+.mono { font-family: var(--font-mono); font-size: 0.85em; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); border: 0;
+}
+.page { max-width: 52rem; padding: var(--space-5) var(--space-5) calc(var(--bottom-nav) + 1rem); }
+.page-head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); }
+.lede { font-size: var(--text-lg); max-width: 28rem; color: var(--color-text-muted); }
+.brand-mark { font-size: var(--text-xl); margin: 0 0 var(--space-2); color: var(--color-teal-strong); }
+.banner {
+  background: var(--color-warn-bg);
+  color: var(--color-warn);
+  padding: var(--space-3);
+  border-radius: var(--radius);
+}
+.stack { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+.hero-amount { font-size: 2.4rem; margin: 0; line-height: 1.1; }
+.amount--in { color: var(--color-in); }
+.amount--out { color: var(--color-out); }
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-5) 0;
+}
+.stat-grid dt { font-size: var(--text-xs); color: var(--color-text-muted); }
+.stat-grid dd { margin: 0; font-size: var(--text-lg); font-variant-numeric: tabular-nums; }
+.stat-hero { display: grid; gap: var(--space-6); }
+@media (min-width: 720px) {
+  .stat-hero { grid-template-columns: 16rem 1fr; align-items: start; }
+}
+.month-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.prose ul { padding-left: 1.2rem; }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
