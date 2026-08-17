@@ -4,7 +4,7 @@
 
 export const APP_NAME = 'PicoLearning';
 export const APP_DISPLAY_NAME = 'Pico Learning';
-export const APP_VERSION = '0.1.1';
+export const APP_VERSION = '0.1.2';
 export const APP_SLUG = 'picolearning';
 
 export const DB_NAME = 'PicoLearning';
