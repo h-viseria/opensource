@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PicoExpense">
+  <rect width="64" height="64" rx="10" fill="#14332b"/>
+  <path d="M18 42c8-18 20-18 28 0" fill="none" stroke="#7dcec0" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="32" cy="26" r="7" fill="#f3f6f4"/>
+  <path d="M29 26h6M32 23v6" stroke="#14332b" stroke-width="2" stroke-linecap="round"/>
+</svg>
