@@ -247,6 +247,223 @@ PAGES = [
             "accounting—no hosting server required—so your books stay under your control."
         ),
     },
+    {
+        "slug": "odoo-alternative",
+        "file": "odoo-alternative.html",
+        "rival": "Odoo",
+        "title": "PicoERP — Free Offline Odoo Alternative (100% Private)",
+        "description": (
+            "Compare PicoERP and Odoo. PicoERP is a free, 100% private, offline-first "
+            "double-entry ERP in the browser—no install, no hosting server, works on "
+            "Windows, Mac, Linux, and Android."
+        ),
+        "h1": "PicoERP: a lean, private Odoo alternative for books",
+        "lead": (
+            "Odoo is a modular ERP platform (Community and Enterprise) covering accounting plus "
+            "CRM, inventory, manufacturing, and more—typically self-hosted or as Odoo Online SaaS. "
+            "PicoERP is deliberately smaller: double-entry books that stay on your device with "
+            "no install and no server to run."
+        ),
+        "rival_cells": {
+            "cost": "Community (open source) free to self-host; Enterprise / Odoo Online are paid",
+            "hosting": "Self-hosted server or Odoo Online (vendor cloud)",
+            "privacy": "Self-host keeps data on your server; Online follows Odoo’s cloud account model",
+            "install": "Server / Docker / appliance setup, or cloud signup for Online",
+            "platforms": "Web clients; mobile apps in the ecosystem; server OS for self-host",
+            "signup": "Account / database setup required (self-host or Online)",
+            "double_entry": "Yes (Accounting app)",
+            "multi_book": "Yes (companies / multi-company in supported setups)",
+            "coa": "Yes — full accounting apps with journals and ledgers",
+            "invoices": "Yes (Invoicing / Accounting)",
+            "inventory": "Yes — deep inventory and warehouse apps",
+            "tax": "Fiscal localization packs (country-dependent)",
+            "personal": "Business / ERP first; not a personal-finance focus",
+            "reports": "Broad ERP and accounting reports; Studio / BI in paid tiers",
+            "bank": "Bank sync / reconciliation available in accounting apps",
+            "multiuser": "Yes — designed for multi-user ERP teams",
+            "payroll": "Payroll apps available (edition / localization dependent)",
+            "offline": "Primarily online; self-host still needs a running server",
+            "backup": "Database / server backups (self-host) or vendor tools (Online)",
+        },
+        "pico_better": [
+            "You want <strong>100% private</strong> books in the browser with <strong>no server to host</strong>",
+            "You refuse the complexity of a full modular ERP just to keep day-to-day ledgers",
+            "You need <strong>no install</strong> and the same thin app on Windows, Mac, Linux, and Android",
+            "You’re a solo shop, society, or small books user who needs double-entry, invoices, inventory, and classic reports",
+            "You prefer exporting your own <strong>JSON backups</strong> instead of operating Postgres / Odoo stacks",
+        ],
+        "rival_better": [
+            "You need a full ERP suite (CRM, MRP, website, HR) beyond lean accounting",
+            "You want multi-user company processes with apps beyond the general ledger",
+            "You already standardize on Odoo and have admins for self-host or Online",
+        ],
+        "closing": (
+            "PicoERP is not a modular ERP platform. It is free, private, offline-first double-entry "
+            "accounting—no hosting server required—when you want books without an Odoo-sized footprint."
+        ),
+    },
+    {
+        "slug": "akaunting-alternative",
+        "file": "akaunting-alternative.html",
+        "rival": "Akaunting",
+        "title": "PicoERP — Free Offline Akaunting Alternative (100% Private)",
+        "description": (
+            "Compare PicoERP and Akaunting. PicoERP is a free, 100% private, offline-first "
+            "double-entry ERP in the browser—no install, no PHP server, works on "
+            "Windows, Mac, Linux, and Android."
+        ),
+        "h1": "PicoERP: a private, offline Akaunting alternative",
+        "lead": (
+            "Akaunting is an open-source online accounting app you can self-host or use via "
+            "cloud offerings—invoices, expenses, and reports for small businesses. PicoERP skips "
+            "the server entirely: double-entry books that stay local in your browser."
+        ),
+        "rival_cells": {
+            "cost": "Open-source core free to self-host; cloud / paid plans for hosted use",
+            "hosting": "Self-hosted (PHP / web server) or vendor-hosted cloud",
+            "privacy": "Self-host keeps data on your server; cloud plans follow that host’s model",
+            "install": "Web server / panel install for self-host; signup for cloud",
+            "platforms": "Web UI via browser; server OS for self-host",
+            "signup": "Admin / user accounts required",
+            "double_entry": "Yes (accounting-oriented)",
+            "multi_book": "Companies / multi-company depending on setup",
+            "coa": "Yes — chart of accounts and journals",
+            "invoices": "Yes (sales / purchase style invoicing)",
+            "inventory": "Available via apps / modules (product-dependent)",
+            "tax": "Tax settings and reports (locale-dependent)",
+            "personal": "Small-business accounting first",
+            "reports": "Income, expense, balance sheet, and related reports",
+            "bank": "Bank accounts / reconciliation features common; feed depth varies",
+            "multiuser": "Yes — multi-user web app model",
+            "payroll": "Not a full payroll suite by default (ecosystem may vary)",
+            "offline": "Needs a reachable web app / server; not offline-first on-device",
+            "backup": "Database / export tools; cloud backups if hosted",
+        },
+        "pico_better": [
+            "You want <strong>no PHP server, Docker, or hosting bill</strong>—just the browser",
+            "You want <strong>100% private</strong> on-device books by default",
+            "You need install-free use on <strong>Windows, Mac, Linux, and Android</strong>",
+            "You’re fine with lean double-entry, invoices, inventory, tax codes, and classic reports",
+            "You prefer owning a <strong>JSON book backup</strong> instead of maintaining a web stack",
+        ],
+        "rival_better": [
+            "You want a multi-user web accounting app on your own domain",
+            "You’re comfortable self-hosting PHP apps or paying for hosted Akaunting",
+            "You already run Akaunting and need its module / portal workflows",
+        ],
+        "closing": (
+            "PicoERP is not a self-hosted SaaS clone. It is free, private, offline-first double-entry "
+            "accounting with no hosting server—when you want Akaunting-class books without the server."
+        ),
+    },
+    {
+        "slug": "wave-accounting-alternative",
+        "file": "wave-accounting-alternative.html",
+        "rival": "Wave Accounting",
+        "title": "PicoERP — Free Offline Wave Accounting Alternative (100% Private)",
+        "description": (
+            "Compare PicoERP and Wave Accounting. PicoERP is a free, 100% private, offline-first "
+            "double-entry ERP in the browser—no cloud account required, works on "
+            "Windows, Mac, Linux, and Android."
+        ),
+        "h1": "PicoERP: a private, offline Wave Accounting alternative",
+        "lead": (
+            "Wave Accounting is a popular free cloud accounting product for small businesses "
+            "(with paid add-ons such as payroll and payments in many markets). PicoERP keeps "
+            "accounting free and private on your device—no vendor cloud account for core books."
+        ),
+        "rival_cells": {
+            "cost": "Core accounting often free; payroll / payments / extras typically paid",
+            "hosting": "Cloud-hosted on Wave’s servers",
+            "privacy": "Data stored under Wave’s cloud account / privacy model",
+            "install": "Browser (account required); mobile apps optional",
+            "platforms": "Web and mobile clients",
+            "signup": "Account required",
+            "double_entry": "Yes",
+            "multi_book": "Business / company model (product-dependent)",
+            "coa": "Yes",
+            "invoices": "Yes — strong free invoicing focus",
+            "inventory": "Limited / lighter than dedicated inventory ERPs",
+            "tax": "Sales tax tools common; depth varies by country",
+            "personal": "Small-business oriented (not a full personal finance suite)",
+            "reports": "P&amp;L, balance sheet, and related small-business reports",
+            "bank": "Yes — bank connections / imports common where supported",
+            "multiuser": "Yes within cloud account permissions",
+            "payroll": "Available as a paid Wave product in supported regions",
+            "offline": "Limited — cloud product expects connectivity",
+            "backup": "Vendor export tools; retention under cloud account",
+        },
+        "pico_better": [
+            "You want <strong>100% private</strong> books that never need a Wave (or any) cloud login",
+            "You need <strong>true offline-first</strong> use with no hosting server of your own",
+            "You want inventory screens and classic double-entry reports in one thin stack",
+            "You value <strong>install-free</strong> access on Windows, Mac, Linux, and Android",
+            "You’re fine managing your own <strong>local JSON backups</strong>",
+        ],
+        "rival_better": [
+            "You want free cloud invoicing with bank feeds and online accountant access",
+            "You need Wave’s paid payroll or payments ecosystem in supported countries",
+            "You prefer managed cloud backups and multi-device sync by default",
+        ],
+        "closing": (
+            "PicoERP is not a freemium cloud suite. It is free, private, offline-first double-entry "
+            "accounting—no cloud account for core books—so your ledgers stay on your device."
+        ),
+    },
+    {
+        "slug": "manager-io-alternative",
+        "file": "manager-io-alternative.html",
+        "rival": "Manager.io",
+        "title": "PicoERP — Free Offline Manager.io Alternative (100% Private)",
+        "description": (
+            "Compare PicoERP and Manager.io. PicoERP is a free, 100% private, offline-first "
+            "double-entry ERP in the browser—no install, no cloud plan required, works on "
+            "Windows, Mac, Linux, and Android."
+        ),
+        "h1": "PicoERP: a browser-based Manager.io alternative",
+        "lead": (
+            "Manager.io is a double-entry accounting product available as a free desktop edition "
+            "and paid cloud / server options, with invoices, inventory, and multi-business books. "
+            "PicoERP aims for the same double-entry clarity with zero install—just your browser."
+        ),
+        "rival_cells": {
+            "cost": "Desktop edition commonly free; cloud / server editions paid",
+            "hosting": "Local desktop files, or cloud / self-hosted server editions",
+            "privacy": "Desktop keeps data local; cloud editions follow Manager’s hosted model",
+            "install": "Desktop application install, or cloud signup / server setup",
+            "platforms": "Windows, Mac, Linux desktop; cloud via browser; mobile varies",
+            "signup": "Not required for desktop; account for cloud",
+            "double_entry": "Yes",
+            "multi_book": "Yes — multiple businesses",
+            "coa": "Yes — control accounts, ledgers, journals",
+            "invoices": "Yes (sales / purchase)",
+            "inventory": "Yes",
+            "tax": "Tax codes and reports (locale-dependent)",
+            "personal": "Can cover personal / small-business books; business-oriented UI",
+            "reports": "Trial balance, P&amp;L, balance sheet, and related statements",
+            "bank": "Bank accounts / reconciliation; feed depth varies by edition",
+            "multiuser": "Stronger on cloud / server editions",
+            "payroll": "Payslips / payroll features available in product line",
+            "offline": "Strong on desktop edition; cloud needs connectivity",
+            "backup": "File / business backups; cloud retention under plan",
+        },
+        "pico_better": [
+            "You want <strong>no desktop install</strong> and the same UI on Android as on desktop",
+            "You want <strong>100% private</strong> browser books without a Manager cloud plan",
+            "You need a thinner stack: open the page and work, with optional PWA-style use",
+            "You’re a solo operator who still wants invoices, inventory, tax codes, and classic reports",
+            "You prefer PicoERP’s <strong>JSON export / restore</strong> backup flow",
+        ],
+        "rival_better": [
+            "You prefer a mature native desktop accounting app (Manager Desktop)",
+            "You need Manager’s cloud multi-user or server edition workflows",
+            "Your team already standardizes on Manager’s business / tab layout",
+        ],
+        "closing": (
+            "PicoERP complements desktop tools like Manager.io: free, private, offline-first "
+            "double-entry in the browser—with no hosting server and no install required."
+        ),
+    },
 ]
 
 FEATURES = [
@@ -278,6 +495,25 @@ DIFFS = [
     ("Works on all platforms", "Windows, Mac, Linux, and Android via a modern browser—same product everywhere."),
 ]
 
+DISCLAIMER = (
+    "This comparison is based on our understanding of publicly described features. "
+    "It is not intended to undermine those apps or their capabilities. "
+    "Names and trademarks belong to their owners. "
+    "Any inaccuracy is unintentional and due to incomplete or outdated information — "
+    "please confirm current details with each product."
+)
+
+FOOTER_NAV = [
+    ("quickbooks-alternative", "vs QuickBooks"),
+    ("tally-alternative", "vs Tally"),
+    ("gnucash-alternative", "vs GnuCash"),
+    ("zoho-books-alternative", "vs Zoho Books"),
+    ("odoo-alternative", "vs Odoo"),
+    ("akaunting-alternative", "vs Akaunting"),
+    ("wave-accounting-alternative", "vs Wave"),
+    ("manager-io-alternative", "vs Manager.io"),
+]
+
 
 def render_page(page: dict, filename: str) -> str:
     rival = page["rival"]
@@ -304,14 +540,8 @@ def render_page(page: dict, filename: str) -> str:
     )
 
     # Footer links relative within alternatives/*
-    nav_others = [
-        ("quickbooks-alternative", "vs QuickBooks"),
-        ("tally-alternative", "vs Tally"),
-        ("gnucash-alternative", "vs GnuCash"),
-        ("zoho-books-alternative", "vs Zoho Books"),
-    ]
     footer_links = []
-    for slug, label in nav_others:
+    for slug, label in FOOTER_NAV:
         href = f"../{slug}/"
         current = ' aria-current="page"' if slug == page["slug"] else ""
         footer_links.append(f'        <a href="{href}"{current}>{label}</a>')
@@ -429,6 +659,7 @@ def render_page(page: dict, filename: str) -> str:
   <footer class="site-footer">
     <div class="wrap site-footer__inner">
       <p>PicoERP — offline-first double-entry accounting. Free, private, no install.</p>
+      <p class="disclaimer">{DISCLAIMER}</p>
       <nav class="footer-links" aria-label="Other comparisons">
 {footer_links_html}
         <a href="../../index.html">Launch PicoERP</a>
@@ -450,13 +681,14 @@ def hub_page() -> str:
         <p><a class="cta" href="{page['slug']}/">Compare →</a></p>
       </article>"""
         )
+    rivals = ", ".join(p["rival"] for p in PAGES[:-1]) + f", and {PAGES[-1]['rival']}"
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0f3d3e" />
-  <meta name="description" content="Compare PicoERP with QuickBooks, Tally, GnuCash, and Zoho Books. Free, 100% private, offline-first accounting in the browser." />
+  <meta name="description" content="Compare PicoERP with {rivals}. Free, 100% private, offline-first accounting in the browser." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://picoai.org/erp/alternatives/" />
   <title>PicoERP Alternatives — Compare Online Accounting Tools</title>
@@ -483,7 +715,7 @@ def hub_page() -> str:
     <p class="hero__eyebrow">Comparisons</p>
     <h1>PicoERP alternatives</h1>
     <p class="hero__lead">
-      See how PicoERP compares on privacy, cost model, hosting, and features—with QuickBooks, Tally, GnuCash, and Zoho Books.
+      See how PicoERP compares on privacy, cost model, hosting, and features—with {rivals}.
     </p>
     <div class="choose-grid" style="margin-top: 2rem;">
 {chr(10).join(cards)}
@@ -492,6 +724,7 @@ def hub_page() -> str:
   <footer class="site-footer">
     <div class="wrap site-footer__inner">
       <p>PicoERP — offline-first double-entry accounting. Free, private, no install.</p>
+      <p class="disclaimer">{DISCLAIMER}</p>
       <nav class="footer-links">
         <a href="../index.html">Launch PicoERP</a>
       </nav>
