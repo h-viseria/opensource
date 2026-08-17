@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "name": "picolearning",
+  "private": true,
+  "scripts": {
+    "test": "node tests/run.mjs",
+    "start": "python -m http.server 8787"
+  }
+}
