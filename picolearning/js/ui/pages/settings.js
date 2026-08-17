@@ -80,7 +80,7 @@ async function paint(outlet) {
 
       <section class="panel">
         <h2>AI models</h2>
-        <p class="muted">Active profile: <strong>${escapeHtml(activeProfile)}</strong>. Downloads stay in browser storage.</p>
+        <p class="muted">Active profile: <strong>${escapeHtml(activeProfile)}</strong>. Downloads stay in browser storage. Requires WebGPU (Chrome/Edge recommended). Without a download, Ask/Quiz use DemoLLM.</p>
         <div data-model-progress class="import-progress" hidden>
           <p class="muted" data-model-msg></p>
           <div class="progress-bar"><div class="progress-bar__fill" data-model-fill style="width:0%"></div></div>
