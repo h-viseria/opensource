@@ -1,0 +1,14 @@
+---
+description: PicoExpense architecture
+globs: **/*.{js,html,css,md}
+---
+
+# PicoExpense
+
+Vanilla JS offline-first personal finance. Layers: **UI → Services → Engine → Repository → IndexedDB**.
+
+- DB: `PicoPersonalFinance`. No IndexedDB in UI.
+- OCR via PicoScan adapter only. Never auto-save scans.
+- Drive folder `PicoExpenseBackup`, file `PicoExpense_sync.exp.zip`.
+- Do not add investments or recurring transactions.
+- Bump `APP_VERSION`, `index.html?v=`, `sw.js` `CACHE_VERSION` together.
