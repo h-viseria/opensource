@@ -189,11 +189,13 @@ export function downloadTemplate(opts) {
 }
 
 /**
- * Parse a CSV string into header + data rows (RFC4180-ish).
+ * Parse a CSV string into a raw grid (no header split).
  * @param {string} text
- * @returns {{ headers: string[], rows: string[][] }}
+ * @param {{ keepEmptyRows?: boolean }} [opts]
+ * @returns {string[][]}
  */
-export function parseCsv(text) {
+export function parseCsvGrid(text, opts = {}) {
+  const keepEmptyRows = opts.keepEmptyRows === true;
   const src = String(text || '').replace(/^\uFEFF/, '');
   /** @type {string[][]} */
   const grid = [];
@@ -201,6 +203,14 @@ export function parseCsv(text) {
   let row = [];
   let cell = '';
   let inQuotes = false;
+
+  const endRow = () => {
+    if (keepEmptyRows || row.some((c) => String(c).trim() !== '')) {
+      grid.push(row);
+    }
+    row = [];
+    cell = '';
+  };
 
   for (let i = 0; i < src.length; i++) {
     const ch = src[i];
@@ -225,18 +235,31 @@ export function parseCsv(text) {
       cell = '';
     } else if (ch === '\n') {
       row.push(cell);
-      cell = '';
-      if (row.some((c) => c.trim() !== '')) grid.push(row);
-      row = [];
+      endRow();
     } else if (ch === '\r') {
-      // ignore; handle on \n
+      row.push(cell);
+      if (next === '\n') i++;
+      endRow();
     } else {
       cell += ch;
     }
   }
 
-  row.push(cell);
-  if (row.some((c) => c.trim() !== '')) grid.push(row);
+  // Final row (no trailing newline)
+  if (cell.length || row.length) {
+    row.push(cell);
+    endRow();
+  }
+  return grid;
+}
+
+/**
+ * Parse a CSV string into header + data rows (RFC4180-ish).
+ * @param {string} text
+ * @returns {{ headers: string[], rows: string[][] }}
+ */
+export function parseCsv(text) {
+  const grid = parseCsvGrid(text);
 
   if (grid.length === 0) {
     return { headers: [], rows: [] };
