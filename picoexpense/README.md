@@ -2,8 +2,6 @@
 
 Offline-first personal expense tracker. Data lives in IndexedDB (`PicoPersonalFinance`) on this device. No backend, no account, no telemetry.
 
-Display name is configurable (`APP_NAME` / `APP_DISPLAY_NAME` in `js/core/constants.js`). Architecture is not coupled to the product name.
-
 ## User guide
 
 In the app: **App → User guide** (`#/guide`), or command palette → User guide.
@@ -12,8 +10,6 @@ Written copy: [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md).
 
 ## Alternatives
 
-Static comparison pages (open while serving this folder):
-
 - Hub: [`alternatives/index.html`](alternatives/index.html)
 - [Free YNAB alternative](alternatives/free-alternative-ynab/)
 - [Free Monarch Money alternative](alternatives/free-alternative-monarch-money/)
@@ -21,9 +17,6 @@ Static comparison pages (open while serving this folder):
 - [Free Goodbudget alternative](alternatives/free-alternative-goodbudget/)
 - [Free Spendee alternative](alternatives/free-alternative-spendee/)
 
-## Run
-
-No build step.
 
 ```
 python -m http.server
@@ -55,9 +48,6 @@ See `DATA_MODEL.md`.
 - Restore: replace all, or merge by UUID.
 - Google Drive: same flow as PicoERP — pick a folder, app uses/creates `PicoExpenseBackup/PicoExpense_sync.exp.zip`, compare local vs Drive, then upload or download. Credentials in `js/data/googleDriveConfig.js`.
 
-## PicoScan
-
-OCR is not reimplemented. See `docs/PICOSCAN.md`. If PicoScan is missing, manual entry still works.
 
 ## Tests
 
