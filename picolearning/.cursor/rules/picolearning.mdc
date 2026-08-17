@@ -1,0 +1,20 @@
+---
+description: PicoLearning project conventions
+globs:
+alwaysApply: true
+---
+
+# PicoLearning
+
+Offline-first AI learning (vanilla JS + IndexedDB). Sibling of PicoERP, PicoScan, PicoExpense.
+
+Layers: UI → Services → Engines → Repository → IndexedDB. No IDB in UI.
+
+- DB: `PicoLearning`
+- OCR: PicoScan adapter only
+- Models: configurable `js/data/modelRegistry.js` + WebLLM
+- PDF only for now (no EPUB/DOCX)
+
+Bump `APP_VERSION`, `index.html?v=`, `sw.js` `CACHE_VERSION` together.
+
+Read README.md and DATA_MODEL.md before large changes.
