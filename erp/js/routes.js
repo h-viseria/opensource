@@ -52,6 +52,22 @@ import { renderInvoiceTemplates } from './ui/pages/invoiceTemplates.js';
 import { renderUserGuide } from './ui/pages/userGuide.js';
 import { renderBulkLoad } from './ui/pages/bulkLoad.js';
 import { renderBankStatementImport } from './ui/pages/bankStatementImport.js';
+import { renderPeople } from './ui/pages/people.js';
+import { renderEmployees } from './ui/pages/employees.js';
+import { renderEmployeeDetail } from './ui/pages/employeeDetail.js';
+import { renderAttendance } from './ui/pages/attendance.js';
+import { renderLeave } from './ui/pages/leave.js';
+import { renderEmployeeFields } from './ui/pages/employeeFields.js';
+import { renderAttendanceSettings } from './ui/pages/attendanceSettings.js';
+import { renderLeaveTypes } from './ui/pages/leaveTypes.js';
+import { renderPayroll } from './ui/pages/payroll.js';
+import { renderSalarySetup } from './ui/pages/salarySetup.js';
+import { renderSalaryStructures } from './ui/pages/salaryStructures.js';
+import { renderPayrollRuns } from './ui/pages/payrollRuns.js';
+import { renderPayrollRunDetail } from './ui/pages/payrollRunDetail.js';
+import { renderPayslip } from './ui/pages/payslip.js';
+import { renderPayrollReports } from './ui/pages/payrollReports.js';
+import { renderPayrollAccountMapping } from './ui/pages/payrollAccountMapping.js';
 
 /**
  * @param {HTMLElement} outlet
@@ -99,10 +115,106 @@ export function registerRoutes(outlet, hooks = {}) {
     render: wrap(renderDriveActivityCompare),
   });
 
+  router.register('/settings/employee-fields', {
+    title: 'Employee fields',
+    requiresBook: true,
+    render: wrap(renderEmployeeFields),
+  });
+
+  router.register('/settings/attendance', {
+    title: 'Attendance settings',
+    requiresBook: true,
+    render: wrap(renderAttendanceSettings),
+  });
+
+  router.register('/settings/leave-types', {
+    title: 'Leave types',
+    requiresBook: true,
+    render: wrap(renderLeaveTypes),
+  });
+
+  router.register('/settings/payroll-accounts', {
+    title: 'Payroll account mapping',
+    requiresBook: true,
+    render: wrap(renderPayrollAccountMapping),
+  });
+
   router.register('/guide', {
     title: 'User Guide',
     requiresBook: false,
     render: wrap(renderUserGuide),
+  });
+
+  router.register('/people', {
+    title: 'People',
+    requiresBook: true,
+    render: wrap(renderPeople),
+  });
+
+  router.register('/people/employees', {
+    title: 'Employees',
+    requiresBook: true,
+    render: wrap(renderEmployees),
+  });
+
+  router.register('/people/employees/:id', {
+    title: 'Employee',
+    requiresBook: true,
+    render: wrap(renderEmployeeDetail),
+  });
+
+  router.register('/people/attendance', {
+    title: 'Attendance',
+    requiresBook: true,
+    render: wrap(renderAttendance),
+  });
+
+  router.register('/people/leave', {
+    title: 'Leave',
+    requiresBook: true,
+    render: wrap(renderLeave),
+  });
+
+  router.register('/payroll', {
+    title: 'Payroll',
+    requiresBook: true,
+    render: wrap(renderPayroll),
+  });
+
+  router.register('/payroll/setup', {
+    title: 'Salary setup',
+    requiresBook: true,
+    render: wrap(renderSalarySetup),
+  });
+
+  router.register('/payroll/structures', {
+    title: 'Salary structures',
+    requiresBook: true,
+    render: wrap(renderSalaryStructures),
+  });
+
+  router.register('/payroll/runs', {
+    title: 'Payroll runs',
+    requiresBook: true,
+    render: wrap(renderPayrollRuns),
+  });
+
+  router.register('/payroll/runs/:id', {
+    title: 'Payroll run',
+    requiresBook: true,
+    render: wrap(renderPayrollRunDetail),
+  });
+
+  router.register('/payroll/payslips/:id', {
+    title: 'Payslip',
+    requiresBook: true,
+    render: wrap(renderPayslip),
+  });
+
+  router.register('/payroll/reports', {
+    title: 'Payroll reports',
+    requiresBook: true,
+    render: wrap(renderPayrollReports),
   });
 
   router.register('/masters', {
