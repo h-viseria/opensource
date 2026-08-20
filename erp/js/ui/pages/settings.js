@@ -53,9 +53,30 @@ export async function renderSettings(ctx, outlet, opts = {}) {
     </div>
 
     <div class="panel">
+      <h2 class="panel__title">People (this book)</h2>
+      <p class="panel__desc">
+        Employee master, attendance, leave, and payroll for the active book.
+      </p>
+      <div class="form-actions" style="justify-content:flex-start;border:0;padding:0;margin-top:0.75rem;flex-wrap:wrap;gap:0.5rem">
+        <a class="btn btn--secondary" href="#/settings/employee-fields" ${session.book ? '' : 'aria-disabled="true"'}>Employee fields</a>
+        <a class="btn btn--secondary" href="#/settings/attendance" ${session.book ? '' : 'aria-disabled="true"'}>Attendance</a>
+        <a class="btn btn--secondary" href="#/settings/leave-types" ${session.book ? '' : 'aria-disabled="true"'}>Leave types</a>
+        <a class="btn btn--secondary" href="#/payroll/setup" ${session.book ? '' : 'aria-disabled="true"'}>Salary setup</a>
+        <a class="btn btn--secondary" href="#/settings/payroll-accounts" ${session.book ? '' : 'aria-disabled="true"'}>Payroll accounts</a>
+        <a class="btn btn--ghost" href="#/people" ${session.book ? '' : 'aria-disabled="true"'}>Open People →</a>
+        <a class="btn btn--ghost" href="#/payroll" ${session.book ? '' : 'aria-disabled="true"'}>Open Payroll →</a>
+      </div>
+      ${
+        !session.book
+          ? `<p class="muted" style="margin-top:0.75rem;font-size:var(--text-sm)">Select an active book to configure People settings.</p>`
+          : ''
+      }
+    </div>
+
+    <div class="panel">
       <h2 class="panel__title">Backup</h2>
       <p class="panel__desc">
-        Export to <span class="mono">*.erp.json</span> (masters, vouchers, inventory, tax, budgets, goals, settings).
+        Export to <span class="mono">*.erp.json</span> (masters, vouchers, inventory, tax, budgets, goals, people, payroll, settings).
         Google Drive uploads use a compressed <span class="mono">*.erp.zip</span>.
         Keep a copy outside this browser. Top-bar icons also run full backup.
       </p>
