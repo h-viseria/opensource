@@ -22,7 +22,7 @@ const CHAPTERS = [
           <p>${escapeHtml(APP_NAME)} is an <strong>offline-first</strong> double-entry accounting ERP that runs entirely in your browser.
           Books, vouchers, inventory, tax, and reports are stored in IndexedDB on this device — no server is required for day-to-day use.</p>
           <ul>
-            <li>Use the <strong>left sidebar</strong> to move between hubs (Masters, Transactions, Invoices, Inventory, Tax, Finance, Reports).</li>
+            <li>Use the <strong>left sidebar</strong> to move between hubs (Masters, Transactions, Invoices, Inventory, Tax, Finance, People, Payroll, Reports).</li>
             <li>Hubs with a chevron expand to show child screens.</li>
             <li>The top bar shows the <strong>active book</strong> and financial year. Switch books anytime from the book control or <a href="#/books">Manage books</a>.</li>
             <li>Screens marked “needs a book” require an active book; open one from Portfolio or Books first.</li>
@@ -406,6 +406,109 @@ const CHAPTERS = [
         title: 'Budget variance',
         path: '/reports/budget-variance',
         body: `<p>Budgeted vs actual by ledger for a period, with variance amounts to spot overspend.</p>`,
+      },
+    ],
+  },
+  {
+    id: 'people',
+    title: 'People',
+    sections: [
+      {
+        id: 'people-hub',
+        title: 'People hub',
+        path: '/people',
+        body: `
+          <p>Offline employees, attendance, and leave for the active book.
+          Configure custom fields, working days, attendance statuses, and leave types under
+          <strong>Settings</strong>. Use the <strong>Payroll</strong> hub for salary and payslips.</p>`,
+      },
+      {
+        id: 'employees',
+        title: 'Employees',
+        path: '/people/employees',
+        body: `
+          <p>Employee master with auto <span class="mono">EMP-####</span> IDs (overridable),
+          optional contact and job fields, custom fields, and local document uploads.
+          Deactivate instead of deleting when attendance or leave history exists.
+          Open an employee’s <strong>Salary structure</strong> from their profile.</p>`,
+      },
+      {
+        id: 'attendance',
+        title: 'Attendance',
+        path: '/people/attendance',
+        body: `
+          <p>Daily status grid, monthly code grid, and exportable monthly summary.
+          Optional check-in/out and overtime hours when enabled in attendance settings.
+          Payroll pulls present days, leave, unpaid leave, and OT from these records.</p>`,
+      },
+      {
+        id: 'leave',
+        title: 'Leave',
+        path: '/people/leave',
+        body: `
+          <p>Record leave by type; day counts follow configured working days (editable).
+          Leave can sync into attendance as the Leave status. Unpaid leave feeds payroll deductions.</p>`,
+      },
+    ],
+  },
+  {
+    id: 'payroll',
+    title: 'Payroll',
+    sections: [
+      {
+        id: 'payroll-hub',
+        title: 'Payroll hub',
+        path: '/payroll',
+        body: `
+          <p>Offline salary calculation for the active book. After finalize you can
+          <strong>Post to Accounting</strong> using mapped COA groups, then pay net salaries
+          with the existing Payment voucher flow.</p>`,
+      },
+      {
+        id: 'salary-setup',
+        title: 'Salary setup',
+        path: '/payroll/setup',
+        body: `
+          <p>Configure earnings and deductions (fixed, percentage, attendance-based, hours-based, manual).
+          Set daily/hourly rate methods used for unpaid leave and overtime.
+          Each head has an <strong>accounting class</strong> (Salary / Deduction / Tax) used when posting.</p>`,
+      },
+      {
+        id: 'salary-structures',
+        title: 'Salary structures',
+        path: '/payroll/structures',
+        body: `
+          <p>Assign heads to each employee with an <strong>effective from</strong> date.
+          Changes add history rows instead of overwriting past amounts.</p>`,
+      },
+      {
+        id: 'payroll-runs',
+        title: 'Payroll runs',
+        path: '/payroll/runs',
+        body: `
+          <p>Create a monthly draft, <strong>Calculate</strong> (pulls attendance/leave/OT),
+          review employee lines and adjustments, then <strong>Finalize</strong> to lock the run.
+          After finalize, use <strong>Post to Accounting</strong> (requires account mapping),
+          then <strong>Pay payroll</strong> to clear net pay via a Payment voucher.
+          Payslips open per employee; use Print → Save as PDF.</p>`,
+      },
+      {
+        id: 'payroll-accounts',
+        title: 'Payroll account mapping',
+        path: '/settings/payroll-accounts',
+        body: `
+          <p>Map three Chart of Accounts <strong>groups</strong>: Salary (expense), Deductions (liability),
+          and Tax (liability). Select existing groups or create new ones under a parent you choose.
+          Posting creates one Journal: Dr employee Salary ledgers, Cr deduction/tax head ledgers,
+          Cr employee Payable. Use existing General Ledger reports to review totals — no parallel books.</p>`,
+      },
+      {
+        id: 'payroll-reports',
+        title: 'Payroll reports',
+        path: '/payroll/reports',
+        body: `
+          <p>Payroll summary, employee salary register, salary-head totals, and history —
+          with CSV and PDF export like other PicoERP reports.</p>`,
       },
     ],
   },
