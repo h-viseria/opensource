@@ -21,12 +21,16 @@ PICO = {
     "inventory": "Yes — items, warehouses, movements, stock summary",
     "tax": "Tax codes and tax reports (summary / ledger / payable style)",
     "personal": "Yes — budgets, goals, net worth, budget variance",
-    "reports": "Trial balance, P&amp;L, balance sheet, day book, cash flow, ledger",
+    "people": "Yes — employees, custom fields, documents, attendance, leave types &amp; balances",
+    "payroll": (
+        "Yes — salary heads/structures, attendance-linked runs, payslips, "
+        "post to Chart of Accounts, pay / reverse journals (offline; no statutory filing)"
+    ),
+    "reports": "Trial balance, P&amp;L, balance sheet, day book, cash flow, ledger; payroll summaries",
     "bank": "No",
     "multiuser": "No cloud multi-user (local books on your device)",
-    "payroll": "No",
     "offline": "First-class offline-first design",
-    "backup": "Export / restore your own JSON book backup",
+    "backup": "Export / restore your own JSON book backup (includes people &amp; payroll)",
 }
 
 PAGES = [
@@ -60,10 +64,11 @@ PAGES = [
             "inventory": "Yes (product-dependent)",
             "tax": "Country modules and compliance tools (product-dependent)",
             "personal": "Not the core focus for most business plans",
+            "people": "Employee / workforce tools product-dependent; often separate products",
+            "payroll": "Often available as paid add-ons / partner payroll products (cloud ecosystem)",
             "reports": "Full report suite; deeper ecosystem tools on paid plans",
             "bank": "Common on cloud products",
             "multiuser": "Yes on cloud multi-user plans",
-            "payroll": "Often available as add-ons / partner products",
             "offline": "Varies by product; cloud products need connectivity for full use",
             "backup": "Vendor export / backup tools; cloud retention under account",
         },
@@ -71,18 +76,18 @@ PAGES = [
             "You want <strong>100% private</strong> books that stay on your device by default",
             "You refuse <strong>recurring license or cloud fees</strong> for day-to-day accounting",
             "You need <strong>no install</strong> and the same app on Windows, Mac, Linux, and Android",
-            "You’re a solo operator, small shop, society, or personal + small-business user who needs double-entry, invoices, inventory, tax codes, and core reports",
+            "You’re a solo operator, small shop, society, or personal + small-business user who needs double-entry, invoices, inventory, <strong>employees / attendance / leave</strong>, offline payroll, tax codes, and core reports",
             "You’re fine managing your own <strong>local backups</strong> instead of vendor-hosted company files",
         ],
         "rival_better": [
             "You need cloud multi-user access and accountant collaboration workflows",
-            "You rely on bank feeds, payments connectors, or payroll ecosystems",
+            "You rely on bank feeds, payments connectors, or statutory payroll filing ecosystems",
             "You want deep country-specific compliance packages and a large partner network",
         ],
         "closing": (
             "PicoERP is not trying to be every QuickBooks add-on. It is a lean, offline-first "
-            "double-entry ERP: private, free of app subscriptions, install-free, and usable "
-            "across desktops and Android—with no hosting server for you to run."
+            "double-entry ERP—with people and payroll on-device—private, free of app subscriptions, "
+            "install-free, and usable across desktops and Android—with no hosting server for you to run."
         ),
     },
     {
@@ -116,10 +121,11 @@ PAGES = [
             "inventory": "Yes (strong inventory focus)",
             "tax": "Deep statutory / GST-oriented workflows in supported editions",
             "personal": "Not the core focus",
+            "people": "Employee / payroll masters available in broader product editions / add-ons",
+            "payroll": "Available in broader product / add-on ecosystems (often statutory-oriented)",
             "reports": "Extensive statutory and management reports",
             "bank": "Partial / product-dependent; often via ecosystem tools",
             "multiuser": "Multi-user / remote configurations available in the ecosystem",
-            "payroll": "Available in broader product / add-on ecosystems",
             "offline": "Strong offline on desktop editions",
             "backup": "Product backup tools for company data",
         },
@@ -127,7 +133,7 @@ PAGES = [
             "You want <strong>100% private</strong> browser books with no desktop install",
             "You want to avoid <strong>recurring license or cloud fees</strong> for everyday books",
             "You need the same UI on <strong>Windows, Mac, Linux, and Android</strong>",
-            "You need double-entry, invoices, inventory, tax codes, and classic reports without Tally’s license footprint",
+            "You need double-entry, invoices, inventory, <strong>employees / attendance / leave</strong>, offline payroll with GL posting, tax codes, and classic reports without Tally’s license footprint",
             "You prefer exporting your own <strong>JSON backups</strong> under your control",
         ],
         "rival_better": [
@@ -137,8 +143,8 @@ PAGES = [
         ],
         "closing": (
             "PicoERP is not a drop-in replacement for every Tally compliance module. It is a free, "
-            "offline-first double-entry ERP for shops, societies, and small books—private, "
-            "install-free, and needing no hosting server of your own."
+            "offline-first double-entry ERP for shops, societies, and small books—including lean "
+            "people and payroll—private, install-free, and needing no hosting server of your own."
         ),
     },
     {
@@ -170,16 +176,17 @@ PAGES = [
             "inventory": "Limited / not as product-centric as dedicated inventory modules",
             "tax": "Manual / schedule-driven approaches common",
             "personal": "Strong personal accounting heritage",
+            "people": "No dedicated employees / attendance / leave module",
+            "payroll": "No full payroll or payslip suite",
             "reports": "Mature report set for double-entry books",
             "bank": "Import / recon tools; not modern bank feed SaaS",
             "multiuser": "Generally single-user desktop workflows",
-            "payroll": "No full payroll suite",
             "offline": "Yes — desktop offline",
             "backup": "File-based backups of your books",
         },
         "pico_better": [
             "You want <strong>no installation</strong> and the same app on desktop <strong>and Android</strong>",
-            "You want built-in <strong>sales/purchase invoices</strong>, inventory screens, and tax reports",
+            "You want built-in <strong>sales/purchase invoices</strong>, inventory screens, tax reports, plus <strong>employees, attendance, leave, and offline payroll</strong>",
             "You want a clear path from GnuCash via <strong>import / export</strong>",
             "You prefer a modern browser UI with optional PWA-style use",
             "You still want <strong>100% private</strong> local data with no cloud account",
@@ -191,7 +198,7 @@ PAGES = [
         ],
         "closing": (
             "PicoERP complements rather than dismisses GnuCash: free, private, double-entry—with "
-            "invoices and inventory in the browser, and no hosting server for you to operate."
+            "invoices, inventory, people, and payroll in the browser, and no hosting server for you to operate."
         ),
     },
     {
@@ -223,10 +230,11 @@ PAGES = [
             "inventory": "Yes",
             "tax": "Country modules and compliance integrations",
             "personal": "Business accounting first",
+            "people": "Via Zoho People and related HR products in the Zoho suite",
+            "payroll": "Via Zoho Payroll and the broader Zoho ecosystem (cloud, region-dependent)",
             "reports": "Broad SaaS report suite",
             "bank": "Yes — bank feeds / reconciliations common",
             "multiuser": "Yes — designed for online collaboration",
-            "payroll": "Via broader Zoho ecosystem products",
             "offline": "Limited — cloud product expects connectivity",
             "backup": "Vendor export tools; data residency under cloud account",
         },
@@ -234,17 +242,17 @@ PAGES = [
             "You want <strong>100% private</strong> books without uploading them to a cloud vendor",
             "You refuse <strong>recurring cloud subscription fees</strong> for core accounting",
             "You need <strong>true offline-first</strong> use with no hosting server of your own",
-            "You’re a solo or small operator who wants invoices, inventory, tax codes, and reports in a thin stack",
+            "You’re a solo or small operator who wants invoices, inventory, <strong>employees / attendance / leave</strong>, offline payroll, tax codes, and reports in a thin stack",
             "You value <strong>install-free</strong> access on Windows, Mac, Linux, and Android",
         ],
         "rival_better": [
             "You need multi-user cloud collaboration and client portals",
-            "You rely on bank feeds, automations, and integration marketplace",
+            "You rely on bank feeds, automations, and a multi-app HR / payroll marketplace",
             "You want managed cloud backups and online accountant access by default",
         ],
         "closing": (
             "PicoERP is not a multi-user SaaS suite. It is free, private, offline-first double-entry "
-            "accounting—no hosting server required—so your books stay under your control."
+            "accounting with on-device people and payroll—no hosting server required—so your books stay under your control."
         ),
     },
     {
@@ -278,10 +286,11 @@ PAGES = [
             "inventory": "Yes — deep inventory and warehouse apps",
             "tax": "Fiscal localization packs (country-dependent)",
             "personal": "Business / ERP first; not a personal-finance focus",
+            "people": "Employees / HR apps (attendance, time off, and more in the suite)",
+            "payroll": "Payroll apps available (edition / localization dependent; typically server or Online)",
             "reports": "Broad ERP and accounting reports; Studio / BI in paid tiers",
             "bank": "Bank sync / reconciliation available in accounting apps",
             "multiuser": "Yes — designed for multi-user ERP teams",
-            "payroll": "Payroll apps available (edition / localization dependent)",
             "offline": "Primarily online; self-host still needs a running server",
             "backup": "Database / server backups (self-host) or vendor tools (Online)",
         },
@@ -289,17 +298,17 @@ PAGES = [
             "You want <strong>100% private</strong> books in the browser with <strong>no server to host</strong>",
             "You refuse the complexity of a full modular ERP just to keep day-to-day ledgers",
             "You need <strong>no install</strong> and the same thin app on Windows, Mac, Linux, and Android",
-            "You’re a solo shop, society, or small books user who needs double-entry, invoices, inventory, and classic reports",
+            "You’re a solo shop, society, or small books user who needs double-entry, invoices, inventory, <strong>lean employees / attendance / leave and offline payroll</strong>, and classic reports",
             "You prefer exporting your own <strong>JSON backups</strong> instead of operating Postgres / Odoo stacks",
         ],
         "rival_better": [
-            "You need a full ERP suite (CRM, MRP, website, HR) beyond lean accounting",
+            "You need a full ERP suite (CRM, MRP, website, deep HR) beyond lean accounting + payroll",
             "You want multi-user company processes with apps beyond the general ledger",
             "You already standardize on Odoo and have admins for self-host or Online",
         ],
         "closing": (
             "PicoERP is not a modular ERP platform. It is free, private, offline-first double-entry "
-            "accounting—no hosting server required—when you want books without an Odoo-sized footprint."
+            "accounting with built-in people and payroll—no hosting server required—when you want books without an Odoo-sized footprint."
         ),
     },
     {
@@ -332,10 +341,11 @@ PAGES = [
             "inventory": "Available via apps / modules (product-dependent)",
             "tax": "Tax settings and reports (locale-dependent)",
             "personal": "Small-business accounting first",
+            "people": "No full employees / attendance / leave suite by default",
+            "payroll": "Not a full payroll suite by default (apps / ecosystem may vary)",
             "reports": "Income, expense, balance sheet, and related reports",
             "bank": "Bank accounts / reconciliation features common; feed depth varies",
             "multiuser": "Yes — multi-user web app model",
-            "payroll": "Not a full payroll suite by default (ecosystem may vary)",
             "offline": "Needs a reachable web app / server; not offline-first on-device",
             "backup": "Database / export tools; cloud backups if hosted",
         },
@@ -343,7 +353,7 @@ PAGES = [
             "You want <strong>no PHP server, Docker, or hosting bill</strong>—just the browser",
             "You want <strong>100% private</strong> on-device books by default",
             "You need install-free use on <strong>Windows, Mac, Linux, and Android</strong>",
-            "You’re fine with lean double-entry, invoices, inventory, tax codes, and classic reports",
+            "You’re fine with lean double-entry, invoices, inventory, <strong>employees / attendance / leave</strong>, offline payroll, tax codes, and classic reports",
             "You prefer owning a <strong>JSON book backup</strong> instead of maintaining a web stack",
         ],
         "rival_better": [
@@ -353,7 +363,7 @@ PAGES = [
         ],
         "closing": (
             "PicoERP is not a self-hosted SaaS clone. It is free, private, offline-first double-entry "
-            "accounting with no hosting server—when you want Akaunting-class books without the server."
+            "accounting with people and payroll—and no hosting server—when you want Akaunting-class books without the server."
         ),
     },
     {
@@ -386,28 +396,29 @@ PAGES = [
             "inventory": "Limited / lighter than dedicated inventory ERPs",
             "tax": "Sales tax tools common; depth varies by country",
             "personal": "Small-business oriented (not a full personal finance suite)",
+            "people": "Limited HR; employee tools mainly via paid payroll product where offered",
+            "payroll": "Available as a paid Wave product in supported regions (cloud filing ecosystem)",
             "reports": "P&amp;L, balance sheet, and related small-business reports",
             "bank": "Yes — bank connections / imports common where supported",
             "multiuser": "Yes within cloud account permissions",
-            "payroll": "Available as a paid Wave product in supported regions",
             "offline": "Limited — cloud product expects connectivity",
             "backup": "Vendor export tools; retention under cloud account",
         },
         "pico_better": [
             "You want <strong>100% private</strong> books that never need a Wave (or any) cloud login",
             "You need <strong>true offline-first</strong> use with no hosting server of your own",
-            "You want inventory screens and classic double-entry reports in one thin stack",
+            "You want inventory, <strong>employees / attendance / leave</strong>, and offline payroll with GL posting in one thin stack",
             "You value <strong>install-free</strong> access on Windows, Mac, Linux, and Android",
             "You’re fine managing your own <strong>local JSON backups</strong>",
         ],
         "rival_better": [
             "You want free cloud invoicing with bank feeds and online accountant access",
-            "You need Wave’s paid payroll or payments ecosystem in supported countries",
+            "You need Wave’s paid statutory payroll or payments ecosystem in supported countries",
             "You prefer managed cloud backups and multi-device sync by default",
         ],
         "closing": (
             "PicoERP is not a freemium cloud suite. It is free, private, offline-first double-entry "
-            "accounting—no cloud account for core books—so your ledgers stay on your device."
+            "accounting with on-device people and payroll—no cloud account for core books—so your ledgers stay on your device."
         ),
     },
     {
@@ -440,19 +451,20 @@ PAGES = [
             "inventory": "Yes",
             "tax": "Tax codes and reports (locale-dependent)",
             "personal": "Can cover personal / small-business books; business-oriented UI",
+            "people": "Employee / payslip-oriented features in the product line (depth varies by edition)",
+            "payroll": "Payslips / payroll features available in the product line",
             "reports": "Trial balance, P&amp;L, balance sheet, and related statements",
             "bank": "Bank accounts / reconciliation; feed depth varies by edition",
             "multiuser": "Stronger on cloud / server editions",
-            "payroll": "Payslips / payroll features available in product line",
             "offline": "Strong on desktop edition; cloud needs connectivity",
             "backup": "File / business backups; cloud retention under plan",
         },
         "pico_better": [
             "You want <strong>no desktop install</strong> and the same UI on Android as on desktop",
             "You want <strong>100% private</strong> browser books without a Manager cloud plan",
-            "You need a thinner stack: open the page and work, with optional PWA-style use",
-            "You’re a solo operator who still wants invoices, inventory, tax codes, and classic reports",
-            "You prefer PicoERP’s <strong>JSON export / restore</strong> backup flow",
+            "You need a thinner stack: open the page and work—with invoices, inventory, <strong>attendance / leave</strong>, and offline payroll posting to the COA",
+            "You’re a solo operator who still wants classic reports and JSON export / restore",
+            "You prefer PicoERP’s <strong>browser-first</strong> offline design",
         ],
         "rival_better": [
             "You prefer a mature native desktop accounting app (Manager Desktop)",
@@ -461,7 +473,7 @@ PAGES = [
         ],
         "closing": (
             "PicoERP complements desktop tools like Manager.io: free, private, offline-first "
-            "double-entry in the browser—with no hosting server and no install required."
+            "double-entry in the browser—with people and payroll, no hosting server, and no install required."
         ),
     },
 ]
@@ -480,10 +492,11 @@ FEATURES = [
     ("Inventory", "inventory"),
     ("Tax", "tax"),
     ("Personal finance (budgets, goals, net worth)", "personal"),
+    ("Employees, attendance &amp; leave", "people"),
+    ("Payroll &amp; payslips", "payroll"),
     ("Classic reports", "reports"),
     ("Bank feeds / auto bank sync", "bank"),
     ("Multi-user cloud collaboration", "multiuser"),
-    ("Payroll / payments ecosystem", "payroll"),
     ("Offline use", "offline"),
     ("Backup", "backup"),
 ]
@@ -493,6 +506,7 @@ DIFFS = [
     ("No recurring license or cloud fees", "Use PicoERP free—no monthly subscription fee for the app itself."),
     ("No installation", "Open the page and start. Optional browser / PWA-style use if you want a home screen icon."),
     ("Works on all platforms", "Windows, Mac, Linux, and Android via a modern browser—same product everywhere."),
+    ("People &amp; payroll on-device", "Employees, attendance, leave, salary runs, and payslips—plus optional posting to your Chart of Accounts—without a cloud HR suite."),
 ]
 
 DISCLAIMER = (
@@ -658,7 +672,7 @@ def render_page(page: dict, filename: str) -> str:
 
   <footer class="site-footer">
     <div class="wrap site-footer__inner">
-      <p>PicoERP — offline-first double-entry accounting. Free, private, no install.</p>
+      <p>PicoERP — offline-first double-entry accounting with people &amp; payroll. Free, private, no install.</p>
       <p class="disclaimer">{DISCLAIMER}</p>
       <nav class="footer-links" aria-label="Other comparisons">
 {footer_links_html}
@@ -688,7 +702,7 @@ def hub_page() -> str:
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0f3d3e" />
-  <meta name="description" content="Compare PicoERP with {rivals}. Free, 100% private, offline-first accounting in the browser." />
+  <meta name="description" content="Compare PicoERP with {rivals}. Free, 100% private, offline-first accounting, employees, and payroll in the browser." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://picoai.org/erp/alternatives/" />
   <title>PicoERP Alternatives — Compare Online Accounting Tools</title>
@@ -715,7 +729,7 @@ def hub_page() -> str:
     <p class="hero__eyebrow">Comparisons</p>
     <h1>PicoERP alternatives</h1>
     <p class="hero__lead">
-      See how PicoERP compares on privacy, cost model, hosting, and features—with {rivals}.
+      See how PicoERP compares on privacy, cost model, hosting, accounting, employees, and payroll—with {rivals}.
     </p>
     <div class="choose-grid" style="margin-top: 2rem;">
 {chr(10).join(cards)}
@@ -723,7 +737,7 @@ def hub_page() -> str:
   </main>
   <footer class="site-footer">
     <div class="wrap site-footer__inner">
-      <p>PicoERP — offline-first double-entry accounting. Free, private, no install.</p>
+      <p>PicoERP — offline-first double-entry accounting with people &amp; payroll. Free, private, no install.</p>
       <p class="disclaimer">{DISCLAIMER}</p>
       <nav class="footer-links">
         <a href="../index.html">Launch PicoERP</a>
