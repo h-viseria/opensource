@@ -240,4 +240,144 @@ export const STORE_DEFINITIONS = [
       { name: 'key', keyPath: 'key', unique: true },
     ],
   },
+  // —— People / HR (Phase 1) ——
+  {
+    name: STORES.EMPLOYEES,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'employeeCode', keyPath: 'employeeCode', unique: false },
+      { name: 'name', keyPath: 'name', unique: false },
+      { name: 'status', keyPath: 'status', unique: false },
+      { name: 'bookId_employeeCode', keyPath: ['bookId', 'employeeCode'], unique: true },
+    ],
+  },
+  {
+    name: STORES.EMPLOYEE_CUSTOM_FIELDS,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'name', keyPath: 'name', unique: false },
+      { name: 'bookId_name', keyPath: ['bookId', 'name'], unique: false },
+    ],
+  },
+  {
+    name: STORES.EMPLOYEE_DOCUMENTS,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'employeeId', keyPath: 'employeeId', unique: false },
+      { name: 'expiryDate', keyPath: 'expiryDate', unique: false },
+    ],
+  },
+  {
+    name: STORES.ATTENDANCE_STATUSES,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'name', keyPath: 'name', unique: false },
+      { name: 'bookId_name', keyPath: ['bookId', 'name'], unique: false },
+    ],
+  },
+  {
+    name: STORES.ATTENDANCE_RECORDS,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'employeeId', keyPath: 'employeeId', unique: false },
+      { name: 'date', keyPath: 'date', unique: false },
+      { name: 'bookId_date', keyPath: ['bookId', 'date'], unique: false },
+      { name: 'bookId_employeeId_date', keyPath: ['bookId', 'employeeId', 'date'], unique: true },
+    ],
+  },
+  {
+    name: STORES.ATTENDANCE_SETTINGS,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: true },
+    ],
+  },
+  {
+    name: STORES.LEAVE_TYPES,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'name', keyPath: 'name', unique: false },
+      { name: 'bookId_name', keyPath: ['bookId', 'name'], unique: false },
+    ],
+  },
+  {
+    name: STORES.LEAVE_RECORDS,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'employeeId', keyPath: 'employeeId', unique: false },
+      { name: 'leaveTypeId', keyPath: 'leaveTypeId', unique: false },
+      { name: 'startDate', keyPath: 'startDate', unique: false },
+    ],
+  },
+  // —— Payroll (Phase 2) ——
+  {
+    name: STORES.SALARY_HEADS,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'name', keyPath: 'name', unique: false },
+      { name: 'bookId_name', keyPath: ['bookId', 'name'], unique: false },
+    ],
+  },
+  {
+    name: STORES.EMPLOYEE_SALARY_LINES,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'employeeId', keyPath: 'employeeId', unique: false },
+      { name: 'salaryHeadId', keyPath: 'salaryHeadId', unique: false },
+      { name: 'effectiveFrom', keyPath: 'effectiveFrom', unique: false },
+      { name: 'bookId_employeeId', keyPath: ['bookId', 'employeeId'], unique: false },
+    ],
+  },
+  {
+    name: STORES.PAYROLL_SETTINGS,
+    keyPath: 'id',
+    indexes: [{ name: 'bookId', keyPath: 'bookId', unique: true }],
+  },
+  {
+    name: STORES.SALARY_ADJUSTMENTS,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'employeeId', keyPath: 'employeeId', unique: false },
+      { name: 'payrollRunId', keyPath: 'payrollRunId', unique: false },
+    ],
+  },
+  {
+    name: STORES.PAYROLL_RUNS,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'periodStart', keyPath: 'periodStart', unique: false },
+      { name: 'status', keyPath: 'status', unique: false },
+      { name: 'bookId_periodStart_periodEnd', keyPath: ['bookId', 'periodStart', 'periodEnd'], unique: false },
+    ],
+  },
+  {
+    name: STORES.PAYROLL_ITEMS,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'payrollRunId', keyPath: 'payrollRunId', unique: false },
+      { name: 'employeeId', keyPath: 'employeeId', unique: false },
+      { name: 'bookId_payrollRunId_employeeId', keyPath: ['bookId', 'payrollRunId', 'employeeId'], unique: true },
+    ],
+  },
+  {
+    name: STORES.EMPLOYEE_PAYROLL_ACCOUNTS,
+    keyPath: 'id',
+    indexes: [
+      { name: 'bookId', keyPath: 'bookId', unique: false },
+      { name: 'employeeId', keyPath: 'employeeId', unique: false },
+      { name: 'bookId_employeeId', keyPath: ['bookId', 'employeeId'], unique: true },
+    ],
+  },
 ];
