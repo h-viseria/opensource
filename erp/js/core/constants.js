@@ -3,12 +3,12 @@
  */
 
 export const APP_NAME = 'PicoERP';
-export const APP_VERSION = '0.19.7';
+export const APP_VERSION = '0.22.0';
 
 /** IndexedDB database name. */
 export const DB_NAME = 'erpDataStore';
-/** Bump when schema changes. v4 adds catalogue (item type) masters. */
-export const DB_VERSION = 4;
+/** Bump when schema changes. v5 People; v6 Payroll; v7 Payroll accounting. */
+export const DB_VERSION = 7;
 
 /**
  * Store names — full schema from master specification §5.
@@ -37,6 +37,23 @@ export const STORES = Object.freeze({
   ATTACHMENTS: 'attachments',
   AUDIT_LOGS: 'auditLogs',
   SETTINGS: 'settings',
+  // People / HR (Phase 1)
+  EMPLOYEES: 'employees',
+  EMPLOYEE_CUSTOM_FIELDS: 'employeeCustomFields',
+  EMPLOYEE_DOCUMENTS: 'employeeDocuments',
+  ATTENDANCE_STATUSES: 'attendanceStatuses',
+  ATTENDANCE_RECORDS: 'attendanceRecords',
+  ATTENDANCE_SETTINGS: 'attendanceSettings',
+  LEAVE_TYPES: 'leaveTypes',
+  LEAVE_RECORDS: 'leaveRecords',
+  // Payroll (Phase 2)
+  SALARY_HEADS: 'salaryHeads',
+  EMPLOYEE_SALARY_LINES: 'employeeSalaryLines',
+  PAYROLL_SETTINGS: 'payrollSettings',
+  SALARY_ADJUSTMENTS: 'salaryAdjustments',
+  PAYROLL_RUNS: 'payrollRuns',
+  PAYROLL_ITEMS: 'payrollItems',
+  EMPLOYEE_PAYROLL_ACCOUNTS: 'employeePayrollAccounts',
 });
 
 /** Session / settings keys. */
@@ -47,13 +64,9 @@ export const SETTINGS_KEYS = Object.freeze({
   GOOGLE_DRIVE_CLIENT_ID: 'googleDriveClientId',
   GOOGLE_DRIVE_API_KEY: 'googleDriveApiKey',
   GOOGLE_DRIVE_APP_ID: 'googleDriveAppId',
-  /** Synced folder / file ids + timestamps for automatic Drive backup */
   GOOGLE_DRIVE_SYNC: 'googleDriveSync',
-  /** ISO timestamp of last local domain data change (for sync compare) */
   LOCAL_DATA_UPDATED_AT: 'localDataUpdatedAt',
-  /** Rolling user-facing activity log (last N entries) */
   ACTIVITY_LOG: 'activityLog',
-  /** Bank statement CSV import prefs + target account mappings (per book) */
   BANK_STATEMENT_IMPORT: 'bankStatementImport',
 });
 
@@ -69,6 +82,8 @@ export const EVENTS = Object.freeze({
   INVOICE_CHANGED: 'invoice:changed',
   TAX_CHANGED: 'tax:changed',
   FINANCE_CHANGED: 'finance:changed',
+  PEOPLE_CHANGED: 'people:changed',
+  PAYROLL_CHANGED: 'payroll:changed',
   NAV_TOGGLE: 'nav:toggle',
   TOAST: 'toast:show',
   DB_READY: 'db:ready',
@@ -76,7 +91,100 @@ export const EVENTS = Object.freeze({
   DRIVE_SYNC_CHANGED: 'driveSync:changed',
 });
 
-/** Voucher types from specification §6. */
+export const EMPLOYMENT_STATUS = Object.freeze({
+  ACTIVE: 'Active',
+  INACTIVE: 'Inactive',
+});
+
+export const EMPLOYMENT_TYPES = Object.freeze([
+  'Full Time',
+  'Part Time',
+  'Contract',
+  'Temporary',
+  'Other',
+]);
+
+export const EMPLOYEE_FIELD_TYPES = Object.freeze([
+  'Text',
+  'Number',
+  'Currency',
+  'Date',
+  'Checkbox',
+]);
+
+export const LEAVE_ACCRUAL_METHODS = Object.freeze({
+  NONE: 'None',
+  ANNUAL: 'Annual',
+  MONTHLY: 'Monthly',
+});
+
+export const SALARY_HEAD_TYPES = Object.freeze({
+  EARNING: 'Earning',
+  DEDUCTION: 'Deduction',
+});
+
+export const SALARY_CALC_TYPES = Object.freeze({
+  FIXED: 'Fixed',
+  PERCENTAGE: 'Percentage',
+  FORMULA: 'Formula',
+  ATTENDANCE: 'AttendanceBased',
+  HOURS: 'HoursBased',
+  MANUAL: 'Manual',
+});
+
+export const SALARY_CALC_BASIS = Object.freeze({
+  BASIC: 'BasicSalary',
+  GROSS: 'GrossEarnings',
+  SPECIFIC_HEAD: 'SpecificSalaryHead',
+  TOTAL_EARNINGS: 'TotalEarnings',
+  TOTAL_DEDUCTIONS: 'TotalDeductions',
+  ATTENDANCE_DAYS: 'AttendanceDays',
+  LEAVE_DAYS: 'LeaveDays',
+  UNPAID_LEAVE_DAYS: 'UnpaidLeaveDays',
+  OVERTIME_HOURS: 'OvertimeHours',
+  MANUAL: 'ManualValue',
+});
+
+export const PAYROLL_FREQUENCIES = Object.freeze({
+  MONTHLY: 'Monthly',
+  WEEKLY: 'Weekly',
+  BIWEEKLY: 'Biweekly',
+});
+
+export const DAILY_RATE_METHODS = Object.freeze({
+  CALENDAR: 'MonthlySalary / CalendarDays',
+  WORKING: 'MonthlySalary / WorkingDays',
+  CUSTOM: 'Custom',
+});
+
+export const HOURLY_RATE_METHODS = Object.freeze({
+  MONTHLY_HOURS: 'MonthlySalary / WorkingHours',
+  DAILY_HOURS: 'DailyRate / DailyHours',
+  CUSTOM: 'Custom',
+});
+
+export const PAYROLL_RUN_STATUS = Object.freeze({
+  DRAFT: 'Draft',
+  CALCULATED: 'Calculated',
+  REVIEWED: 'Reviewed',
+  FINALIZED: 'Finalized',
+});
+
+/** Accounting classification for salary heads (Phase 3). */
+export const PAYROLL_ACCOUNTING_CLASS = Object.freeze({
+  SALARY: 'Salary',
+  DEDUCTION: 'Deduction',
+  TAX: 'Tax',
+});
+
+/** Payroll run accounting / payment status (Phase 3). */
+export const PAYROLL_ACCOUNTING_STATUS = Object.freeze({
+  NOT_POSTED: 'NotPosted',
+  POSTED: 'Posted',
+  REVERSED: 'Reversed',
+  PAID: 'Paid',
+});
+
 export const VOUCHER_TYPES = Object.freeze({
   OPENING: 'Opening',
   JOURNAL: 'Journal',
@@ -89,7 +197,6 @@ export const VOUCHER_TYPES = Object.freeze({
   DEBIT_NOTE: 'Debit Note',
 });
 
-/** Inventory movement types — master specification §10. */
 export const INVENTORY_TXN_TYPES = Object.freeze({
   OPENING: 'Opening',
   PURCHASE: 'Purchase',
@@ -100,14 +207,12 @@ export const INVENTORY_TXN_TYPES = Object.freeze({
   TRANSFER: 'Transfer',
 });
 
-/** Invoice document status. */
 export const INVOICE_STATUS = Object.freeze({
   POSTED: 'Posted',
   PARTIALLY_RETURNED: 'PartiallyReturned',
   CANCELLED: 'Cancelled',
 });
 
-/** Tax types and components — master specification §11. */
 export const TAX_TYPES = Object.freeze({
   VAT: 'VAT',
   GST: 'GST',
@@ -119,7 +224,6 @@ export const TAX_COMPONENTS = Object.freeze({
   OUTPUT: 'Output',
 });
 
-/** Personal finance goal categories — master specification §8. */
 export const GOAL_CATEGORIES = Object.freeze({
   EMERGENCY: 'Emergency Fund',
   RETIREMENT: 'Retirement',
@@ -134,5 +238,4 @@ export const BUDGET_PERIODS = Object.freeze({
   YEAR: 'year',
 });
 
-/** Default financial year helpers. */
-export const DEFAULT_FY_START_MONTH = 4; // April (common India FY); adjustable per book
+export const DEFAULT_FY_START_MONTH = 4;
