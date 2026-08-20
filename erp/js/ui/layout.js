@@ -103,6 +103,29 @@ const NAV = [
         ],
       },
       {
+        path: '/people',
+        label: 'People',
+        icon: '☺',
+        requiresBook: true,
+        children: [
+          { path: '/people/employees', label: 'Employees' },
+          { path: '/people/attendance', label: 'Attendance' },
+          { path: '/people/leave', label: 'Leave' },
+        ],
+      },
+      {
+        path: '/payroll',
+        label: 'Payroll',
+        icon: '₹',
+        requiresBook: true,
+        children: [
+          { path: '/payroll/setup', label: 'Salary setup' },
+          { path: '/payroll/structures', label: 'Structures' },
+          { path: '/payroll/runs', label: 'Runs' },
+          { path: '/payroll/reports', label: 'Reports' },
+        ],
+      },
+      {
         path: '/reports',
         label: 'Reports',
         icon: '▤',
