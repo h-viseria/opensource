@@ -184,6 +184,8 @@ export async function deleteBook(bookId) {
   await (await import('./inventoryService.js')).purgeInventory(bookId);
   await (await import('./taxService.js')).purgeTax(bookId);
   await (await import('./personalFinanceService.js')).purgeFinance(bookId);
+  await (await import('./peopleService.js')).purgePeople(bookId);
+  await (await import('./payrollService.js')).purgePayroll(bookId);
 
   const years = await financialYearRepository.findByBook(bookId);
   for (const fy of years) {
@@ -228,6 +230,8 @@ export async function setActiveBook(bookId, financialYearId) {
   await coaService.ensureChartOfAccounts(bookId);
   await (await import('./inventoryService.js')).ensureInventoryMasters(bookId);
   await (await import('./taxService.js')).ensureTaxMasters(bookId);
+  await (await import('./peopleService.js')).ensurePeopleMasters(bookId);
+  await (await import('./payrollService.js')).ensurePayrollMasters(bookId, book.currency);
 
   let fyId = financialYearId;
   if (!fyId) {
