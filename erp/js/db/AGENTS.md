@@ -12,3 +12,5 @@
 - Schema upgrades: increment `DB_VERSION`, add stores/indexes in `schema.js` upgrade path.
 - Always go through repositories for domain writes; avoid ad-hoc store access from UI.
 - Backup/restore (`backupService`) dumps store contents; keep store names in sync with `STORES`.
+- People/HR (Phase 1): `employees`, `employeeCustomFields`, `employeeDocuments`, `attendanceStatuses`, `attendanceRecords`, `attendanceSettings`, `leaveTypes`, `leaveRecords` (DB_VERSION 5+).
+- Payroll (Phase 2–3): `salaryHeads`, `employeeSalaryLines`, `payrollSettings`, `salaryAdjustments`, `payrollRuns`, `payrollItems`, `employeePayrollAccounts` (DB_VERSION 6–7). Accounting posts via existing vouchers/COA.
