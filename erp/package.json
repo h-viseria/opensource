@@ -1,24 +1,11 @@
 {
-  "name": "mf-holdings-app",
+  "name": "picoerp",
+  "version": "0.12.0",
   "private": true,
-  "version": "1.0.0",
-  "type": "module",
+  "description": "PicoERP — offline-first accounting ERP (Tally + GnuCash inspired)",
   "scripts": {
-    "check": "node --check ./main.js",
-    "smoke": "node ./tests/smoke.mjs",
-    "amc:test": "node ./tests/amc-report.mjs",
-    "matcher:test": "node ./tests/scheme-matcher.mjs",
-    "cas:test": "node ./tests/cas-regression.mjs",
-    "portfolio:compare": "node ./tests/portfolio-compare.mjs",
-    "xirr:test": "node ./tests/xirr.mjs",
-    "cas-dates:test": "node ./tests/cas-dates.mjs",
-    "transactions:test": "node ./tests/transactions-parser.mjs",
-    "transaction-mapper:test": "node ./tests/transaction-holding-mapper.mjs",
-    "switch-classifier:test": "node ./tests/switch-transaction-classifier.mjs",
-    "icons:generate": "node ./scripts/generate-icons.mjs",
-    "test": "npm run check && npm run smoke && npm run amc:test && npm run matcher:test && npm run cas:test && npm run xirr:test && npm run transactions:test && npm run transaction-mapper:test"
-  },
-  "dependencies": {
-    "xlsx": "^0.18.5"
+    "start": "python -m http.server 8765 --bind 127.0.0.1",
+    "serve": "python -m http.server 8765 --bind 127.0.0.1",
+    "icons": "python scripts/generate_icons.py"
   }
 }
