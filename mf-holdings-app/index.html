@@ -122,7 +122,7 @@
                     <div class="inline-actions">
                         <button id="refresh-report-btn" class="button-primary" type="button">Refresh Report</button>
                     </div>
-                    <div id="scheme-report-totals" class="report-totals-grid"></div>
+                    <div id="scheme-report-totals"></div>
                     <div id="report-status" class="status" aria-live="polite"></div>
                     <table>
                         <thead>
@@ -150,7 +150,7 @@
 
                 <section id="amc-report-panel" class="report-subtab-panel">
                     <h2>AMC Level Summary</h2>
-                    <div id="amc-report-totals" class="report-totals-grid"></div>
+                    <div id="amc-report-totals"></div>
                     <div class="inline-actions">
                         <label>
                             AMC Filter
@@ -320,7 +320,7 @@
                             <ul>
                                 <li>Click <strong>Fetch NAV Snapshots</strong> on the Import tab</li>
                                 <li>The app fetches NAV history for each scheme from MFAPI (this may take 30–60 seconds for large portfolios)</li>
-                                <li>For each scheme it captures: latest NAV, 1-day, 1-month, 1-Jan, and 1-year reference NAVs</li>
+                                <li>For each scheme it captures: latest NAV, 1-day, 1-month, 3-month, 6-month, 1-Jan, and 1-year reference NAVs</li>
                                 <li>The <em>NAV Snapshots</em> counter updates when complete</li>
                             </ul>
                             <p class="step-tip">💡 You can re-run <em>Fetch NAV Snapshots</em> any time to refresh prices with the latest available NAV.</p>
@@ -351,7 +351,7 @@
                                     Useful for spotting valuation discrepancies.
                                 </li>
                             </ul>
-                            <p>Each report shows a <strong>totals summary</strong> at the top with total invested value, total current value, total returns (₹ and %).</p>
+                            <p>Each report shows a <strong>totals summary</strong> at the top with total invested value, total current value, total returns (₹ and %), plus absolute rupee returns over the last 1 day, 3 months, 6 months, and 1 year.</p>
                         </div>
                     </li>
                 </ol>
