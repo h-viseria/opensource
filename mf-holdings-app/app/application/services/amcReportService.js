@@ -2,6 +2,13 @@ function toNumber(value) {
     return Number.isFinite(value) ? value : 0;
 }
 
+function addNullable(current, incoming) {
+    if (!Number.isFinite(incoming)) {
+        return current;
+    }
+    return Number.isFinite(current) ? current + incoming : incoming;
+}
+
 export function buildAmcSummaryRows(reportRows) {
     const byAmc = new Map();
 
@@ -12,11 +19,19 @@ export function buildAmcSummaryRows(reportRows) {
             investedValue: 0,
             currentValue: 0,
             schemeCount: 0,
+            absReturn1Day: null,
+            absReturn3Month: null,
+            absReturn6Month: null,
+            absReturn1Year: null,
         };
 
         current.investedValue += toNumber(row.investedValue);
         current.currentValue += toNumber(row.currentValue);
         current.schemeCount += 1;
+        current.absReturn1Day = addNullable(current.absReturn1Day, row.absReturn1Day);
+        current.absReturn3Month = addNullable(current.absReturn3Month, row.absReturn3Month);
+        current.absReturn6Month = addNullable(current.absReturn6Month, row.absReturn6Month);
+        current.absReturn1Year = addNullable(current.absReturn1Year, row.absReturn1Year);
 
         byAmc.set(amcName, current);
     });
