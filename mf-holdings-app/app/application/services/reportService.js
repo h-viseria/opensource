@@ -24,6 +24,10 @@ function toNumber(value) {
     return Number.isFinite(value) ? value : null;
 }
 
+function absReturn(latestNav, periodNav, units) {
+    return (latestNav !== null && periodNav !== null) ? (latestNav - periodNav) * units : null;
+}
+
 export async function buildReportRows() {
     const [holdings, schemeCodes, navSnapshots] = await Promise.all([
         getAllHoldings(),
@@ -43,16 +47,19 @@ export async function buildReportRows() {
         const investedValue = toNumber(holding.investedValue);
         const currentValue = latestNav === null ? null : latestNav * units;
 
-        // Compute absolute returns for different time periods
         const oneDayNav = toNumber(snapshot?.prev1Day?.nav);
         const oneMonthNav = toNumber(snapshot?.oneMonth?.nav);
+        const threeMonthNav = toNumber(snapshot?.threeMonth?.nav);
+        const sixMonthNav = toNumber(snapshot?.sixMonth?.nav);
         const jan1Nav = toNumber(snapshot?.jan1?.nav);
         const oneYearNav = toNumber(snapshot?.oneYear?.nav);
 
-        const absReturn1Day = (latestNav !== null && oneDayNav !== null) ? (latestNav - oneDayNav) * units : null;
-        const absReturn1Month = (latestNav !== null && oneMonthNav !== null) ? (latestNav - oneMonthNav) * units : null;
-        const absReturnVsJan1 = (latestNav !== null && jan1Nav !== null) ? (latestNav - jan1Nav) * units : null;
-        const absReturn1Year = (latestNav !== null && oneYearNav !== null) ? (latestNav - oneYearNav) * units : null;
+        const absReturn1Day = absReturn(latestNav, oneDayNav, units);
+        const absReturn1Month = absReturn(latestNav, oneMonthNav, units);
+        const absReturn3Month = absReturn(latestNav, threeMonthNav, units);
+        const absReturn6Month = absReturn(latestNav, sixMonthNav, units);
+        const absReturnVsJan1 = absReturn(latestNav, jan1Nav, units);
+        const absReturn1Year = absReturn(latestNav, oneYearNav, units);
 
         return {
             amcName: holding.amcName || deriveAmcFromSchemeName(codeItem?.apiSchemeName || holding.schemeName) || '-',
@@ -71,6 +78,8 @@ export async function buildReportRows() {
                 : null,
             oneDayNav,
             oneMonthNav,
+            threeMonthNav,
+            sixMonthNav,
             jan1Nav,
             oneYearNav,
             pctVs1Day: toNumber(snapshot?.pctVs1Day),
@@ -79,6 +88,8 @@ export async function buildReportRows() {
             pctVs1Year: toNumber(snapshot?.pctVs1Year),
             absReturn1Day,
             absReturn1Month,
+            absReturn3Month,
+            absReturn6Month,
             absReturnVsJan1,
             absReturn1Year,
         };
