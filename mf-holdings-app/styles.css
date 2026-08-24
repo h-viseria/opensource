@@ -399,6 +399,8 @@ th .header-filter {
 .delta-positive { color: #4bd37b; }
 .delta-negative { color: #ff7a8a; }
 .delta-zero     { color: var(--muted); }
+.totals-card-value.delta-positive { color: #4bd37b; }
+.totals-card-value.delta-negative { color: #ff7a8a; }
 
 /* ── How to Use tab ───────────────────────────────────────────────────── */
 .how-to-use-card {
