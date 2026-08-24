@@ -61,6 +61,10 @@ function pctDelta(latest, base) {
     return ((latest - base) / base) * 100;
 }
 
+function monthsBefore(date, months) {
+    return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() - months, date.getUTCDate()));
+}
+
 function toSnapshot(series) {
     const latest = series[0] || null;
 
@@ -71,18 +75,18 @@ function toSnapshot(series) {
     const latestDate = latest.dateObj;
     const oneDayTarget = new Date(Date.UTC(latestDate.getUTCFullYear(), latestDate.getUTCMonth(), latestDate.getUTCDate() - 1));
     const prev1Day = findOnOrBefore(series, oneDayTarget);
-    const oneMonthTarget = new Date(Date.UTC(latestDate.getUTCFullYear(), latestDate.getUTCMonth() - 1, latestDate.getUTCDate()));
-    const jan1Target = new Date(Date.UTC(latestDate.getUTCFullYear(), 0, 1));
-    const oneYearTarget = new Date(Date.UTC(latestDate.getUTCFullYear() - 1, latestDate.getUTCMonth(), latestDate.getUTCDate()));
-
-    const oneMonth = findOnOrBefore(series, oneMonthTarget);
-    const jan1 = findOnOrBefore(series, jan1Target);
-    const oneYear = findOnOrBefore(series, oneYearTarget);
+    const oneMonth = findOnOrBefore(series, monthsBefore(latestDate, 1));
+    const threeMonth = findOnOrBefore(series, monthsBefore(latestDate, 3));
+    const sixMonth = findOnOrBefore(series, monthsBefore(latestDate, 6));
+    const jan1 = findOnOrBefore(series, new Date(Date.UTC(latestDate.getUTCFullYear(), 0, 1)));
+    const oneYear = findOnOrBefore(series, monthsBefore(latestDate, 12));
 
     return {
         latest,
         prev1Day,
         oneMonth,
+        threeMonth,
+        sixMonth,
         jan1,
         oneYear,
         pctVs1Day: pctDelta(latest.nav, prev1Day?.nav),
