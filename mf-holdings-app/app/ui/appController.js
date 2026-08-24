@@ -535,26 +535,50 @@ async function refreshReport() {
 
 // ─── Report Totals Summary ────────────────────────────────────────────────────
 
+function signedTotalsCard(label, value) {
+    const colorClass = !Number.isFinite(value) ? '' : value >= 0 ? 'delta-positive' : 'delta-negative';
+    return `
+        <div class="totals-card">
+            <div class="totals-card-label">${label}</div>
+            <div class="totals-card-value ${colorClass}">${formatNumber(value)}</div>
+        </div>
+    `;
+}
+
+function periodReturnCardsHtml(totals) {
+    return `
+        <div class="report-totals-grid">
+            ${signedTotalsCard('Last 1 Day Return', totals.absReturn1Day)}
+            ${signedTotalsCard('Last 3 Months Return', totals.absReturn3Month)}
+            ${signedTotalsCard('Last 6 Months Return', totals.absReturn6Month)}
+            ${signedTotalsCard('Last 1 Year Return', totals.absReturn1Year)}
+        </div>
+    `;
+}
+
 function renderReportTotals() {
     // Scheme Report totals
     const schemeTotal = calculateSchemeTotals(allReportRows);
     const schemeTotalsHtml = `
-        <div class="totals-card">
-            <div class="totals-card-label">Total Invested Value</div>
-            <div class="totals-card-value">${formatNumber(schemeTotal.investedValue)}</div>
+        <div class="report-totals-grid">
+            <div class="totals-card">
+                <div class="totals-card-label">Total Invested Value</div>
+                <div class="totals-card-value">${formatNumber(schemeTotal.investedValue)}</div>
+            </div>
+            <div class="totals-card">
+                <div class="totals-card-label">Total Current Value</div>
+                <div class="totals-card-value">${formatNumber(schemeTotal.currentValue)}</div>
+            </div>
+            <div class="totals-card">
+                <div class="totals-card-label">Total Returns</div>
+                <div class="totals-card-value" style="color:${schemeTotal.returns >= 0 ? '#4bd37b' : '#ff7a8a'}">${formatNumber(schemeTotal.returns)}</div>
+            </div>
+            <div class="totals-card">
+                <div class="totals-card-label">Total Returns %</div>
+                <div class="totals-card-value" style="color:${schemeTotal.returnsPct >= 0 ? '#4bd37b' : '#ff7a8a'}">${formatPercent(schemeTotal.returnsPct)}</div>
+            </div>
         </div>
-        <div class="totals-card">
-            <div class="totals-card-label">Total Current Value</div>
-            <div class="totals-card-value">${formatNumber(schemeTotal.currentValue)}</div>
-        </div>
-        <div class="totals-card">
-            <div class="totals-card-label">Total Returns</div>
-            <div class="totals-card-value" style="color:${schemeTotal.returns >= 0 ? '#4bd37b' : '#ff7a8a'}">${formatNumber(schemeTotal.returns)}</div>
-        </div>
-        <div class="totals-card">
-            <div class="totals-card-label">Total Returns %</div>
-            <div class="totals-card-value" style="color:${schemeTotal.returnsPct >= 0 ? '#4bd37b' : '#ff7a8a'}">${formatPercent(schemeTotal.returnsPct)}</div>
-        </div>
+        ${periodReturnCardsHtml(schemeTotal)}
     `;
     const schemeTotalsEl = byId('scheme-report-totals');
     if (schemeTotalsEl) schemeTotalsEl.innerHTML = schemeTotalsHtml;
@@ -562,22 +586,25 @@ function renderReportTotals() {
     // AMC Summary totals
     const amcTotal = calculateAmcTotals(allAmcRows);
     const amcTotalsHtml = `
-        <div class="totals-card">
-            <div class="totals-card-label">Total Invested Value</div>
-            <div class="totals-card-value">${formatNumber(amcTotal.investedValue)}</div>
+        <div class="report-totals-grid">
+            <div class="totals-card">
+                <div class="totals-card-label">Total Invested Value</div>
+                <div class="totals-card-value">${formatNumber(amcTotal.investedValue)}</div>
+            </div>
+            <div class="totals-card">
+                <div class="totals-card-label">Total Current Value</div>
+                <div class="totals-card-value">${formatNumber(amcTotal.currentValue)}</div>
+            </div>
+            <div class="totals-card">
+                <div class="totals-card-label">Total Returns</div>
+                <div class="totals-card-value" style="color:${amcTotal.returns >= 0 ? '#4bd37b' : '#ff7a8a'}">${formatNumber(amcTotal.returns)}</div>
+            </div>
+            <div class="totals-card">
+                <div class="totals-card-label">Total Returns %</div>
+                <div class="totals-card-value" style="color:${amcTotal.returnsPct >= 0 ? '#4bd37b' : '#ff7a8a'}">${formatPercent(amcTotal.returnsPct)}</div>
+            </div>
         </div>
-        <div class="totals-card">
-            <div class="totals-card-label">Total Current Value</div>
-            <div class="totals-card-value">${formatNumber(amcTotal.currentValue)}</div>
-        </div>
-        <div class="totals-card">
-            <div class="totals-card-label">Total Returns</div>
-            <div class="totals-card-value" style="color:${amcTotal.returns >= 0 ? '#4bd37b' : '#ff7a8a'}">${formatNumber(amcTotal.returns)}</div>
-        </div>
-        <div class="totals-card">
-            <div class="totals-card-label">Total Returns %</div>
-            <div class="totals-card-value" style="color:${amcTotal.returnsPct >= 0 ? '#4bd37b' : '#ff7a8a'}">${formatPercent(amcTotal.returnsPct)}</div>
-        </div>
+        ${periodReturnCardsHtml(amcTotal)}
     `;
     const amcTotalsEl = byId('amc-report-totals');
     if (amcTotalsEl) amcTotalsEl.innerHTML = amcTotalsHtml;
@@ -610,6 +637,18 @@ function renderReportTotals() {
     if (comparisonTotalsEl) comparisonTotalsEl.innerHTML = comparisonTotalsHtml;
 }
 
+function sumFinite(rows, key) {
+    let sum = 0;
+    let hasValue = false;
+    rows.forEach((row) => {
+        if (Number.isFinite(row[key])) {
+            sum += row[key];
+            hasValue = true;
+        }
+    });
+    return hasValue ? sum : null;
+}
+
 function calculateSchemeTotals(rows) {
     let investedValue = 0, currentValue = 0;
     rows.forEach(row => {
@@ -618,7 +657,16 @@ function calculateSchemeTotals(rows) {
     });
     const returns = currentValue - investedValue;
     const returnsPct = investedValue ? (returns / investedValue) * 100 : 0;
-    return { investedValue, currentValue, returns, returnsPct };
+    return {
+        investedValue,
+        currentValue,
+        returns,
+        returnsPct,
+        absReturn1Day: sumFinite(rows, 'absReturn1Day'),
+        absReturn3Month: sumFinite(rows, 'absReturn3Month'),
+        absReturn6Month: sumFinite(rows, 'absReturn6Month'),
+        absReturn1Year: sumFinite(rows, 'absReturn1Year'),
+    };
 }
 
 function calculateAmcTotals(rows) {
@@ -629,7 +677,16 @@ function calculateAmcTotals(rows) {
         if (Number.isFinite(row.returnsValue)) returnsValue += row.returnsValue;
     });
     const returnsPct = investedValue ? (returnsValue / investedValue) * 100 : 0;
-    return { investedValue, currentValue, returns: returnsValue, returnsPct };
+    return {
+        investedValue,
+        currentValue,
+        returns: returnsValue,
+        returnsPct,
+        absReturn1Day: sumFinite(rows, 'absReturn1Day'),
+        absReturn3Month: sumFinite(rows, 'absReturn3Month'),
+        absReturn6Month: sumFinite(rows, 'absReturn6Month'),
+        absReturn1Year: sumFinite(rows, 'absReturn1Year'),
+    };
 }
 
 function calculateComparisonTotals(rows) {
