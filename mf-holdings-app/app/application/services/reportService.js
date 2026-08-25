@@ -4,6 +4,14 @@ import {
     getAllSchemeCodes,
     normalizeSchemeName,
 } from '../../infrastructure/db/indexedDb.js';
+import { getAllTransactions } from '../../infrastructure/db/transactionsIndexedDb.js';
+import { enrichTransactionsWithHoldingMapping } from './transactionHoldingMapper.js';
+import {
+    calendarLookbacks,
+    computePeriodPnl,
+    groupTransactionsByHolding,
+    resolvePeriodWindow,
+} from './periodPnlService.js';
 
 function deriveAmcFromSchemeName(schemeName) {
     const cleaned = String(schemeName || '').trim();
@@ -24,19 +32,30 @@ function toNumber(value) {
     return Number.isFinite(value) ? value : null;
 }
 
-function absReturn(latestNav, periodNav, units) {
-    return (latestNav !== null && periodNav !== null) ? (latestNav - periodNav) * units : null;
+function holdingPeriodPnl(holdingUnits, latestNav, snapshotPoint, calendarStartIso, endIso, transactions) {
+    const window = resolvePeriodWindow(snapshotPoint, calendarStartIso);
+    return computePeriodPnl({
+        currentUnits: holdingUnits,
+        latestNav,
+        periodNav: window.periodNav,
+        periodStartIso: window.startIso,
+        periodEndIso: endIso,
+        transactions,
+    });
 }
 
 export async function buildReportRows() {
-    const [holdings, schemeCodes, navSnapshots] = await Promise.all([
+    const [holdings, schemeCodes, navSnapshots, rawTransactions] = await Promise.all([
         getAllHoldings(),
         getAllSchemeCodes(),
         getAllNavSnapshots(),
+        getAllTransactions(),
     ]);
 
     const codeByName = new Map(schemeCodes.map((item) => [item.schemeNameNormalized, item]));
     const snapshotByCode = new Map(navSnapshots.map((item) => [item.schemeCode, item]));
+    const mappedTransactions = enrichTransactionsWithHoldingMapping(rawTransactions, holdings);
+    const transactionsByHolding = groupTransactionsByHolding(mappedTransactions);
 
     return holdings.map((holding) => {
         const codeItem = codeByName.get(normalizeSchemeName(holding.schemeName));
@@ -54,12 +73,15 @@ export async function buildReportRows() {
         const jan1Nav = toNumber(snapshot?.jan1?.nav);
         const oneYearNav = toNumber(snapshot?.oneYear?.nav);
 
-        const absReturn1Day = absReturn(latestNav, oneDayNav, units);
-        const absReturn1Month = absReturn(latestNav, oneMonthNav, units);
-        const absReturn3Month = absReturn(latestNav, threeMonthNav, units);
-        const absReturn6Month = absReturn(latestNav, sixMonthNav, units);
-        const absReturnVsJan1 = absReturn(latestNav, jan1Nav, units);
-        const absReturn1Year = absReturn(latestNav, oneYearNav, units);
+        const lookbacks = calendarLookbacks(snapshot?.latest?.date);
+        const schemeTransactions = transactionsByHolding.get(normalizeSchemeName(holding.schemeName)) || [];
+
+        const absReturn1Day = holdingPeriodPnl(units, latestNav, snapshot?.prev1Day, lookbacks.oneDay, lookbacks.endIso, schemeTransactions);
+        const absReturn1Month = holdingPeriodPnl(units, latestNav, snapshot?.oneMonth, lookbacks.oneMonth, lookbacks.endIso, schemeTransactions);
+        const absReturn3Month = holdingPeriodPnl(units, latestNav, snapshot?.threeMonth, lookbacks.threeMonth, lookbacks.endIso, schemeTransactions);
+        const absReturn6Month = holdingPeriodPnl(units, latestNav, snapshot?.sixMonth, lookbacks.sixMonth, lookbacks.endIso, schemeTransactions);
+        const absReturnVsJan1 = holdingPeriodPnl(units, latestNav, snapshot?.jan1, lookbacks.jan1, lookbacks.endIso, schemeTransactions);
+        const absReturn1Year = holdingPeriodPnl(units, latestNav, snapshot?.oneYear, lookbacks.oneYear, lookbacks.endIso, schemeTransactions);
 
         return {
             amcName: holding.amcName || deriveAmcFromSchemeName(codeItem?.apiSchemeName || holding.schemeName) || '-',
