@@ -3,7 +3,7 @@
  * Enables offline support and caching strategies
  */
 
-const CACHE_NAME = 'mf-holdings-v2';
+const CACHE_NAME = 'mf-holdings-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -17,6 +17,7 @@ const ASSETS_TO_CACHE = [
   './app/application/services/schemeCodeSyncService.js',
   './app/application/services/navSnapshotService.js',
   './app/application/services/reportService.js',
+  './app/application/services/periodPnlService.js',
   './app/infrastructure/db/indexedDb.js',
   './app/infrastructure/api/mfApiClient.js',
   './app/infrastructure/parsers/mfcCasParser.js',
