@@ -264,6 +264,21 @@ export function classifyTransactionDirection(text) {
     return 'unknown';
 }
 
+/**
+ * Cash-flow direction for period rupee P&L.
+ * Unlike XIRR, switch-out is treated as a redemption so units and cash leave the scheme.
+ */
+export function classifyPnlDirection(text) {
+    const value = String(text || '').toLowerCase();
+    if (!value || isIgnorableNonCashRow(value)) {
+        return 'skip';
+    }
+    if (isSwitchOutTransaction(value)) {
+        return 'inflow';
+    }
+    return classifyTransactionDirection(text);
+}
+
 function detectStatementPeriod(rows, headerRowIndex) {
     const scanLimit = Math.min(headerRowIndex, 20);
     let periodFrom = null;
