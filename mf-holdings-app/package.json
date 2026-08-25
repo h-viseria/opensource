@@ -16,7 +16,8 @@
     "transaction-mapper:test": "node ./tests/transaction-holding-mapper.mjs",
     "switch-classifier:test": "node ./tests/switch-transaction-classifier.mjs",
     "icons:generate": "node ./scripts/generate-icons.mjs",
-    "test": "npm run check && npm run smoke && npm run amc:test && npm run matcher:test && npm run cas:test && npm run xirr:test && npm run transactions:test && npm run transaction-mapper:test"
+    "period-pnl:test": "node ./tests/period-pnl.mjs",
+    "test": "npm run check && npm run smoke && npm run amc:test && npm run matcher:test && npm run cas:test && npm run xirr:test && npm run transactions:test && npm run transaction-mapper:test && npm run period-pnl:test"
   },
   "dependencies": {
     "xlsx": "^0.18.5"
