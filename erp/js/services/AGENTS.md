@@ -19,6 +19,7 @@ Orchestrate repositories + engines, emit events, write audit logs. Called by UI 
 | `googleDriveService.js` | OAuth (`drive.file`) upload/update/list/download; Client ID in `googleDriveConfig.js` |
 | `driveSyncService.js` | Folder-linked sync, launch compare, periodic upload |
 | `gnuCashImportService.js` | Accounts + transactions CSV round-trip |
+| `tallyImportService.js` | Tally XML masters + vouchers (validate, then import) |
 | `personalFinanceService.js` | Budgets/goals + PF reports |
 | `invoiceTemplateService.js` | docx/odt placeholder fill |
 
