@@ -10,6 +10,7 @@ Static data only (no I/O).
 | `inventoryDefaults.js` | Default units, categories, warehouse |
 | `taxDefaults.js` | Default tax codes / ledger names |
 | `financeDefaults.js` | Goal template hints |
+| `tallyMaps.js` | Tally reserved group → nature, voucher type names |
 
 ## Rules
 
