@@ -66,6 +66,11 @@ export async function renderMasters(_ctx, outlet) {
         <div class="master-card__title">GNUCash Import/Export</div>
         <div class="master-card__desc">Import or export accounts + transactions CSV (GNUCash format)</div>
       </a>
+      <a class="master-card" href="#/masters/tally-import">
+        <div class="master-card__icon" aria-hidden="true">⇩</div>
+        <div class="master-card__title">Tally Import</div>
+        <div class="master-card__desc">Import Tally XML groups, ledgers, and vouchers</div>
+      </a>
     </div>
   `;
 }
