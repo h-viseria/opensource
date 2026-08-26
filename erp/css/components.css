@@ -1412,6 +1412,91 @@
   font-family: var(--font-mono, monospace);
 }
 
+/* ── Tally import validation ────────────────────────────── */
+
+.tally-file {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+}
+
+.tally-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-3) 0;
+}
+
+.tally-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.tally-toolbar .input {
+  max-width: 18rem;
+}
+
+.tally-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.tally-subhead {
+  margin: var(--space-4) 0 var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.tally-validate {
+  max-height: 22rem;
+  margin-top: 0;
+}
+
+.tally-validate--map {
+  max-height: 14rem;
+}
+
+.tally-validate .input,
+.tally-validate .select {
+  width: 100%;
+  min-width: 6rem;
+  padding: 0.35rem 0.5rem;
+  font-size: var(--text-sm);
+}
+
+.tally-validate td:first-child {
+  width: 2.25rem;
+}
+
+.data-table tr.is-danger td {
+  background: var(--color-danger-bg, #fde8e8);
+}
+
+.data-table tr.is-muted td {
+  opacity: 0.65;
+}
+
+.tally-lines {
+  margin: 0;
+  background: var(--color-bg-muted, rgba(0, 0, 0, 0.03));
+}
+
+.tally-lines-row td {
+  padding: 0.5rem 1rem 1rem;
+}
+
+.tally-pager {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
 .text-danger {
   color: var(--color-danger, #b42318);
 }
