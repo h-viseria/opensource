@@ -44,6 +44,7 @@ import { renderGoals } from './ui/pages/goals.js';
 import { renderNetWorth } from './ui/pages/netWorth.js';
 import { renderBudgetVariance } from './ui/pages/budgetVariance.js';
 import { renderGnuCashImport } from './ui/pages/gnuCashImport.js';
+import { renderTallyImport } from './ui/pages/tallyImport.js';
 import { renderInvoices } from './ui/pages/invoices.js';
 import { renderInvoiceNew } from './ui/pages/invoiceForm.js';
 import { renderInvoiceDetail } from './ui/pages/invoiceDetail.js';
@@ -245,6 +246,12 @@ export function registerRoutes(outlet, hooks = {}) {
     title: 'GNUCash Import/Export',
     requiresBook: true,
     render: wrap(renderGnuCashImport),
+  });
+
+  router.register('/masters/tally-import', {
+    title: 'Tally Import',
+    requiresBook: true,
+    render: wrap(renderTallyImport),
   });
 
   router.register('/transactions', {
