@@ -40,6 +40,7 @@ const NAV = [
           { path: '/masters/groups', label: 'Ledger groups' },
           { path: '/masters/ledgers', label: 'Ledgers' },
           { path: '/masters/gnucash-import', label: 'GNUCash Import/Export' },
+          { path: '/masters/tally-import', label: 'Tally Import' },
         ],
       },
       {
