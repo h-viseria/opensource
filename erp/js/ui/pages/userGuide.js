@@ -76,7 +76,7 @@ const CHAPTERS = [
         title: 'Masters hub',
         path: '/masters',
         body: `
-          <p>Entry point for the accounting structure: Chart of Accounts, ledger groups, ledgers, and GNUCash import/export.</p>`,
+          <p>Entry point for the accounting structure: Chart of Accounts, ledger groups, ledgers, GNUCash import/export, and Tally XML import.</p>`,
       },
       {
         id: 'chart',
@@ -132,6 +132,23 @@ const CHAPTERS = [
             <li>Export from ${escapeHtml(APP_NAME)} when you need CSV back out for GNUCash or archive.</li>
           </ol>
           <p>Follow on-screen column hints; mismatches usually mean an account path that was not imported yet.</p>`,
+      },
+      {
+        id: 'tally',
+        title: 'Tally Import',
+        path: '/masters/tally-import',
+        body: `
+          <p>Import Tally XML <strong>masters</strong> (groups and ledgers) and <strong>vouchers</strong> into the active book.
+          Nothing is saved until you review the validation tables and confirm.</p>
+          <ol>
+            <li>Export Groups + Ledgers as XML from Tally, then export vouchers (or one file that contains both).</li>
+            <li>Upload masters first. If the book has <strong>no vouchers</strong>, PicoERP
+              <strong>replaces</strong> the template chart with Tally. If vouchers already exist, matching names are reused and only new accounts are added.</li>
+            <li>On the validation grid, fix natures (top-level groups), parents, names, and opening Dr/Cr. Uncheck a row to skip it.</li>
+            <li>Upload vouchers. Map each Tally ledger name to a chart ledger, correct dates/types/amounts, then import.
+              Opening-balance vouchers are skipped so openings are not double-counted.</li>
+          </ol>
+          <p>GST, inventory, and invoices are not imported in this version — accounting vouchers only. Run Trial Balance after a large import.</p>`,
       },
     ],
   },
