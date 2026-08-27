@@ -20,8 +20,10 @@ export function buildAmcSummaryRows(reportRows) {
             currentValue: 0,
             schemeCount: 0,
             absReturn1Day: null,
+            absReturn1Month: null,
             absReturn3Month: null,
             absReturn6Month: null,
+            absReturnVsJan1: null,
             absReturn1Year: null,
         };
 
@@ -29,8 +31,10 @@ export function buildAmcSummaryRows(reportRows) {
         current.currentValue += toNumber(row.currentValue);
         current.schemeCount += 1;
         current.absReturn1Day = addNullable(current.absReturn1Day, row.absReturn1Day);
+        current.absReturn1Month = addNullable(current.absReturn1Month, row.absReturn1Month);
         current.absReturn3Month = addNullable(current.absReturn3Month, row.absReturn3Month);
         current.absReturn6Month = addNullable(current.absReturn6Month, row.absReturn6Month);
+        current.absReturnVsJan1 = addNullable(current.absReturnVsJan1, row.absReturnVsJan1);
         current.absReturn1Year = addNullable(current.absReturn1Year, row.absReturn1Year);
 
         byAmc.set(amcName, current);
