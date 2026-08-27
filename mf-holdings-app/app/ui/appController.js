@@ -549,8 +549,12 @@ function periodReturnCardsHtml(totals) {
     return `
         <div class="report-totals-grid">
             ${signedTotalsCard('Last 1 Day Return', totals.absReturn1Day)}
+            ${signedTotalsCard('Last 1 Month Return', totals.absReturn1Month)}
             ${signedTotalsCard('Last 3 Months Return', totals.absReturn3Month)}
             ${signedTotalsCard('Last 6 Months Return', totals.absReturn6Month)}
+        </div>
+        <div class="report-totals-grid">
+            ${signedTotalsCard('YTD Return', totals.absReturnVsJan1)}
             ${signedTotalsCard('Last 1 Year Return', totals.absReturn1Year)}
         </div>
     `;
@@ -663,8 +667,10 @@ function calculateSchemeTotals(rows) {
         returns,
         returnsPct,
         absReturn1Day: sumFinite(rows, 'absReturn1Day'),
+        absReturn1Month: sumFinite(rows, 'absReturn1Month'),
         absReturn3Month: sumFinite(rows, 'absReturn3Month'),
         absReturn6Month: sumFinite(rows, 'absReturn6Month'),
+        absReturnVsJan1: sumFinite(rows, 'absReturnVsJan1'),
         absReturn1Year: sumFinite(rows, 'absReturn1Year'),
     };
 }
@@ -683,8 +689,10 @@ function calculateAmcTotals(rows) {
         returns: returnsValue,
         returnsPct,
         absReturn1Day: sumFinite(rows, 'absReturn1Day'),
+        absReturn1Month: sumFinite(rows, 'absReturn1Month'),
         absReturn3Month: sumFinite(rows, 'absReturn3Month'),
         absReturn6Month: sumFinite(rows, 'absReturn6Month'),
+        absReturnVsJan1: sumFinite(rows, 'absReturnVsJan1'),
         absReturn1Year: sumFinite(rows, 'absReturn1Year'),
     };
 }
