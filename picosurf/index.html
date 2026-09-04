@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3d3e" />
+  <meta name="description" content="PicoSurf — a lightweight, privacy-first browser with local AI. Browse freely. Think locally." />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="PicoAI" />
+  <link rel="canonical" href="https://picoai.org/picosurf/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://picoai.org/picosurf/" />
+  <meta property="og:site_name" content="PicoSurf" />
+  <meta property="og:title" content="PicoSurf — Browse freely. Think locally." />
+  <meta property="og:description" content="A lightweight, privacy-first browser with local AI that helps you search, explore, understand and remember the web. No cloud AI required." />
+
+  <meta name="twitter:title" content="PicoSurf — Browse freely. Think locally." />
+  <meta name="twitter:description" content="Local AI in a small browser. No API keys. No per-query token bill. Your data stays on your device." />
+
+  <title>PicoSurf — Browse freely. Think locally.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../erp/css/variables.css" />
+  <link rel="stylesheet" href="../erp/css/base.css" />
+  <link rel="stylesheet" href="../erp/alternatives/alternatives.css" />
+  <style>
+    .brand__mark {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: var(--radius-sm);
+      display: grid;
+      place-items: center;
+      background: var(--color-brand);
+      color: var(--color-text-on-brand);
+      flex-shrink: 0;
+    }
+
+    .brand__mark svg {
+      width: 1.35rem;
+      height: 1.35rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-bottom: var(--space-2);
+    }
+
+    .cta--secondary {
+      background: var(--color-bg-elevated);
+      color: var(--color-brand);
+      border: 1px solid var(--color-border);
+      box-shadow: none;
+    }
+
+    .cta--secondary:hover {
+      background: var(--color-bg-muted);
+      color: var(--color-brand-strong);
+      transform: translateY(-1px);
+    }
+
+    .hero__tagline {
+      margin: 0 0 var(--space-5);
+      font-size: clamp(1.1rem, 2.5vw, var(--text-xl));
+      font-weight: 500;
+      color: var(--color-text);
+      letter-spacing: -0.02em;
+    }
+
+    .hero__points {
+      margin: 0 0 var(--space-6);
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .hero__points li {
+      font-size: var(--text-base);
+      color: var(--color-text-muted);
+    }
+
+    .hero__points li strong {
+      color: var(--color-text);
+      font-weight: 600;
+    }
+
+    .hero__closing {
+      margin: var(--space-6) 0 0;
+      font-size: var(--text-lg);
+      font-weight: 600;
+      color: var(--color-brand);
+    }
+
+    .pillar {
+      padding: var(--space-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      background: var(--color-bg-elevated);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pillar h3 {
+      margin: 0 0 var(--space-3);
+      font-size: var(--text-base);
+      font-weight: 700;
+      color: var(--color-brand);
+    }
+
+    .pillar p {
+      margin: 0 0 var(--space-3);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      line-height: 1.55;
+    }
+
+    .pillar p:last-child {
+      margin-bottom: 0;
+    }
+
+    .pillar__emphasis {
+      margin-top: var(--space-3) !important;
+      font-weight: 600;
+      color: var(--color-brand) !important;
+    }
+
+    .pillars {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    @media (min-width: 720px) {
+      .pillars {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .quote-grid {
+      display: grid;
+      gap: var(--space-3);
+      margin: var(--space-4) 0 var(--space-5);
+    }
+
+    .quote {
+      margin: 0;
+      padding: var(--space-4) var(--space-5);
+      border-left: 3px solid var(--color-accent);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      background: var(--color-bg-elevated);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      font-style: italic;
+      line-height: 1.55;
+    }
+
+    .section__lead {
+      font-size: var(--text-lg);
+      color: var(--color-text);
+      font-weight: 500;
+    }
+
+    .section__emphasis {
+      margin-top: var(--space-4);
+      font-weight: 600;
+      color: var(--color-brand);
+    }
+
+    .philosophy {
+      padding: var(--space-6);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(15, 61, 62, 0.06), rgba(196, 92, 38, 0.05));
+      border: 1px solid var(--color-border);
+    }
+
+    .philosophy p {
+      margin: 0 0 var(--space-3);
+    }
+
+    .philosophy p:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PicoSurf",
+    "url": "https://picoai.org/picosurf/",
+    "description": "A lightweight, privacy-first browser with local AI for search, research, and page understanding.",
+    "applicationCategory": "BrowserApplication",
+    "operatingSystem": "Windows",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Local AI with llama.cpp — no cloud API required",
+      "System WebView2 — no bundled browser engine",
+      "Research and summarize from the live web",
+      "Browsing history and downloads stored locally",
+      "Privacy-first — websites cannot access local data"
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="index.html">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3 12h18M12 3c2.5 2.8 4 6 4 9s-1.5 6.2-4 9M12 3c-2.5 2.8-4 6-4 9s1.5 6.2 4 9" />
+          </svg>
+        </span>
+        <span class="brand__text">
+          <span class="brand__name">PicoSurf</span>
+          <span class="brand__tag">Browse freely. Think locally.</span>
+        </span>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link nav-link--hide-sm" href="https://picoai.org/">PicoAI</a>
+        <a class="nav-link nav-link--hide-sm" href="../erp/index.html">PicoERP</a>
+        <a class="cta" href="#download">Download PicoSurf</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <p class="hero__eyebrow">PicoAI</p>
+      <h1>PicoSurf</h1>
+      <p class="hero__tagline">Browse freely. Think locally.</p>
+      <p class="hero__lead">
+        A lightweight, privacy-first browser with a local AI that helps you search, explore,
+        understand and remember the web.
+      </p>
+      <ul class="hero__points">
+        <li><strong>No cloud AI required.</strong></li>
+        <li><strong>No AI API key.</strong></li>
+        <li><strong>No per-query token bill.</strong></li>
+        <li><strong>No giant browser engine bundled inside.</strong></li>
+      </ul>
+      <div class="hero-actions">
+        <a class="cta cta--lg" id="download" href="#download">Download PicoSurf</a>
+        <a class="cta cta--lg cta--secondary" href="https://github.com/PicoAI/picosurf">View on GitHub</a>
+      </div>
+      <p class="hero__closing">Just a small browser with a brain of its own.</p>
+    </div>
+
+    <section class="wrap section" aria-labelledby="why-heading">
+      <h2 id="why-heading">Why PicoSurf?</h2>
+      <div class="pillars">
+        <article class="pillar">
+          <h3>Browsers became huge.</h3>
+          <p>We wanted something smaller.</p>
+          <p>
+            PicoSurf uses the operating system&rsquo;s native WebView instead of shipping another
+            complete browser engine. The result is a browser designed to stay lightweight, fast
+            and focused.
+          </p>
+          <p class="pillar__emphasis">Less software. Less baggage.</p>
+        </article>
+        <article class="pillar">
+          <h3>AI became cloud-dependent.</h3>
+          <p>We wanted something different.</p>
+          <p>
+            PicoSurf runs AI models locally on your device. When the browser needs AI to understand
+            a page, summarize information or research the web, the intelligence can stay with you.
+          </p>
+          <p class="pillar__emphasis">Your browsing context doesn&rsquo;t need to become someone else&rsquo;s data.</p>
+        </article>
+        <article class="pillar">
+          <h3>AI became a token meter.</h3>
+          <p>Every question. Every page. Every API call. Tokens add up.</p>
+          <p>
+            PicoSurf takes a different approach: download a suitable local model once and use it
+            on your device.
+          </p>
+          <p class="pillar__emphasis">No per-query AI bill.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap section" aria-labelledby="help-heading">
+      <h2 id="help-heading">A browser that can actually help you browse</h2>
+      <p class="section__lead">Don&rsquo;t just search. Tell PicoSurf what you&rsquo;re looking for.</p>
+      <div class="quote-grid">
+        <blockquote class="quote">&ldquo;Find the top 5 milk brands in UAE and compare them.&rdquo;</blockquote>
+        <blockquote class="quote">&ldquo;Find five good research papers about local LLM inference.&rdquo;</blockquote>
+        <blockquote class="quote">&ldquo;Open this page and summarize it.&rdquo;</blockquote>
+        <blockquote class="quote">&ldquo;Find the pricing on this website.&rdquo;</blockquote>
+        <blockquote class="quote">&ldquo;Compare these three products.&rdquo;</blockquote>
+      </div>
+      <p>
+        PicoSurf can search, navigate, extract, compare and summarize &mdash; using local AI and
+        the browser itself.
+      </p>
+      <p class="section__emphasis">The browser remains the tool. AI just makes it smarter.</p>
+    </section>
+
+    <section class="wrap section" aria-labelledby="data-heading">
+      <h2 id="data-heading">Your browser. Your AI. Your data.</h2>
+      <p>PicoSurf is designed around a simple principle:</p>
+      <p class="section__emphasis">AI should work for you without requiring your data to work for someone else.</p>
+      <div class="diff" style="margin-top: var(--space-5);">
+        <div class="diff__item">
+          <strong>Local by default</strong>
+          <p>Your AI interactions and saved knowledge can stay on this device.</p>
+        </div>
+        <div class="diff__item">
+          <strong>Websites stay websites</strong>
+          <p>Page scripts cannot read history, downloads, or local AI data.</p>
+        </div>
+        <div class="diff__item">
+          <strong>Your browser remains yours</strong>
+          <p>No account, no telemetry, no cloud LLM in the loop.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section" aria-labelledby="design-heading">
+      <h2 id="design-heading">Small by design.</h2>
+      <div class="philosophy">
+        <p>PicoSurf is part of the PicoAI philosophy:</p>
+        <p class="section__emphasis">Small software. Local intelligence. Private by default.</p>
+        <p>
+          We don&rsquo;t believe every application needs a cloud backend, a user account, a
+          subscription or a massive runtime.
+        </p>
+        <p>Sometimes, a small application running on your own machine is enough.</p>
+      </div>
+    </section>
+
+    <div class="wrap cta-block">
+      <h2>PicoSurf</h2>
+      <p>Browse freely. Think locally.</p>
+      <p>Open source. Local AI. Lightweight by design.</p>
+      <div class="hero-actions" style="justify-content: center; margin-top: var(--space-5);">
+        <a class="cta cta--lg" href="#download">Download PicoSurf</a>
+        <a class="cta cta--lg cta--secondary" href="https://github.com/PicoAI/picosurf">View on GitHub</a>
+      </div>
+      <p style="margin-top: var(--space-6); margin-bottom: 0; font-size: var(--text-sm); color: var(--color-text-on-brand-muted);">
+        <strong style="color: var(--color-text-on-brand);">PicoAI</strong>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap site-footer__inner">
+      <p>PicoSurf &mdash; privacy-first browser with local AI. Windows. WebView2. llama.cpp.</p>
+      <nav class="footer-links" aria-label="Related links">
+        <a href="https://picoai.org/">PicoAI</a>
+        <a href="../erp/index.html">PicoERP</a>
+        <a href="https://github.com/PicoAI/picosurf">GitHub</a>
+        <a href="../README.md">Developer README</a>
+      </nav>
+      <p class="disclaimer">
+        PicoSurf is experimental software. Browse responsibly. Local AI quality depends on the
+        model you choose and your device hardware. Download links point to releases when published.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
