@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Health Check Pinger</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #121212; color: #fff; }
+    #log { background: #1e1e1e; padding: 10px; border-radius: 5px; font-family: monospace; height: 300px; overflow-y: scroll; }
+    .success { color: #4caf50; }
+    .error { color: #f44336; }
+  </style>
+</head>
+<body>
+  <h2>Background Pinger</h2>
+  <p>Status: <span id="status">Running...</span></p>
+  <div id="log"></div>
+
+  <script>
+    const URL_TO_PING = 'https://sourceforge.net/projects/picosurf/files/latest/download?t=';
+    const INTERVAL_MS = 30000; // 30 seconds
+
+    const logEl = document.getElementById('log');
+
+    function log(msg, isError = false) {
+      const entry = document.createElement('div');
+      entry.className = isError ? 'error' : 'success';
+      entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      logEl.prepend(entry);
+    }
+
+    function pingViaImage() {
+       const img = new Image();
+       // Appending a timestamp avoids browser caching
+       img.src = URL_TO_PING + Date.now();
+    }
+
+    async function sendPing() {
+      try {
+        // cache: 'no-store' ensures the browser doesn't hit local cache
+//        const res = await fetch(URL_TO_PING, { cache: 'no-store', mode: 'cors' });
+        const res = await pingViaImage() ;
+        log(`Ping successful - Status: ${res.status}`);
+      } catch (err) {
+        log(`Ping failed: ${err.message}`, true);
+      }
+    }
+
+    // Initial ping & recurring schedule
+    sendPing();
+    setInterval(sendPing, INTERVAL_MS);
+  </script>
+</body>
+</html>
