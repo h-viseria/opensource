@@ -29,3 +29,5 @@ PicoSurf can search, navigate, extract, compare and summarize using local AI and
 
 Part of the **PicoAI** philosophy: *Small software. Local intelligence. Private by default.*
 
+## Build
+powershell -ExecutionPolicy Bypass -File .\scripts\build.ps1
