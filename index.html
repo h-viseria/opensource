@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="PicoAI — 100% private, open-source, offline-first AI platform focused on building the next generation of private, AI-native applications." />
-  <meta name="keywords" content="PicoAI, open source, offline first, web apps, privacy, indexeddb, developer tools, client side apps" />
+  <meta name="description" content="PicoAI — private, lightweight, open-source software with local-first AI. Explore a growing family of apps for work, privacy, documents, learning and creativity." />
+  <meta name="keywords" content="PicoAI, open source, privacy, local first, AI applications, PicoERP, PicoSurf, PicoScan, PicoLearning, PicoPDF, PicoPrivacy, PicoClipboard, PicoAnime" />
   <meta name="author" content="PicoAI Team" />
   <meta name="robots" content="index, follow" />
 
@@ -15,16 +15,16 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://picoai.org/" />
   <meta property="og:site_name" content="PicoAI" />
-  <meta property="og:title" content="PicoAI — Privacy-First, Open-Source AI Application Platform" />
-  <meta property="og:description" content="Explore PicoAI's lightweight, offline-first applications. Zero installation, zero server telemetry, maximum privacy." />
+  <meta property="og:title" content="PicoAI — Private, Lightweight, Open-Source Software" />
+  <meta property="og:description" content="Explore PicoAI's growing family of lightweight, privacy-first applications. Local-first by design, with AI where it actually helps." />
 
   <!-- Twitter / X Card -->
   <meta name="twitter:url" content="https://picoai.org/" />
-  <meta name="twitter:title" content="PicoAI — Privacy-First, Open-Source AI Application Platform" />
-  <meta name="twitter:description" content="100% private, open-source, offline-first AI platform focused on building the next generation of private, AI-native applications running entirely offline via HTML & IndexedDB." />
+  <meta name="twitter:title" content="PicoAI — Private, Lightweight, Open-Source Software" />
+  <meta name="twitter:description" content="A growing family of private, lightweight and open-source applications designed to run where your data lives." />
 
   <meta name="google-adsense-account" content="ca-pub-3312349367159855" />
-  <title>PicoAI — Privacy-First, Open-Source AI Application Platform</title>
+  <title>PicoAI — Private, Lightweight, Open-Source Software</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -251,6 +251,202 @@
       transform: translateX(2px);
     }
 
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .hero__eyebrow,
+    .section-kicker {
+      margin: 0 0 0.65rem;
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .hero__eyebrow { margin-bottom: 1.1rem; }
+
+    .section-intro {
+      margin: 1.5rem 0 3.25rem;
+      max-width: 48rem;
+    }
+
+    .section-intro h2,
+    .why h2,
+    .closing h2 {
+      margin: 0 0 0.55rem;
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.65rem);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+    }
+
+    .section-intro > p:last-child,
+    .category-lead,
+    .closing > p:last-child {
+      margin: 0;
+      color: var(--cream-muted);
+      font-size: 0.98rem;
+    }
+
+    .category-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .category-heading .section-kicker { margin-bottom: 0.35rem; }
+
+    .category__title { margin-bottom: 0; }
+
+    .section-status {
+      flex-shrink: 0;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .section-status.live {
+      color: #8ed6bb;
+      background: rgba(61, 155, 122, 0.10);
+    }
+
+    .section-status.soon {
+      color: var(--accent-2);
+      background: rgba(196, 165, 116, 0.10);
+    }
+
+    .flagship { margin-top: 0; }
+
+    .flagship-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .app-card--featured {
+      padding: 1.55rem;
+      background:
+        linear-gradient(145deg, rgba(61, 155, 122, 0.14), transparent 48%),
+        var(--panel);
+    }
+
+    .app-card--featured h3 { font-size: 1.6rem; }
+
+    .feature-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.32rem;
+      color: var(--cream-muted);
+      font-size: 0.83rem;
+    }
+
+    .feature-list li::before {
+      content: "•";
+      color: var(--accent);
+      margin-right: 0.5rem;
+      font-weight: 800;
+    }
+
+    .platforms {
+      color: var(--cream-muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .coming-soon {
+      padding-top: 0.4rem;
+    }
+
+    .coming-soon .category-lead {
+      margin: -0.25rem 0 1.15rem;
+      max-width: 52rem;
+    }
+
+    .app-card--soon {
+      position: relative;
+      background:
+        linear-gradient(165deg, rgba(196, 165, 116, 0.065), transparent 45%),
+        var(--panel);
+      border-color: rgba(196, 165, 116, 0.14);
+    }
+
+    .app-card--soon:hover {
+      border-color: rgba(196, 165, 116, 0.32);
+    }
+
+    .app-card--soon .app-card__badge {
+      background: rgba(196, 165, 116, 0.14);
+      color: var(--accent-2);
+    }
+
+    .app-card--creative {
+      background:
+        linear-gradient(165deg, rgba(61, 155, 122, 0.10), rgba(196, 165, 116, 0.055) 70%),
+        var(--panel);
+    }
+
+    .why {
+      margin-top: 4.75rem;
+      padding: 2.4rem;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 0.25rem);
+      background:
+        linear-gradient(145deg, rgba(61, 155, 122, 0.09), transparent 55%),
+        rgba(18, 28, 24, 0.72);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+
+    .why-grid article {
+      padding-top: 0.4rem;
+    }
+
+    .why-icon {
+      display: block;
+      margin-bottom: 0.65rem;
+      font-size: 1.25rem;
+    }
+
+    .why-grid h3 {
+      margin: 0 0 0.4rem;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 500;
+    }
+
+    .why-grid p {
+      margin: 0;
+      color: var(--cream-muted);
+      font-size: 0.86rem;
+    }
+
+    .closing {
+      padding: 5rem 0 1rem;
+      text-align: center;
+    }
+
+    .closing .section-kicker { margin-bottom: 0.75rem; }
+    .closing h2 { max-width: 48rem; margin-inline: auto; }
+    .closing > p:last-child { max-width: 40rem; margin-inline: auto; }
+
     /* ── Footer ── */
     .site-footer {
       border-top: 1px solid var(--line);
@@ -290,9 +486,22 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    @media (max-width: 800px) {
+      .nav-actions { gap: 0.75rem; }
+      .nav-link:nth-child(3) { display: none; }
+      .flagship-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
     @media (max-width: 640px) {
       .hero { padding: 3rem 0 2.25rem; }
       .hero__tagline { max-width: none; }
+      .nav-actions { gap: 0.6rem; }
+      .nav-link { font-size: 0.78rem; }
+      .nav-link:nth-child(2) { display: none; }
+      .category-heading { align-items: flex-start; flex-direction: column; gap: 0.45rem; }
+      .why { padding: 1.4rem; }
+      .why-grid { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -312,15 +521,15 @@
     "@type": "WebApplication",
     "name": "PicoAI",
     "url": "https://picoai.org",
-    "description": "A collection of privacy-focused, offline-first web applications running directly inside the browser using IndexedDB.",
+    "description": "A growing collection of private, lightweight and open-source applications designed to run where your data lives.",
     "applicationCategory": "AIApplication",
-    "operatingSystem": "All",
+    "operatingSystem": "Web, Windows, Android",
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
     },
-    "license": "https://opensource.org/licenses/MIT"
+    "license": "/LICENSE"
   }
   </script>  
   <!-- Google tag (gtag.js) -->
@@ -337,117 +546,314 @@
   <header class="site-header">
     <div class="wrap nav">
       <a class="brand" href="#top">Pico<span>AI</span></a>
-      <a class="nav-link" href="#apps">Browse apps</a>
-      <a class="nav-link" href="mailto:support@picoai.org">Contact us</a>
+      <div class="nav-actions">
+        <a class="nav-link" href="#apps">Apps</a>
+        <a class="nav-link" href="#coming-soon">Coming Soon</a>
+        <a class="nav-link" href="#why-picoai">Why PicoAI</a>
+        <a class="nav-link" href="mailto:support@picoai.org">Contact</a>
+      </div>
     </div>
 
     <div class="wrap hero" id="top">
+      <p class="hero__eyebrow">SMALL SOFTWARE · LOCAL INTELLIGENCE · PRIVATE BY DEFAULT</p>
       <p class="hero__brand" aria-label="PicoAI">Pico<span>AI</span></p>
-      <h1 class="hero__tagline">100% Private, Open-Source AI Application Platform</h1>
+      <h1 class="hero__tagline">AI software that runs where your data lives.</h1>
       <p class="hero__sub">
-        PicoAI is an open-source AI-native application platform that enables private, intelligent software to run where your data lives.<BR>
-        No accounts, no subscriptions, and zero cloud uploads — everything runs safely inside your browser.
+        A growing family of lightweight, privacy-first applications for work, browsing, documents, learning and creativity.
+        AI where it actually helps. No unnecessary cloud dependency.
       </p>
       <div class="pills" aria-label="Key benefits">
-        <span class="pill">🔒 100% Private (Local-first)</span>
-        <span class="pill">⚡ Instant Access (Zero install or sign-up)</span>
-        <span class="pill">💡 AI-Engineered (Ultra-lean &amp; open source)</span>
-        <span class="pill">💸 100% Free Forever</span>
+        <span class="pill">🔒 Private by design</span>
+        <span class="pill">⚡ Lightweight &amp; local-first</span>
+        <span class="pill">🧠 AI where useful</span>
+        <span class="pill">💸 Free &amp; open source</span>
       </div>
     </div>
   </header>
 
   <main class="wrap" id="apps">
-  <section class="category" aria-labelledby="cat-finance">
-      <h2 class="category__title" id="cat-finance">Flagship</h2>
-      <div class="grid">
-        <article class="app-card">
-          <span class="app-card__badge">Private / Local-first</span>
+
+    <section class="section-intro" aria-labelledby="apps-title">
+      <p class="section-kicker">THE PICOAI APP COLLECTION</p>
+      <h2 id="apps-title">Useful software first. AI where it matters.</h2>
+      <p>Explore the apps available today — and the next wave already being built.</p>
+    </section>
+
+    <section class="category flagship" aria-labelledby="cat-flagship">
+      <div class="category-heading">
+        <div>
+          <p class="section-kicker">START HERE</p>
+          <h2 class="category__title" id="cat-flagship">Flagship</h2>
+        </div>
+        <span class="section-status live">Available now</span>
+      </div>
+      <div class="grid flagship-grid">
+        <article class="app-card app-card--featured">
+          <span class="app-card__badge">PRIVATE / LOCAL-FIRST</span>
           <h3>PicoERP</h3>
-          <p>AI Enabled, Offline-first, double-entry accounting ERP for shops, societies, and personal finance — books, invoices, inventory, tax, and reports in your browser.</p>
+          <p>AI-enabled, offline-first accounting ERP for shops, societies and personal finance.</p>
+          <ul class="feature-list">
+            <li>Accounting &amp; double-entry books</li>
+            <li>Invoices &amp; inventory</li>
+            <li>Payroll, tax &amp; reports</li>
+            <li>Local-first AI assistance</li>
+          </ul>
           <a class="app-card__cta" href="erp/index.html">Launch App →</a>
         </article>
-        <article class="app-card">
-          <span class="app-card__badge">Super light / Secure</span>
+
+        <article class="app-card app-card--featured">
+          <span class="app-card__badge">SUPER LIGHT / PRIVATE</span>
           <h3>PicoSurf</h3>
-          <p>A lightweight, privacy-first browser with a local AI that helps you search, explore, understand and remember the web.</p>
+          <p>A lightweight browser with local AI for searching, exploring, understanding and remembering the web.</p>
+          <ul class="feature-list">
+            <li>Privacy-focused browsing</li>
+            <li>Local AI assistance</li>
+            <li>Web research &amp; extraction</li>
+            <li>Lightweight WebView architecture</li>
+          </ul>
           <a class="app-card__cta" href="picosurf/index.html">Try Now →</a>
         </article>
       </div>
     </section>
-    
-    <section class="category" aria-labelledby="cat-finance">
-      <h2 class="category__title" id="cat-finance">Finance &amp; Wealth</h2>
+
+    <section class="category" aria-labelledby="cat-available">
+      <div class="category-heading">
+        <div>
+          <p class="section-kicker">AVAILABLE NOW</p>
+          <h2 class="category__title" id="cat-available">More PicoAI Apps</h2>
+        </div>
+        <span class="section-status live">Live</span>
+      </div>
       <div class="grid">
+
         <article class="app-card">
-          <span class="app-card__badge">Private / Secure</span>
+          <span class="app-card__badge">AI IN YOUR HAND</span>
+          <h3>PicoScan</h3>
+          <p>Private OCR for images and PDFs, running directly on your device.</p>
+          <ul class="feature-list">
+            <li>OCR images &amp; PDFs</li>
+            <li>Local processing</li>
+            <li>No token limit</li>
+            <li>No API key required</li>
+          </ul>
+          <a class="app-card__cta" href="picoscan/index.html">Launch App →</a>
+        </article>
+
+        <article class="app-card">
+          <span class="app-card__badge">LEARNING</span>
+          <h3>PicoLearning</h3>
+          <p>Offline-first learning software that turns your own material into useful learning aids.</p>
+          <ul class="feature-list">
+            <li>Study from your own material</li>
+            <li>AI-generated learning aids</li>
+            <li>Local-first architecture</li>
+            <li>Designed for students &amp; professionals</li>
+          </ul>
+          <a class="app-card__cta" href="picolearning/index.html">Launch App →</a>
+        </article>
+
+        <article class="app-card">
+          <span class="app-card__badge">PERSONAL FINANCE</span>
           <h3>PicoExpense</h3>
-          <p>AI Enabled, Offline-first, 100% Secure Personal Expense Tracker</p>
+          <p>A private, offline-first personal expense tracker.</p>
+          <ul class="feature-list">
+            <li>Expense tracking</li>
+            <li>Local storage</li>
+            <li>Simple reports</li>
+            <li>No account required</li>
+          </ul>
           <a class="app-card__cta" href="picoexpense/index.html">Launch App →</a>
         </article>
 
         <article class="app-card">
-          <span class="app-card__badge">Local Storage</span>
-          <h3>Mutual Fund Holdings Lite</h3>
-          <p>Consolidated view of all your mutual fund holdings stored securely in local browser storage.</p>
-          <a class="app-card__cta" href="mf-holdings-app/index.html">Launch App →</a>
-        </article>
-        <article class="app-card">
-          <span class="app-card__badge">Local Storage</span>
-          <h3>Free Accounting System Lite</h3>
-          <p>A lightweight, privacy-focused double-entry ledger inspired by GnuCash for personal and small business tracking.</p>
-          <a class="app-card__cta" href="accounting-app/index.html">Launch App →</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="category" aria-labelledby="cat-finance">
-      <h2 class="category__title" id="cat-learn">Personal Learning</h2>
-      <div class="grid">
-        <article class="app-card">
-          <span class="app-card__badge">Zero Token, AI Powered Learning</span>
-          <h3>PicoLearning</h3>
-          <p>Offline-first, AI learning application for individuals, students and professionals. Not another AI chatbot, solve real learning problem.</p>
-          <a class="app-card__cta" href="picolearning/index.html">Launch App →</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="category" aria-labelledby="cat-business">
-      <h2 class="category__title" id="cat-business">Business &amp; Operations</h2>
-      <div class="grid">
-        <article class="app-card">
-          <span class="app-card__badge">Local Operations</span>
-          <h3>Inventory ERP Lite</h3>
-          <p>Track orders, supplier relationships, and fulfillment lifecycles without complex software setups.</p>
-          <a class="app-card__cta" href="inventory-app/app/index.html">Launch App →</a>
-        </article>
-        <article class="app-card">
-          <span class="app-card__badge">Local Operations</span>
-          <h3>Mini CTRM Lite</h3>
-          <p>Lightweight commodity trading and risk management suite engineered for quick, small-scale evaluation.</p>
-          <a class="app-card__cta" href="ctrm-app/index.html">Launch App →</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="category" aria-labelledby="cat-docs">
-      <h2 class="category__title" id="cat-docs">Document Utilities</h2>
-      <div class="grid">
-        <article class="app-card">
-          <span class="app-card__badge">AI in your Hand</span>
-          <h3>PicoScan</h3>
-          <p>No token limit, no data theft, works completely offline. Scan and extract from you images and PDF documents directly on your device without ever sending sensitive information out.</p>
-          <a class="app-card__cta" href="picoscan/index.html">Launch App →</a>
-        </article>
-        <article class="app-card">
-          <span class="app-card__badge">100% Client-Side</span>
+          <span class="app-card__badge">DOCUMENTS</span>
           <h3>Browser PDF Utilities</h3>
-          <p>Process and manage PDF documents directly on your device without ever sending sensitive files to third-party servers.</p>
+          <p>Process PDF documents directly on your device without sending sensitive files to third-party servers.</p>
+          <ul class="feature-list">
+            <li>Client-side PDF processing</li>
+            <li>Private document handling</li>
+            <li>No cloud upload required</li>
+          </ul>
           <a class="app-card__cta" href="pdf-utils/index.html">Launch App →</a>
         </article>
+
+        <article class="app-card">
+          <span class="app-card__badge">FINANCE</span>
+          <h3>Mutual Fund Holdings Lite</h3>
+          <p>A consolidated view of mutual fund holdings stored securely in local browser storage.</p>
+          <ul class="feature-list">
+            <li>Portfolio consolidation</li>
+            <li>Local storage</li>
+            <li>Simple holdings view</li>
+          </ul>
+          <a class="app-card__cta" href="mf-holdings-app/index.html">Launch App →</a>
+        </article>
+
+        <article class="app-card">
+          <span class="app-card__badge">ACCOUNTING</span>
+          <h3>Free Accounting System Lite</h3>
+          <p>A lightweight, privacy-focused double-entry ledger for personal and small-business tracking.</p>
+          <ul class="feature-list">
+            <li>Double-entry ledger</li>
+            <li>Personal &amp; small business use</li>
+            <li>Local-first</li>
+          </ul>
+          <a class="app-card__cta" href="accounting-app/index.html">Launch App →</a>
+        </article>
+
+        <article class="app-card">
+          <span class="app-card__badge">OPERATIONS</span>
+          <h3>Inventory ERP Lite</h3>
+          <p>Track orders, suppliers and fulfillment lifecycles without complex software setups.</p>
+          <ul class="feature-list">
+            <li>Inventory tracking</li>
+            <li>Orders &amp; suppliers</li>
+            <li>Fulfillment lifecycle</li>
+          </ul>
+          <a class="app-card__cta" href="inventory-app/app/index.html">Launch App →</a>
+        </article>
+
+        <article class="app-card">
+          <span class="app-card__badge">COMMODITY TRADING</span>
+          <h3>Mini CTRM Lite</h3>
+          <p>A lightweight commodity trading and risk management suite for small-scale evaluation.</p>
+          <ul class="feature-list">
+            <li>Trade capture</li>
+            <li>Risk management</li>
+            <li>Lightweight evaluation</li>
+          </ul>
+          <a class="app-card__cta" href="ctrm-app/index.html">Launch App →</a>
+        </article>
+
       </div>
     </section>
+
+    <section class="category coming-soon" id="coming-soon" aria-labelledby="cat-coming">
+      <div class="category-heading">
+        <div>
+          <p class="section-kicker">THE NEXT WAVE</p>
+          <h2 class="category__title" id="cat-coming">More is coming.</h2>
+        </div>
+        <span class="section-status soon">In development</span>
+      </div>
+      <p class="category-lead">PicoAI is growing beyond today's apps — into privacy, productivity, documents and creativity.</p>
+
+      <div class="grid">
+
+        <article class="app-card app-card--soon">
+          <span class="app-card__badge">COMING SOON</span>
+          <h3>PicoClipboard</h3>
+          <p>Your clipboard, private, searchable and smarter.</p>
+          <ul class="feature-list">
+            <li>Clipboard history</li>
+            <li>Local search</li>
+            <li>Clean, summarize &amp; explain</li>
+            <li>Extract &amp; transform</li>
+          </ul>
+          <span class="platforms">Windows · Android</span>
+        </article>
+
+        <article class="app-card app-card--soon">
+          <span class="app-card__badge">COMING SOON</span>
+          <h3>PicoPrivacy</h3>
+          <p>Find sensitive information before it leaks.</p>
+          <ul class="feature-list">
+            <li>Local privacy scanning</li>
+            <li>Find credentials &amp; secrets</li>
+            <li>Detect sensitive information</li>
+            <li>Private reports</li>
+          </ul>
+          <span class="platforms">Windows · Android</span>
+        </article>
+
+        <article class="app-card app-card--soon">
+          <span class="app-card__badge">COMING SOON</span>
+          <h3>PicoPDF</h3>
+          <p>A lightweight PDF toolkit with local AI.</p>
+          <ul class="feature-list">
+            <li>Merge, split &amp; compress</li>
+            <li>OCR &amp; redaction</li>
+            <li>Annotate &amp; sign</li>
+            <li>AI document analysis</li>
+          </ul>
+          <span class="platforms">Windows · Android</span>
+        </article>
+
+        <article class="app-card app-card--soon">
+          <span class="app-card__badge">COMING SOON</span>
+          <h3>PicoOffice</h3>
+          <p>Lightweight office tools without unnecessary cloud dependency.</p>
+          <ul class="feature-list">
+            <li>Documents &amp; spreadsheets</li>
+            <li>Presentations</li>
+            <li>PDF support</li>
+            <li>Local AI analysis</li>
+          </ul>
+          <span class="platforms">Windows · Android</span>
+        </article>
+
+        <article class="app-card app-card--soon app-card--creative">
+          <span class="app-card__badge">COMING SOON</span>
+          <h3>PicoAnime</h3>
+          <p>Turn a child's idea into a little animated story.</p>
+          <ul class="feature-list">
+            <li>Create characters &amp; scenes</li>
+            <li>Generate stories &amp; dialogue</li>
+            <li>Simple 2D animation</li>
+            <li>Export &amp; share</li>
+          </ul>
+          <span class="platforms">Windows · Android · Web</span>
+        </article>
+
+        <article class="app-card app-card--soon app-card--creative">
+          <span class="app-card__badge">COMING SOON</span>
+          <h3>PicoGame</h3>
+          <p>Create simple games from your ideas — and learn by changing them.</p>
+          <ul class="feature-list">
+            <li>Build small games</li>
+            <li>AI-assisted creation</li>
+            <li>Modify characters &amp; rules</li>
+            <li>Play &amp; share</li>
+          </ul>
+          <span class="platforms">Windows · Android · Web</span>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="why" id="why-picoai" aria-labelledby="why-title">
+      <p class="section-kicker">THE PICOAI PHILOSOPHY</p>
+      <h2 id="why-title">Software should be useful before it needs to be complicated.</h2>
+      <div class="why-grid">
+        <article>
+          <span class="why-icon">🔒</span>
+          <h3>Private by design</h3>
+          <p>Your data should not need to leave your device just because software became intelligent.</p>
+        </article>
+        <article>
+          <span class="why-icon">⚡</span>
+          <h3>Small by design</h3>
+          <p>No giant runtime, unnecessary backend or subscription should be required for simple software.</p>
+        </article>
+        <article>
+          <span class="why-icon">🧠</span>
+          <h3>AI where it helps</h3>
+          <p>Use AI for ambiguity and intelligence. Use predictable software for everything else.</p>
+        </article>
+        <article>
+          <span class="why-icon">💡</span>
+          <h3>Open by design</h3>
+          <p>Free, open-source software should remain useful without requiring you to hand over your data.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="closing">
+      <p class="section-kicker">JUST THE BEGINNING</p>
+      <h2>Small software. Local intelligence. Private by default.</h2>
+      <p>PicoAI is a growing collection of applications — built one useful problem at a time.</p>
+    </section>
+
   </main>
 
   <footer class="site-footer">
