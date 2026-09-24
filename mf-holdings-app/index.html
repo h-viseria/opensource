@@ -59,6 +59,14 @@
                         AMFI
                     </label>
                 </div>
+                <div id="amfi-cors-help" class="amfi-cors-help" hidden>
+                    <p>AMFI does not allow in-browser download from GitHub Pages (CORS). Open the links, save the <code>.txt</code> files, then load them here. Include NAVAll plus history reports for 1D / 1M / 3M / 6M / YTD / 1Y.</p>
+                    <div id="amfi-download-links" class="amfi-download-links"></div>
+                    <div class="inline-actions">
+                        <input id="amfi-files" type="file" accept=".txt,.csv" multiple />
+                        <button id="amfi-upload-btn" type="button">Load AMFI files</button>
+                    </div>
+                </div>
                 <div class="inline-actions">
                     <button id="import-btn" class="button-primary" type="button">Load Holdings to IndexedDB</button>
                     <button id="sync-codes-btn" type="button">Map Scheme Codes</button>
@@ -331,7 +339,7 @@
                             <ul>
                                 <li>Select <strong>NAV source</strong> on the Import tab: MFAPI (per-scheme API) or AMFI (official NAVAll + history reports)</li>
                                 <li>Click <strong>Fetch NAV Snapshots</strong></li>
-                                <li>MFAPI fetches each mapped scheme individually. AMFI downloads latest NAV from <em>NAVAll.txt</em>, then history windows for 1 day / 1 month / 3 months / 6 months / YTD / 1 year</li>
+                                <li>AMFI cannot be fetched from GitHub Pages (CORS). Open the AMFI links, save NAVAll and history <code>.txt</code> files, then click <strong>Load AMFI files</strong></li>
                                 <li>For each scheme the app captures: latest NAV, 1-day, 1-month, 3-month, 6-month, 1-Jan, and 1-year reference NAVs</li>
                                 <li>The <em>NAV Snapshots</em> counter updates when complete</li>
                             </ul>
