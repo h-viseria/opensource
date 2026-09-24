@@ -139,12 +139,31 @@ select {
     color: var(--text);
 }
 
-.inline-actions {
+.nav-source-row {
+    margin-bottom: 6px;
+}
+
+label.nav-source-option {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 10px;
+    gap: 6px;
+    color: var(--text);
+    cursor: pointer;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #121c2c;
+}
+
+label.nav-source-option:has(input:checked) {
+    border-color: var(--accent);
+    background: #1e3859;
+}
+
+label.nav-source-option input {
+    margin: 0;
+    accent-color: var(--accent);
 }
 
 .meta-grid {
