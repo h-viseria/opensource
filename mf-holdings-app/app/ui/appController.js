@@ -2,7 +2,7 @@ import { importCasFromFile } from '../application/services/casImportService.js';
 import { syncSchemeCodes } from '../application/services/schemeCodeSyncService.js';
 import { refreshNavSnapshots } from '../application/services/navSnapshotService.js';
 import { refreshNavSnapshotsFromAmfiFiles } from '../application/services/amfiNavSnapshotService.js';
-import { getAmfiManualDownloadLinks } from '../infrastructure/api/amfiClient.js';
+import { getAmfiLastWeekHistoryUrl } from '../infrastructure/api/amfiClient.js';
 import { buildReportRows } from '../application/services/reportService.js';
 import { buildAmcDistributionRows, buildAmcSummaryRows, filterAmcSummaryRows } from '../application/services/amcReportService.js';
 import { formatNumber, formatPercent } from '../shared/formatters.js';
@@ -83,9 +83,8 @@ function renderAmfiDownloadLinks() {
         return;
     }
 
-    container.innerHTML = getAmfiManualDownloadLinks()
-        .map((item) => `<a href="${item.href}" target="_blank" rel="noopener">${item.label}</a>`)
-        .join('');
+    const item = getAmfiLastWeekHistoryUrl();
+    container.innerHTML = `<a href="${item.href}" target="_blank" rel="noopener">${item.label}</a>`;
 }
 
 async function updateAmfiSourceUi() {
@@ -1159,7 +1158,7 @@ export function initAppController() {
             setText('import-error', '');
             const files = Array.from(amfiFilesInput.files || []);
             if (!files.length) {
-                setText('import-error', 'Choose one or more AMFI .txt files (NAVAll and/or history reports).');
+                setText('import-error', 'Choose the AMFI last-week .txt file.');
                 return;
             }
 
@@ -1170,7 +1169,10 @@ export function initAppController() {
                 const result = await refreshNavSnapshotsFromAmfiFiles(texts, {
                     onProgress: (message) => setText('import-status', message),
                 });
-                setText('import-status', `NAV snapshots updated from AMFI files for ${result.successCount}/${result.requested} scheme(s).`);
+                setText(
+                    'import-status',
+                    `AMFI merge: filled ${result.datesAdded} missing date(s) across ${result.successCount} scheme(s). ${result.unchangedCount} scheme(s) already up to date.`
+                );
                 if (result.failures.length) {
                     const sample = result.failures.slice(0, 5).map((item) => `${item.schemeCode}: ${item.reason}`).join(' | ');
                     setText('import-error', `NAV failures for ${result.failures.length} scheme(s). ${sample}`);
@@ -1262,7 +1264,7 @@ export function initAppController() {
         const source = getSelectedNavSource();
         persistNavSource(source);
         if (source === 'amfi') {
-            setText('import-error', 'AMFI cannot be fetched from GitHub Pages (CORS). Open the AMFI links, save the .txt files, then click Load AMFI files.');
+            setText('import-error', 'AMFI cannot be fetched from GitHub Pages (CORS). Download the last 1 week file and click Load AMFI last-week file.');
             return;
         }
 
