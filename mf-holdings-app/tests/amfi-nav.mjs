@@ -1,6 +1,7 @@
 import {
     buildAmfiHistoryUrl,
     formatAmfiDate,
+    getAmfiManualDownloadLinks,
     historyWindowAround,
     parseAmfiNavRows,
 } from '../app/infrastructure/api/amfiClient.js';
@@ -55,6 +56,10 @@ function main() {
     assert(axis.schemeName.startsWith('Axis ELSS'), `history name should come from NAV Name, got ${axis.schemeName}`);
     assert(axis.dateIso === '2026-09-22', 'history date ISO mismatch');
     assert(axis.nav === 112.0096, 'history NAV mismatch');
+
+    const links = getAmfiManualDownloadLinks('2026-09-24');
+    assert(links[0].href.includes('NAVAll.txt'), 'first manual link should be NAVAll');
+    assert(links.length === 7, `expected 7 AMFI download links, got ${links.length}`);
 
     console.log('AMFI NAV parser tests passed.');
 }
