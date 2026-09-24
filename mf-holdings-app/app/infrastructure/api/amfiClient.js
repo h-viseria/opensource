@@ -1,7 +1,7 @@
-import { addDaysToIsoDate, normalizeCasDateToIso } from '../../shared/casDates.js';
+import { addDaysToIsoDate, normalizeCasDateToIso, todayIsoDate } from '../../shared/casDates.js';
 
-const AMFI_LATEST_URL = 'https://portal.amfiindia.com/spages/NAVAll.txt';
-const AMFI_HISTORY_URL = 'https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx';
+export const AMFI_LATEST_URL = 'https://portal.amfiindia.com/spages/NAVAll.txt';
+export const AMFI_HISTORY_URL = 'https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx';
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -37,9 +37,9 @@ function looksLikeHtml(text) {
 async function fetchText(url) {
     let response;
     try {
-        response = await fetch(url);
+        response = await fetch(url, { cache: 'no-store' });
     } catch {
-        throw new Error('Could not reach AMFI from the browser (network or CORS). portal.amfiindia.com may block direct browser requests; try MFAPI or serve the app through a proxy that allows that host.');
+        throw new Error('Could not reach AMFI from the browser (CORS). Open the AMFI links, save the .txt files, and upload them.');
     }
 
     if (!response.ok) {
@@ -132,8 +132,7 @@ export async function fetchAmfiHistoryRows(fromIso, toIso) {
 
     const start = from <= to ? from : to;
     const end = from <= to ? to : from;
-    const url = buildAmfiHistoryUrl(start, end);
-    const text = await fetchTextWithRetry(url);
+    const text = await fetchTextWithRetry(buildAmfiHistoryUrl(start, end));
     return parseAmfiNavRows(text);
 }
 
@@ -147,4 +146,37 @@ export function historyWindowAround(targetIso, lookbackDays = 8) {
         fromIso: addDaysToIsoDate(to, -lookbackDays) || to,
         toIso: to,
     };
+}
+
+function monthsBeforeIso(isoDate, months) {
+    const normalized = normalizeCasDateToIso(isoDate);
+    if (!normalized) {
+        return null;
+    }
+    const date = new Date(`${normalized}T00:00:00Z`);
+    date.setUTCMonth(date.getUTCMonth() - months);
+    return date.toISOString().slice(0, 10);
+}
+
+export function getAmfiManualDownloadLinks(latestIso = todayIsoDate()) {
+    const latest = normalizeCasDateToIso(latestIso) || todayIsoDate();
+    const windows = [
+        { label: '1 day', iso: addDaysToIsoDate(latest, -1) },
+        { label: '1 month', iso: monthsBeforeIso(latest, 1) },
+        { label: '3 months', iso: monthsBeforeIso(latest, 3) },
+        { label: '6 months', iso: monthsBeforeIso(latest, 6) },
+        { label: 'YTD', iso: `${latest.slice(0, 4)}-01-01` },
+        { label: '1 year', iso: monthsBeforeIso(latest, 12) },
+    ];
+
+    return [
+        { label: 'Latest NAVAll.txt', href: AMFI_LATEST_URL },
+        ...windows.map((item) => {
+            const window = historyWindowAround(item.iso);
+            return {
+                label: `${item.label} history`,
+                href: window ? buildAmfiHistoryUrl(window.fromIso, window.toIso) : AMFI_HISTORY_URL,
+            };
+        }),
+    ];
 }
