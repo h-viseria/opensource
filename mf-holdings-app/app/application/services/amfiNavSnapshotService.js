@@ -1,16 +1,14 @@
-import {
-    fetchAmfiHistoryRows,
-    fetchAmfiLatestRows,
-    historyWindowAround,
-    parseAmfiNavRows,
-} from '../../infrastructure/api/amfiClient.js';
+import { parseAmfiNavRows } from '../../infrastructure/api/amfiClient.js';
 import {
     getAllHoldings,
+    getAllNavSnapshots,
     getAllSchemeCodes,
     normalizeSchemeName,
     upsertNavSnapshot,
 } from '../../infrastructure/db/indexedDb.js';
-import { addDaysToIsoDate, maxIsoDate, normalizeCasDateToIso } from '../../shared/casDates.js';
+import { normalizeCasDateToIso } from '../../shared/casDates.js';
+
+const SNAPSHOT_POINT_KEYS = ['latest', 'prev1Day', 'oneMonth', 'threeMonth', 'sixMonth', 'jan1', 'oneYear'];
 
 function parseSeriesDate(dateString) {
     const iso = normalizeCasDateToIso(dateString);
@@ -61,7 +59,9 @@ function buildNavSeries(historyRows) {
         .map((row) => ({
             nav: Number(row.nav),
             date: row.date,
-            dateObj: parseSeriesDate(row.date),
+            dateIso: row.dateIso || normalizeCasDateToIso(row.date),
+            dateObj: parseSeriesDate(row.dateIso || row.date),
+            schemeName: row.schemeName,
         }))
         .filter((row) => Number.isFinite(row.nav) && row.dateObj)
         .sort((a, b) => b.dateObj - a.dateObj);
@@ -111,165 +111,139 @@ function collectUniqueSchemeCodes(holdings, codeMappings) {
     return uniqueCodes;
 }
 
-function toSeriesRow(row) {
+export function snapshotPointsToSeries(snapshot) {
+    const byIso = new Map();
+
+    SNAPSHOT_POINT_KEYS.forEach((key) => {
+        const point = snapshot?.[key];
+        const iso = normalizeCasDateToIso(point?.date);
+        const nav = Number(point?.nav);
+        if (!iso || !Number.isFinite(nav)) {
+            return;
+        }
+        if (!byIso.has(iso)) {
+            byIso.set(iso, {
+                nav,
+                date: isoToDdMmYyyy(iso) || point.date,
+                dateIso: iso,
+                schemeName: snapshot.apiSchemeName || null,
+            });
+        }
+    });
+
+    return Array.from(byIso.values());
+}
+
+export function mergeMissingNavDates(existingSeries, amfiRows) {
+    const byIso = new Map();
+    (existingSeries || []).forEach((row) => {
+        const iso = row.dateIso || normalizeCasDateToIso(row.date);
+        if (!iso || byIso.has(iso)) {
+            return;
+        }
+        byIso.set(iso, {
+            nav: Number(row.nav),
+            date: isoToDdMmYyyy(iso) || row.date,
+            dateIso: iso,
+            schemeName: row.schemeName || null,
+        });
+    });
+
+    let added = 0;
+    (amfiRows || []).forEach((row) => {
+        const iso = row.dateIso || normalizeCasDateToIso(row.date);
+        if (!iso || byIso.has(iso) || !Number.isFinite(Number(row.nav))) {
+            return;
+        }
+        byIso.set(iso, {
+            nav: Number(row.nav),
+            date: isoToDdMmYyyy(iso) || row.date,
+            dateIso: iso,
+            schemeName: row.schemeName || null,
+        });
+        added += 1;
+    });
+
     return {
-        nav: row.nav,
-        date: isoToDdMmYyyy(row.dateIso) || row.date,
-        dateIso: row.dateIso,
-        schemeName: row.schemeName,
+        series: Array.from(byIso.values()),
+        added,
     };
-}
-
-function lookbackTargets(latestIso) {
-    const latestDate = parseSeriesDate(latestIso);
-    if (!latestDate) {
-        return [];
-    }
-
-    const jan1Iso = `${latestDate.getUTCFullYear()}-01-01`;
-    const oneMonthIso = monthsBefore(latestDate, 1).toISOString().slice(0, 10);
-    const threeMonthIso = monthsBefore(latestDate, 3).toISOString().slice(0, 10);
-    const sixMonthIso = monthsBefore(latestDate, 6).toISOString().slice(0, 10);
-    const oneYearIso = monthsBefore(latestDate, 12).toISOString().slice(0, 10);
-
-    return [
-        { label: '1 day', iso: addDaysToIsoDate(latestIso, -1) },
-        { label: '1 month', iso: oneMonthIso },
-        { label: '3 months', iso: threeMonthIso },
-        { label: '6 months', iso: sixMonthIso },
-        { label: 'YTD', iso: jan1Iso },
-        { label: '1 year', iso: oneYearIso },
-    ].filter((item) => item.iso);
-}
-
-export async function refreshNavSnapshotsFromAmfi({ onProgress } = {}) {
-    const holdings = await getAllHoldings();
-    const codeMappings = await getAllSchemeCodes();
-    const uniqueCodes = collectUniqueSchemeCodes(holdings, codeMappings);
-
-    if (uniqueCodes.size === 0) {
-        return { requested: 0, successCount: 0, failures: [], source: 'amfi' };
-    }
-
-    onProgress?.('Fetching latest NAV from AMFI...');
-    const latestRows = (await fetchAmfiLatestRows()).filter((row) => uniqueCodes.has(row.schemeCode));
-    const latestByCode = new Map();
-    latestRows.forEach((row) => {
-        const existing = latestByCode.get(row.schemeCode);
-        if (!existing || row.dateIso > existing.dateIso) {
-            latestByCode.set(row.schemeCode, row);
-        }
-    });
-
-    const seriesByCode = new Map();
-    latestByCode.forEach((row, schemeCode) => {
-        seriesByCode.set(schemeCode, [toSeriesRow(row)]);
-    });
-
-    const latestIso = maxIsoDate(...latestRows.map((row) => row.dateIso));
-    const targets = lookbackTargets(latestIso);
-    const fetchedRanges = new Set();
-
-    for (const target of targets) {
-        const window = historyWindowAround(target.iso);
-        if (!window) {
-            continue;
-        }
-
-        const rangeKey = `${window.fromIso}:${window.toIso}`;
-        if (fetchedRanges.has(rangeKey)) {
-            continue;
-        }
-        fetchedRanges.add(rangeKey);
-
-        onProgress?.(`Fetching AMFI history for ${target.label} (${window.fromIso} to ${window.toIso})...`);
-        try {
-            const historyRows = await fetchAmfiHistoryRows(window.fromIso, window.toIso);
-            mergeRowsIntoSeries(seriesByCode, historyRows, uniqueCodes);
-        } catch (error) {
-            onProgress?.(`AMFI history for ${target.label} failed: ${error.message}`);
-        }
-    }
-
-    return saveSnapshotsFromSeries(uniqueCodes, seriesByCode, latestByCode, onProgress);
 }
 
 export async function refreshNavSnapshotsFromAmfiFiles(fileTexts, { onProgress } = {}) {
     const holdings = await getAllHoldings();
     const codeMappings = await getAllSchemeCodes();
+    const existingSnapshots = await getAllNavSnapshots();
     const uniqueCodes = collectUniqueSchemeCodes(holdings, codeMappings);
 
     if (uniqueCodes.size === 0) {
-        return { requested: 0, successCount: 0, failures: [], source: 'amfi' };
+        return { requested: 0, successCount: 0, unchangedCount: 0, datesAdded: 0, failures: [], source: 'amfi' };
     }
 
-    onProgress?.('Parsing uploaded AMFI files...');
+    onProgress?.('Parsing AMFI last-week file...');
     const rows = (fileTexts || []).flatMap((text) => parseAmfiNavRows(text));
     if (!rows.length) {
-        throw new Error('No NAV rows found in the uploaded AMFI files.');
+        throw new Error('No NAV rows found in the uploaded AMFI file.');
     }
 
-    const seriesByCode = new Map();
-    mergeRowsIntoSeries(seriesByCode, rows, uniqueCodes);
-
-    const latestByCode = new Map();
-    seriesByCode.forEach((series, schemeCode) => {
-        const newest = [...series].sort((a, b) => String(b.dateIso || b.date).localeCompare(String(a.dateIso || a.date)))[0];
-        latestByCode.set(schemeCode, { schemeName: newest?.schemeName || null });
-    });
-
-    return saveSnapshotsFromSeries(uniqueCodes, seriesByCode, latestByCode, onProgress);
-}
-
-function mergeRowsIntoSeries(seriesByCode, rows, uniqueCodes) {
+    const amfiByCode = new Map();
     rows.forEach((row) => {
-        if (uniqueCodes && !uniqueCodes.has(row.schemeCode)) {
+        if (!uniqueCodes.has(row.schemeCode)) {
             return;
         }
-
-        const series = seriesByCode.get(row.schemeCode) || [];
-        const converted = toSeriesRow(row);
-        if (!series.some((item) => item.date === converted.date)) {
-            series.push(converted);
-            seriesByCode.set(row.schemeCode, series);
-        }
+        const list = amfiByCode.get(row.schemeCode) || [];
+        list.push(row);
+        amfiByCode.set(row.schemeCode, list);
     });
-}
 
-async function saveSnapshotsFromSeries(uniqueCodes, seriesByCode, latestByCode, onProgress) {
+    if (amfiByCode.size === 0) {
+        throw new Error('Uploaded AMFI file has no rows matching mapped scheme codes.');
+    }
+
+    const existingByCode = new Map(
+        existingSnapshots.map((item) => [String(item.schemeCode), item])
+    );
+
     let successCount = 0;
+    let unchangedCount = 0;
+    let datesAdded = 0;
     const failures = [];
 
-    onProgress?.('Saving AMFI NAV snapshots...');
-    for (const schemeCode of uniqueCodes) {
+    onProgress?.('Merging missing AMFI dates into existing NAV snapshots...');
+    for (const [schemeCode, amfiRows] of amfiByCode.entries()) {
         try {
-            const series = seriesByCode.get(schemeCode);
-            if (!series?.length) {
-                throw new Error('Scheme not found in AMFI NAV data.');
+            const existing = existingByCode.get(schemeCode) || null;
+            const merged = mergeMissingNavDates(snapshotPointsToSeries(existing), amfiRows);
+            if (merged.added === 0) {
+                unchangedCount += 1;
+                continue;
             }
 
-            const snapshot = toSnapshot(buildNavSeries(series));
+            const snapshot = toSnapshot(buildNavSeries(merged.series));
             if (!snapshot) {
-                throw new Error('Empty NAV history.');
+                throw new Error('Empty NAV history after merge.');
             }
 
-            const apiSchemeName = latestByCode.get(schemeCode)?.schemeName || series[0]?.schemeName || null;
             await upsertNavSnapshot({
-                schemeCode,
-                apiSchemeName,
-                source: 'amfi',
+                ...existing,
+                schemeCode: existing?.schemeCode || schemeCode,
+                apiSchemeName: existing?.apiSchemeName || amfiRows[0]?.schemeName || null,
                 ...snapshot,
+                source: existing ? existing.source || 'mfapi' : 'amfi',
                 updatedAt: new Date().toISOString(),
             });
             successCount += 1;
+            datesAdded += merged.added;
         } catch (error) {
             failures.push({ schemeCode, reason: error.message });
         }
     }
 
     return {
-        requested: uniqueCodes.size,
+        requested: amfiByCode.size,
         successCount,
+        unchangedCount,
+        datesAdded,
         failures,
         source: 'amfi',
     };
