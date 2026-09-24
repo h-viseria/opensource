@@ -60,11 +60,11 @@
                     </label>
                 </div>
                 <div id="amfi-cors-help" class="amfi-cors-help" hidden>
-                    <p>AMFI does not allow in-browser download from GitHub Pages (CORS). Open the links, save the <code>.txt</code> files, then load them here. Include NAVAll plus history reports for 1D / 1M / 3M / 6M / YTD / 1Y.</p>
+                    <p>AMFI cannot be fetched from GitHub Pages (CORS). Download the last 1 week report, then load that file. Existing MFAPI dates in IndexedDB are kept; only missing dates are added.</p>
                     <div id="amfi-download-links" class="amfi-download-links"></div>
                     <div class="inline-actions">
-                        <input id="amfi-files" type="file" accept=".txt,.csv" multiple />
-                        <button id="amfi-upload-btn" type="button">Load AMFI files</button>
+                        <input id="amfi-files" type="file" accept=".txt,.csv" />
+                        <button id="amfi-upload-btn" type="button">Load AMFI last-week file</button>
                     </div>
                 </div>
                 <div class="inline-actions">
@@ -335,15 +335,14 @@
                     <li>
                         <div class="step-heading">Fetch NAV Snapshots</div>
                         <div class="step-body">
-                            <p>Download NAV history for each mapped scheme to compute current valuations and return percentages. Choose <strong>MFAPI</strong> or <strong>AMFI</strong> as the NAV source, then click Fetch.</p>
+                            <p>Download NAV history for each mapped scheme to compute current valuations and return percentages.</p>
                             <ul>
-                                <li>Select <strong>NAV source</strong> on the Import tab: MFAPI (per-scheme API) or AMFI (official NAVAll + history reports)</li>
-                                <li>Click <strong>Fetch NAV Snapshots</strong></li>
-                                <li>AMFI cannot be fetched from GitHub Pages (CORS). Open the AMFI links, save NAVAll and history <code>.txt</code> files, then click <strong>Load AMFI files</strong></li>
-                                <li>For each scheme the app captures: latest NAV, 1-day, 1-month, 3-month, 6-month, 1-Jan, and 1-year reference NAVs</li>
+                                <li>Select <strong>NAV source</strong> on the Import tab</li>
+                                <li><strong>MFAPI</strong> — click <strong>Fetch NAV Snapshots</strong> for full history (1D / 1M / 3M / 6M / YTD / 1Y)</li>
+                                <li><strong>AMFI</strong> — download the last 1 week file, then <strong>Load AMFI last-week file</strong>. That only fills dates missing from IndexedDB (typically the latest few sessions MFAPI has not caught up on)</li>
                                 <li>The <em>NAV Snapshots</em> counter updates when complete</li>
                             </ul>
-                            <p class="step-tip">💡 You can re-run <em>Fetch NAV Snapshots</em> any time to refresh prices with the latest available NAV. AMFI is usually more current than MFAPI.</p>
+                            <p class="step-tip">💡 Fetch MFAPI first, then load the AMFI last-week file if latest NAV looks a day or two behind.</p>
                         </div>
                     </li>
 
