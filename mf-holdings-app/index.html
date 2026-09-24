@@ -48,10 +48,21 @@
                     </label>
                 </div>
 
+                <div class="inline-actions nav-source-row">
+                    <span class="inline-label">NAV source</span>
+                    <label class="nav-source-option" for="nav-source-mfapi">
+                        <input id="nav-source-mfapi" type="radio" name="nav-source" value="mfapi" checked />
+                        MFAPI
+                    </label>
+                    <label class="nav-source-option" for="nav-source-amfi">
+                        <input id="nav-source-amfi" type="radio" name="nav-source" value="amfi" />
+                        AMFI
+                    </label>
+                </div>
                 <div class="inline-actions">
                     <button id="import-btn" class="button-primary" type="button">Load Holdings to IndexedDB</button>
                     <button id="sync-codes-btn" type="button">Map Scheme Codes</button>
-                    <button id="fetch-nav-btn" type="button">Fetch NAV Snapshots</button>
+                    <button id="fetch-nav-btn" class="button-primary" type="button">Fetch NAV Snapshots</button>
                     <button id="clear-db-btn" type="button">Clear All IndexedDB Data</button>
                 </div>
 
@@ -316,14 +327,15 @@
                     <li>
                         <div class="step-heading">Fetch NAV Snapshots</div>
                         <div class="step-body">
-                            <p>Download the latest NAV history for each mapped scheme to compute current valuations and return percentages.</p>
+                            <p>Download NAV history for each mapped scheme to compute current valuations and return percentages. Choose <strong>MFAPI</strong> or <strong>AMFI</strong> as the NAV source, then click Fetch.</p>
                             <ul>
-                                <li>Click <strong>Fetch NAV Snapshots</strong> on the Import tab</li>
-                                <li>The app fetches NAV history for each scheme from MFAPI (this may take 30–60 seconds for large portfolios)</li>
-                                <li>For each scheme it captures: latest NAV, 1-day, 1-month, 3-month, 6-month, 1-Jan, and 1-year reference NAVs</li>
+                                <li>Select <strong>NAV source</strong> on the Import tab: MFAPI (per-scheme API) or AMFI (official NAVAll + history reports)</li>
+                                <li>Click <strong>Fetch NAV Snapshots</strong></li>
+                                <li>MFAPI fetches each mapped scheme individually. AMFI downloads latest NAV from <em>NAVAll.txt</em>, then history windows for 1 day / 1 month / 3 months / 6 months / YTD / 1 year</li>
+                                <li>For each scheme the app captures: latest NAV, 1-day, 1-month, 3-month, 6-month, 1-Jan, and 1-year reference NAVs</li>
                                 <li>The <em>NAV Snapshots</em> counter updates when complete</li>
                             </ul>
-                            <p class="step-tip">💡 You can re-run <em>Fetch NAV Snapshots</em> any time to refresh prices with the latest available NAV.</p>
+                            <p class="step-tip">💡 You can re-run <em>Fetch NAV Snapshots</em> any time to refresh prices with the latest available NAV. AMFI is usually more current than MFAPI.</p>
                         </div>
                     </li>
 
