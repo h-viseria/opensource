@@ -1,7 +1,8 @@
 import { importCasFromFile } from '../application/services/casImportService.js';
 import { syncSchemeCodes } from '../application/services/schemeCodeSyncService.js';
 import { refreshNavSnapshots } from '../application/services/navSnapshotService.js';
-import { refreshNavSnapshotsFromAmfi } from '../application/services/amfiNavSnapshotService.js';
+import { refreshNavSnapshotsFromAmfiFiles } from '../application/services/amfiNavSnapshotService.js';
+import { getAmfiManualDownloadLinks } from '../infrastructure/api/amfiClient.js';
 import { buildReportRows } from '../application/services/reportService.js';
 import { buildAmcDistributionRows, buildAmcSummaryRows, filterAmcSummaryRows } from '../application/services/amcReportService.js';
 import { formatNumber, formatPercent } from '../shared/formatters.js';
@@ -73,6 +74,28 @@ function restoreNavSourceSelection() {
     const radio = byId(`nav-source-${source}`);
     if (radio) {
         radio.checked = true;
+    }
+}
+
+function renderAmfiDownloadLinks() {
+    const container = byId('amfi-download-links');
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = getAmfiManualDownloadLinks()
+        .map((item) => `<a href="${item.href}" target="_blank" rel="noopener">${item.label}</a>`)
+        .join('');
+}
+
+async function updateAmfiSourceUi() {
+    const amfiSelected = getSelectedNavSource() === 'amfi';
+    const help = byId('amfi-cors-help');
+    if (help) {
+        help.hidden = !amfiSelected;
+    }
+    if (amfiSelected) {
+        renderAmfiDownloadLinks();
     }
 }
 
@@ -1121,9 +1144,46 @@ export function initAppController() {
     const bulkCodesFile         = byId('bulk-codes-file');
 
     restoreNavSourceSelection();
+    updateAmfiSourceUi();
     document.querySelectorAll('input[name="nav-source"]').forEach((radio) => {
-        radio.addEventListener('change', () => persistNavSource(getSelectedNavSource()));
+        radio.addEventListener('change', () => {
+            persistNavSource(getSelectedNavSource());
+            updateAmfiSourceUi();
+        });
     });
+
+    const amfiUploadBtn = byId('amfi-upload-btn');
+    const amfiFilesInput = byId('amfi-files');
+    if (amfiUploadBtn && amfiFilesInput) {
+        amfiUploadBtn.addEventListener('click', async () => {
+            setText('import-error', '');
+            const files = Array.from(amfiFilesInput.files || []);
+            if (!files.length) {
+                setText('import-error', 'Choose one or more AMFI .txt files (NAVAll and/or history reports).');
+                return;
+            }
+
+            amfiUploadBtn.disabled = true;
+            try {
+                setText('import-status', `Reading ${files.length} AMFI file(s)...`);
+                const texts = await Promise.all(files.map((file) => file.text()));
+                const result = await refreshNavSnapshotsFromAmfiFiles(texts, {
+                    onProgress: (message) => setText('import-status', message),
+                });
+                setText('import-status', `NAV snapshots updated from AMFI files for ${result.successCount}/${result.requested} scheme(s).`);
+                if (result.failures.length) {
+                    const sample = result.failures.slice(0, 5).map((item) => `${item.schemeCode}: ${item.reason}`).join(' | ');
+                    setText('import-error', `NAV failures for ${result.failures.length} scheme(s). ${sample}`);
+                }
+                await refreshMetrics();
+                await refreshReport();
+            } catch (error) {
+                setText('import-error', error.message);
+            } finally {
+                amfiUploadBtn.disabled = false;
+            }
+        });
+    }
 
     // Export/Import IndexedDB
     if (exportDbBtn) {
@@ -1201,20 +1261,16 @@ export function initAppController() {
         setText('import-error', '');
         const source = getSelectedNavSource();
         persistNavSource(source);
+        if (source === 'amfi') {
+            setText('import-error', 'AMFI cannot be fetched from GitHub Pages (CORS). Open the AMFI links, save the .txt files, then click Load AMFI files.');
+            return;
+        }
+
         fetchNavButton.disabled = true;
         try {
-            let result;
-            if (source === 'amfi') {
-                setText('import-status', 'Fetching NAV snapshots from AMFI...');
-                result = await refreshNavSnapshotsFromAmfi({
-                    onProgress: (message) => setText('import-status', message),
-                });
-            } else {
-                setText('import-status', 'Fetching NAV snapshots from MFAPI...');
-                result = await refreshNavSnapshots();
-            }
-            const sourceLabel = result.source === 'amfi' ? 'AMFI' : 'MFAPI';
-            setText('import-status', `NAV snapshots updated from ${sourceLabel} for ${result.successCount}/${result.requested} scheme(s).`);
+            setText('import-status', 'Fetching NAV snapshots from MFAPI...');
+            const result = await refreshNavSnapshots();
+            setText('import-status', `NAV snapshots updated from MFAPI for ${result.successCount}/${result.requested} scheme(s).`);
             if (result.failures.length) {
                 const sample = result.failures.slice(0, 5).map((item) => `${item.schemeCode}: ${item.reason}`).join(' | ');
                 setText('import-error', `NAV failures for ${result.failures.length} scheme(s). ${sample}`);
