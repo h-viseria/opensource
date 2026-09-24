@@ -2,6 +2,7 @@ import {
     fetchAmfiHistoryRows,
     fetchAmfiLatestRows,
     historyWindowAround,
+    parseAmfiNavRows,
 } from '../../infrastructure/api/amfiClient.js';
 import {
     getAllHoldings,
@@ -184,23 +185,58 @@ export async function refreshNavSnapshotsFromAmfi({ onProgress } = {}) {
         onProgress?.(`Fetching AMFI history for ${target.label} (${window.fromIso} to ${window.toIso})...`);
         try {
             const historyRows = await fetchAmfiHistoryRows(window.fromIso, window.toIso);
-            historyRows.forEach((row) => {
-                if (!uniqueCodes.has(row.schemeCode)) {
-                    return;
-                }
-
-                const series = seriesByCode.get(row.schemeCode) || [];
-                const converted = toSeriesRow(row);
-                if (!series.some((item) => item.date === converted.date)) {
-                    series.push(converted);
-                    seriesByCode.set(row.schemeCode, series);
-                }
-            });
+            mergeRowsIntoSeries(seriesByCode, historyRows, uniqueCodes);
         } catch (error) {
             onProgress?.(`AMFI history for ${target.label} failed: ${error.message}`);
         }
     }
 
+    return saveSnapshotsFromSeries(uniqueCodes, seriesByCode, latestByCode, onProgress);
+}
+
+export async function refreshNavSnapshotsFromAmfiFiles(fileTexts, { onProgress } = {}) {
+    const holdings = await getAllHoldings();
+    const codeMappings = await getAllSchemeCodes();
+    const uniqueCodes = collectUniqueSchemeCodes(holdings, codeMappings);
+
+    if (uniqueCodes.size === 0) {
+        return { requested: 0, successCount: 0, failures: [], source: 'amfi' };
+    }
+
+    onProgress?.('Parsing uploaded AMFI files...');
+    const rows = (fileTexts || []).flatMap((text) => parseAmfiNavRows(text));
+    if (!rows.length) {
+        throw new Error('No NAV rows found in the uploaded AMFI files.');
+    }
+
+    const seriesByCode = new Map();
+    mergeRowsIntoSeries(seriesByCode, rows, uniqueCodes);
+
+    const latestByCode = new Map();
+    seriesByCode.forEach((series, schemeCode) => {
+        const newest = [...series].sort((a, b) => String(b.dateIso || b.date).localeCompare(String(a.dateIso || a.date)))[0];
+        latestByCode.set(schemeCode, { schemeName: newest?.schemeName || null });
+    });
+
+    return saveSnapshotsFromSeries(uniqueCodes, seriesByCode, latestByCode, onProgress);
+}
+
+function mergeRowsIntoSeries(seriesByCode, rows, uniqueCodes) {
+    rows.forEach((row) => {
+        if (uniqueCodes && !uniqueCodes.has(row.schemeCode)) {
+            return;
+        }
+
+        const series = seriesByCode.get(row.schemeCode) || [];
+        const converted = toSeriesRow(row);
+        if (!series.some((item) => item.date === converted.date)) {
+            series.push(converted);
+            seriesByCode.set(row.schemeCode, series);
+        }
+    });
+}
+
+async function saveSnapshotsFromSeries(uniqueCodes, seriesByCode, latestByCode, onProgress) {
     let successCount = 0;
     const failures = [];
 
@@ -209,7 +245,7 @@ export async function refreshNavSnapshotsFromAmfi({ onProgress } = {}) {
         try {
             const series = seriesByCode.get(schemeCode);
             if (!series?.length) {
-                throw new Error('Scheme not found in AMFI NAVAll.txt.');
+                throw new Error('Scheme not found in AMFI NAV data.');
             }
 
             const snapshot = toSnapshot(buildNavSeries(series));
