@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PicoSoul — an AI-native, compact and secure operating environment designed around lightweight software, local intelligence and user control." />
+  <title>PicoSoul — AI-Native. Compact. Secure.</title>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f7f8fa;
+      --text: #17191d;
+      --muted: #626873;
+      --border: #e5e7eb;
+      --accent: #111827;
+      --accent-soft: #eef1f5;
+      --max: 1120px;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont,
+                   "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(229,231,235,.8);
+    }
+
+    .nav-inner {
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-size: 19px;
+      font-weight: 750;
+      letter-spacing: -.03em;
+    }
+
+    .brand span {
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 96px 0 82px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 13px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--bg-soft);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 22px auto 18px;
+      max-width: 850px;
+      font-size: clamp(44px, 7vw, 76px);
+      line-height: 1.02;
+      letter-spacing: -.055em;
+      font-weight: 800;
+    }
+
+    .hero h1 span {
+      color: #6b7280;
+    }
+
+    .hero p {
+      max-width: 730px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .hero-actions {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      font-weight: 650;
+      transition: .18s ease;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .button.secondary:hover {
+      background: var(--bg-soft);
+    }
+
+    /* Sections */
+    section {
+      padding: 82px 0;
+    }
+
+    .section-soft {
+      background: var(--bg-soft);
+      border-top: 1px solid #f0f1f3;
+      border-bottom: 1px solid #f0f1f3;
+    }
+
+    .section-heading {
+      max-width: 720px;
+      margin-bottom: 38px;
+    }
+
+    .kicker {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 8px 0 12px;
+      font-size: clamp(30px, 4vw, 44px);
+      line-height: 1.12;
+      letter-spacing: -.04em;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    /* Vision */
+    .vision-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .vision-copy p {
+      color: var(--muted);
+      font-size: 17px;
+      margin: 0 0 18px;
+    }
+
+    .vision-statement {
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: white;
+    }
+
+    .vision-statement strong {
+      display: block;
+      font-size: 20px;
+      line-height: 1.35;
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+
+    .vision-statement p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Principles */
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .principle {
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: white;
+    }
+
+    .principle .icon {
+      font-size: 23px;
+      margin-bottom: 15px;
+    }
+
+    .principle h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      letter-spacing: -.02em;
+    }
+
+    .principle p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Architecture */
+    .architecture-wrap {
+      padding: 22px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(17,24,39,.04);
+    }
+
+    .architecture-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+    .architecture-note {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Layers */
+    .layers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .layer {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px;
+      background: white;
+    }
+
+    .layer-number {
+      color: #9ca3af;
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .08em;
+    }
+
+    .layer h3 {
+      margin: 8px 0 10px;
+      font-size: 19px;
+    }
+
+    .layer p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .layer ul {
+      margin: 16px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Why */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .compare-card {
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .compare-card h3 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+
+    .compare-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .compare-card.highlight {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .compare-card.highlight p {
+      color: #d1d5db;
+    }
+
+    /* Roadmap */
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .roadmap-item {
+      padding: 22px;
+      border-left: 2px solid var(--border);
+    }
+
+    .roadmap-item strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .roadmap-item span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 45px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-brand {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    @media (max-width: 850px) {
+      .nav-links { display: none; }
+
+      .hero {
+        padding: 72px 0 60px;
+      }
+
+      .vision-grid,
+      .compare {
+        grid-template-columns: 1fr;
+      }
+
+      .principles {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .layers {
+        grid-template-columns: 1fr;
+      }
+
+      .roadmap {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        width: min(var(--max), calc(100% - 28px));
+      }
+
+      section {
+        padding: 62px 0;
+      }
+
+      .principles,
+      .roadmap {
+        grid-template-columns: 1fr;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .architecture-wrap {
+        padding: 10px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="container nav-inner">
+      <a class="brand" href="#">PicoSoul <span>/ by PicoAI</span></a>
+      <div class="nav-links">
+        <a href="#vision">Vision</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#principles">Principles</a>
+        <a href="#roadmap">Roadmap</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">A PicoAI experiment</div>
+
+        <h1>
+          AI-Native.<br />
+          Compact. <span>Secure.</span>
+        </h1>
+
+        <p>
+          PicoSoul is an exploration of what a modern personal computer
+          could look like when the operating environment is designed around
+          lightweight software, local intelligence, privacy and user control.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button primary" href="#vision">Explore the vision</a>
+          <a class="button secondary" href="#architecture">View architecture</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISION -->
+    <section id="vision" class="section-soft">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">The vision</div>
+          <h2>What if the computer got out of the way?</h2>
+          <p>
+            PicoSoul is not about building another heavyweight desktop stack.
+            It is about assembling a small, practical computing environment
+            from proven components — and putting a simple orchestration layer
+            over the top.
+          </p>
+        </div>
+
+        <div class="vision-grid">
+          <div class="vision-copy">
+            <p>
+              Today's personal computers carry an enormous amount of software,
+              services and background infrastructure. Much of it is necessary
+              for compatibility, security and the modern web — but the result
+              is a system that can feel disproportionately large for the work
+              people actually do.
+            </p>
+
+            <p>
+              PicoSoul starts from the opposite direction: keep the foundation
+              small, add only what the machine needs, make applications feel
+              unified, and use local AI as an interface to the computer rather
+              than another cloud dependency.
+            </p>
+
+            <p>
+              The goal is not to replace everything overnight. The goal is to
+              create a practical environment where lightweight web applications,
+              native applications and existing desktop software can coexist
+              behind one simple experience.
+            </p>
+          </div>
+
+          <div class="vision-statement">
+            <strong>
+              One computer. One experience. Less software overhead.
+            </strong>
+            <p>
+              PicoSoul aims to hide the complexity underneath while keeping
+              the underlying system modular, inspectable and replaceable.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRINCIPLES -->
+    <section id="principles">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">Design principles</div>
+          <h2>Small software. Local intelligence. User control.</h2>
+          <p>
+            The same thinking behind PicoAI's applications, extended to the
+            computing environment itself.
+          </p>
+        </div>
+
+        <div class="principles">
+          <div class="principle">
+            <div class="icon">⚡</div>
+            <h3>Small by design</h3>
+            <p>
+              Start with a compact foundation and add capabilities only when
+              they are actually needed.
+            </p>
+          </div>
+
+          <div class="principle">
+            <div class="icon">🧠</div>
+            <h3>AI where it helps</h3>
+            <p>
+              Let AI handle ambiguity, discovery and orchestration while
+              predictable software handles predictable work.
+            </p>
+          </div>
+
+          <div class="principle">
+            <div class="icon">🔒</div>
+            <h3>Private by default</h3>
+            <p>
+              Local processing, controlled permissions and explicit boundaries
+              should be the default rather than an advanced setting.
+            </p>
+          </div>
+
+          <div class="principle">
+            <div class="icon">🧩</div>
+            <h3>Built from components</h3>
+            <p>
+              Reuse mature runtimes, services and open technologies instead
+              of rebuilding the computing stack from scratch.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE -->
+    <section id="architecture" class="section-soft">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">High-level architecture</div>
+          <h2>A thin orchestration layer over proven building blocks.</h2>
+          <p>
+            PicoSoul is intended to be an integration and experience layer,
+            not a reinvention of every component underneath it.
+          </p>
+        </div>
+
+        <div class="architecture-wrap">
+          <!-- Replace architecture.png with your architecture diagram filename -->
+          <img src="architecture.png" alt="PicoSoul high-level architecture diagram" />
+          <div class="architecture-note">
+            High-level conceptual architecture — implementation details may evolve.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECHNICAL APPROACH -->
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">Technical approach</div>
+          <h2>Four layers. One experience.</h2>
+          <p>
+            The architecture separates the user experience from system
+            services, execution environments and hardware.
+          </p>
+        </div>
+
+        <div class="layers">
+          <div class="layer">
+            <div class="layer-number">01 / EXPERIENCE</div>
+            <h3>A simple user layer</h3>
+            <p>
+              A familiar desktop experience with one launcher, one settings
+              surface and one place to interact with local AI.
+            </p>
+            <ul>
+              <li>PicoSoul Launcher</li>
+              <li>PicoSurf</li>
+              <li>Applications & files</li>
+              <li>Conversational assistant</li>
+            </ul>
+          </div>
+
+          <div class="layer">
+            <div class="layer-number">02 / SERVICES</div>
+            <h3>System orchestration</h3>
+            <p>
+              A central coordinator connects hardware, packages, applications,
+              updates, policies and AI capabilities.
+            </p>
+            <ul>
+              <li>Hardware detection</li>
+              <li>Package & application management</li>
+              <li>Network & system services</li>
+              <li>Updates, settings & policy</li>
+            </ul>
+          </div>
+
+          <div class="layer">
+            <div class="layer-number">03 / RUNTIME</div>
+            <h3>Multiple application worlds</h3>
+            <p>
+              Different application types should coexist without forcing the
+              user to understand how each one runs underneath.
+            </p>
+            <ul>
+              <li>Web / PWA applications</li>
+              <li>Native applications</li>
+              <li>Compatibility environments</li>
+              <li>Virtualized environments</li>
+            </ul>
+          </div>
+
+          <div class="layer">
+            <div class="layer-number">04 / LOCAL AI</div>
+            <h3>Intelligence as infrastructure</h3>
+            <p>
+              A local inference layer provides the intelligence needed for
+              assistance, discovery, automation and system interaction.
+            </p>
+            <ul>
+              <li>Model management</li>
+              <li>Local inference</li>
+              <li>Context management</li>
+              <li>Tool & agent orchestration</li>
+            </ul>
+          </div>
+
+          <div class="layer">
+            <div class="layer-number">05 / CONTROL</div>
+            <h3>Security & isolation</h3>
+            <p>
+              AI and applications operate within explicit boundaries rather
+              than receiving unrestricted access to the underlying machine.
+            </p>
+            <ul>
+              <li>Process isolation</li>
+              <li>Filesystem boundaries</li>
+              <li>Network controls</li>
+              <li>Permissions & audit</li>
+            </ul>
+          </div>
+
+          <div class="layer">
+            <div class="layer-number">06 / HARDWARE</div>
+            <h3>Hardware abstraction</h3>
+            <p>
+              The system detects the machine and provisions the capabilities
+              required by the hardware instead of assuming one fixed setup.
+            </p>
+            <ul>
+              <li>Compute & memory</li>
+              <li>Storage</li>
+              <li>Graphics & audio</li>
+              <li>Network & peripherals</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY -->
+    <section class="section-soft">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">The idea</div>
+          <h2>Not another application. A different foundation.</h2>
+        </div>
+
+        <div class="compare">
+          <div class="compare-card">
+            <h3>Traditional approach</h3>
+            <p>
+              Install a large general-purpose environment first. Then add
+              applications, services, AI tools and integrations on top of it.
+              The user has to understand — or tolerate — much of the underlying
+              complexity.
+            </p>
+          </div>
+
+          <div class="compare-card highlight">
+            <h3>PicoSoul approach</h3>
+            <p>
+              Start compact. Detect the hardware. Provision what is required.
+              Present one coherent application experience. Let local AI help
+              the user interact with the system while explicit policies keep
+              control with the user.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">Early roadmap</div>
+          <h2>Build the glue, not the universe.</h2>
+          <p>
+            The first versions should prove the experience before attempting
+            a completely custom desktop or distribution.
+          </p>
+        </div>
+
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <strong>Foundation</strong>
+            <span>Hardware detection, system services and the PicoSoul manager.</span>
+          </div>
+
+          <div class="roadmap-item">
+            <strong>Applications</strong>
+            <span>PicoSurf, web apps, native apps and a unified launcher.</span>
+          </div>
+
+          <div class="roadmap-item">
+            <strong>Compatibility</strong>
+            <span>Compatibility and virtualized environments behind one interface.</span>
+          </div>
+
+          <div class="roadmap-item">
+            <strong>Local AI</strong>
+            <span>Local models, controlled tools, agent workflows and sandboxing.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLOSING -->
+    <section class="section-soft">
+      <div class="container" style="text-align:center;">
+        <div class="kicker">PicoSoul</div>
+        <h2 style="max-width:720px; margin:10px auto 14px;">
+          The computer should work for you — not become another thing you have to manage.
+        </h2>
+        <p style="max-width:650px; margin:0 auto; color:var(--muted);">
+          An experiment by PicoAI exploring a smaller, more private and
+          AI-native personal computing experience.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <span class="footer-brand">PicoSoul</span>
+        <span> — an experiment by PicoAI</span>
+      </div>
+      <div>AI-Native · Compact · Secure</div>
+    </div>
+  </footer>
+
+</body>
+</html>
