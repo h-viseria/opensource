@@ -1,6 +1,7 @@
 import { importCasFromFile } from '../application/services/casImportService.js';
 import { syncSchemeCodes } from '../application/services/schemeCodeSyncService.js';
 import { refreshNavSnapshots } from '../application/services/navSnapshotService.js';
+import { refreshNavSnapshotsFromAmfi } from '../application/services/amfiNavSnapshotService.js';
 import { buildReportRows } from '../application/services/reportService.js';
 import { buildAmcDistributionRows, buildAmcSummaryRows, filterAmcSummaryRows } from '../application/services/amcReportService.js';
 import { formatNumber, formatPercent } from '../shared/formatters.js';
@@ -41,9 +42,38 @@ let allAmcRows = [];
 let amcSortState = { key: 'currentValue', direction: 'desc' };
 const amcFilters = { query: '', returnMode: 'all', topN: 0 };
 const PIE_COLORS = ['#45a6ff', '#8ed0ff', '#4bd37b', '#ffc857', '#ff8fab', '#b794f4', '#2dd4bf', '#f97316'];
+const NAV_SOURCE_STORAGE_KEY = 'mf-holdings-nav-source';
 
 function byId(id) {
     return document.getElementById(id);
+}
+
+function getSelectedNavSource() {
+    const selected = document.querySelector('input[name="nav-source"]:checked');
+    return selected?.value === 'amfi' ? 'amfi' : 'mfapi';
+}
+
+function persistNavSource(source) {
+    try {
+        localStorage.setItem(NAV_SOURCE_STORAGE_KEY, source);
+    } catch {
+        // Ignore storage failures (private mode).
+    }
+}
+
+function restoreNavSourceSelection() {
+    let stored = 'mfapi';
+    try {
+        stored = localStorage.getItem(NAV_SOURCE_STORAGE_KEY) || 'mfapi';
+    } catch {
+        stored = 'mfapi';
+    }
+
+    const source = stored === 'amfi' ? 'amfi' : 'mfapi';
+    const radio = byId(`nav-source-${source}`);
+    if (radio) {
+        radio.checked = true;
+    }
 }
 
 function setText(id, value) {
@@ -1090,6 +1120,11 @@ export function initAppController() {
     const bulkOverrideCodesBtn  = byId('bulk-override-codes-btn');
     const bulkCodesFile         = byId('bulk-codes-file');
 
+    restoreNavSourceSelection();
+    document.querySelectorAll('input[name="nav-source"]').forEach((radio) => {
+        radio.addEventListener('change', () => persistNavSource(getSelectedNavSource()));
+    });
+
     // Export/Import IndexedDB
     if (exportDbBtn) {
         exportDbBtn.addEventListener('click', () => exportIndexedDbDump());
@@ -1164,10 +1199,22 @@ export function initAppController() {
 
     fetchNavButton.addEventListener('click', async () => {
         setText('import-error', '');
+        const source = getSelectedNavSource();
+        persistNavSource(source);
+        fetchNavButton.disabled = true;
         try {
-            setText('import-status', 'Fetching NAV snapshots from MFAPI...');
-            const result = await refreshNavSnapshots();
-            setText('import-status', `NAV snapshots updated for ${result.successCount}/${result.requested} scheme(s).`);
+            let result;
+            if (source === 'amfi') {
+                setText('import-status', 'Fetching NAV snapshots from AMFI...');
+                result = await refreshNavSnapshotsFromAmfi({
+                    onProgress: (message) => setText('import-status', message),
+                });
+            } else {
+                setText('import-status', 'Fetching NAV snapshots from MFAPI...');
+                result = await refreshNavSnapshots();
+            }
+            const sourceLabel = result.source === 'amfi' ? 'AMFI' : 'MFAPI';
+            setText('import-status', `NAV snapshots updated from ${sourceLabel} for ${result.successCount}/${result.requested} scheme(s).`);
             if (result.failures.length) {
                 const sample = result.failures.slice(0, 5).map((item) => `${item.schemeCode}: ${item.reason}`).join(' | ');
                 setText('import-error', `NAV failures for ${result.failures.length} scheme(s). ${sample}`);
@@ -1176,6 +1223,8 @@ export function initAppController() {
             await refreshReport();
         } catch (error) {
             setText('import-error', error.message);
+        } finally {
+            fetchNavButton.disabled = false;
         }
     });
 
