@@ -166,6 +166,36 @@ label.nav-source-option input {
     accent-color: var(--accent);
 }
 
+.amfi-cors-help {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: #121c2c;
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.amfi-cors-help p,
+.amfi-cors-help ol {
+    margin: 0 0 10px;
+}
+
+.amfi-cors-help code {
+    color: var(--text);
+}
+
+.amfi-download-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.amfi-download-links a {
+    color: var(--accent);
+}
+
 .meta-grid {
     display: grid;
     gap: 8px;
