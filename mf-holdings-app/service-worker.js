@@ -3,7 +3,7 @@
  * Enables offline support and caching strategies
  */
 
-const CACHE_NAME = 'mf-holdings-v4';
+const CACHE_NAME = 'mf-holdings-v5';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -16,10 +16,12 @@ const ASSETS_TO_CACHE = [
   './app/application/services/schemeMatcher.js',
   './app/application/services/schemeCodeSyncService.js',
   './app/application/services/navSnapshotService.js',
+  './app/application/services/amfiNavSnapshotService.js',
   './app/application/services/reportService.js',
   './app/application/services/periodPnlService.js',
   './app/infrastructure/db/indexedDb.js',
   './app/infrastructure/api/mfApiClient.js',
+  './app/infrastructure/api/amfiClient.js',
   './app/infrastructure/parsers/mfcCasParser.js',
   './app/shared/formatters.js',
   'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js',
