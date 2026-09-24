@@ -3,7 +3,7 @@
  * Enables offline support and caching strategies
  */
 
-const CACHE_NAME = 'mf-holdings-v7';
+const CACHE_NAME = 'mf-holdings-v8';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
