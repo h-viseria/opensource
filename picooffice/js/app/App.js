@@ -1,5 +1,6 @@
 import { PdfEngine } from '../pdf/PdfEngine.js';
 import { pickFiles, saveBytes, safeBaseName, fileBytes } from '../file/fileIO.js';
+import { bindMultiFileList, multiFileFieldHtml } from '../file/pickerShim.js';
 import {
   addPageNumbers, addWatermark, deletePages, extractPages, imagesToPdf, mergePdfs,
   parsePageRange, reorderPages, rotatePages, updateMetadata, validatePdf, zipFiles,
@@ -609,14 +610,27 @@ export class App {
     modal.querySelector('#tool-status').textContent = `${label}… ${percent}%`;
   }
 
-  async toolMerge() {
-    const files = await pickFiles({ multiple: true, kind: 'pdf' });
-    if (files.length < 2) return this.toast('Choose at least two PDFs.');
-    this.toolModal('Merge PDFs', `<p>${files.map((file, index) => `${index + 1}. ${this.escape(file.name)}`).join('<br>')}</p><p class="muted">Files will be merged in this order.</p>`, async () => {
-      const output = await mergePdfs(await Promise.all(files.map(fileBytes)));
-      await validatePdf(output);
-      await saveBytes(output, 'merged.pdf');
-    });
+  toolMerge() {
+    const backdrop = this.toolModal(
+      'Merge PDFs',
+      `<p class="muted">PDFs are combined in the order shown below (first file = first pages).</p>
+       ${multiFileFieldHtml({
+         listId: 'merge-pdfs',
+         accept: '.pdf,application/pdf',
+         minCount: 2,
+         label: 'Choose PDFs…',
+         hint: 'Select two or more PDFs, or drop them below, then click Process locally.',
+       })}
+       <div class="drop file-drop-mini" id="merge-pdf-drop"><strong>Drop PDFs here</strong></div>`,
+      async () => {
+        const files = getMergeFiles();
+        if (files.length < 2) throw new Error('Choose at least two PDFs.');
+        const output = await mergePdfs(await Promise.all(files.map(fileBytes)));
+        await validatePdf(output);
+        await saveBytes(output, 'merged.pdf', 'application/pdf', { preferDownload: true });
+      },
+    );
+    const getMergeFiles = bindMultiFileList(backdrop, 'merge-pdfs', { dropSelector: '#merge-pdf-drop' });
   }
 
   rangeField(extra = '') {
@@ -747,13 +761,25 @@ export class App {
     });
   }
 
-  async toolImagesToPdf() {
-    const files = await pickFiles({ multiple: true, kind: 'images' });
-    if (!files.length) return;
-    this.toolModal('Images → PDF', `<p>${files.length} image(s) selected.</p><div class="field"><label>Page sizing</label><select name="pageSize"><option value="image">Fit page to image</option><option value="a4">Fit on A4</option></select></div><div class="field"><label>Margin (points)</label><input name="margin" type="number" min="0" value="0"></div>`, async (data) => {
-      const output = await imagesToPdf(files, { pageSize: data.get('pageSize'), margin: Number(data.get('margin')) });
-      await saveBytes(output, 'images.pdf');
-    });
+  toolImagesToPdf() {
+    const backdrop = this.toolModal(
+      'Images → PDF',
+      `${multiFileFieldHtml({
+        listId: 'images-pdf',
+        accept: 'image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp',
+        minCount: 1,
+        label: 'Choose images…',
+      })}
+      <div class="field"><label>Page sizing</label><select name="pageSize"><option value="image">Fit page to image</option><option value="a4">Fit on A4</option></select></div>
+      <div class="field"><label>Margin (points)</label><input name="margin" type="number" min="0" value="0"></div>`,
+      async (data, modal) => {
+        const files = [...modal.querySelector('#images-pdf-input').files];
+        if (!files.length) throw new Error('Choose at least one image.');
+        const output = await imagesToPdf(files, { pageSize: data.get('pageSize'), margin: Number(data.get('margin')) });
+        await saveBytes(output, 'images.pdf', 'application/pdf', { preferDownload: true });
+      },
+    );
+    bindMultiFileList(backdrop, 'images-pdf');
   }
 
   toolPdfToImages() {
