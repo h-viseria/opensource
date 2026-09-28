@@ -8,20 +8,11 @@ var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require
   if (typeof require !== "undefined") return require.apply(this, arguments);
   throw Error('Dynamic require of "' + x + '" is not supported');
 });
-var __esm = (fn, res, err) => function __init() {
-  if (err) throw err[0];
-  try {
-    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-  } catch (e) {
-    throw err = [e], e;
-  }
+var __esm = (fn, res) => function __init() {
+  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
 };
 var __commonJS = (cb2, mod) => function __require2() {
-  try {
-    return mod || (0, cb2[__getOwnPropNames(cb2)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-  } catch (e) {
-    throw mod = 0, e;
-  }
+  return mod || (0, cb2[__getOwnPropNames(cb2)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
 var __export = (target, all) => {
   for (var name in all)
@@ -3106,10 +3097,10 @@ var init_index_all = __esm({
 // node_modules/bluebird/js/release/es5.js
 var require_es5 = __commonJS({
   "node_modules/bluebird/js/release/es5.js"(exports2, module2) {
-    var isES5 = (function() {
+    var isES5 = function() {
       "use strict";
       return this === void 0;
-    })();
+    }();
     if (isES5) {
       module2.exports = {
         freeze: Object.freeze,
@@ -3270,7 +3261,7 @@ var require_util = __commonJS({
     function thrower(r) {
       throw r;
     }
-    var inheritedDataKeys = (function() {
+    var inheritedDataKeys = function() {
       var excludedPrototypes = [
         Array.prototype,
         Object.prototype,
@@ -3329,7 +3320,7 @@ var require_util = __commonJS({
           return ret2;
         };
       }
-    })();
+    }();
     var thisAssignmentPattern = /this\s*\.\s*\S+\s*=/;
     function isClass(fn) {
       try {
@@ -3390,7 +3381,7 @@ var require_util = __commonJS({
     function canAttachTrace(obj2) {
       return isError(obj2) && es5.propertyIsWritable(obj2, "stack");
     }
-    var ensureErrorObject = (function() {
+    var ensureErrorObject = function() {
       if (!("stack" in new Error())) {
         return function(value) {
           if (canAttachTrace(value)) return value;
@@ -3406,7 +3397,7 @@ var require_util = __commonJS({
           return new Error(safeToString(value));
         };
       }
-    })();
+    }();
     function classString(obj2) {
       return {}.toString.call(obj2);
     }
@@ -3505,10 +3496,10 @@ var require_util = __commonJS({
       getNativePromise,
       domainBind
     };
-    ret.isRecentNode = ret.isNode && (function() {
+    ret.isRecentNode = ret.isNode && function() {
       var version = process.versions.node.split(".").map(Number);
       return version[0] === 0 && version[1] > 10 || version[0] > 0;
-    })();
+    }();
     if (ret.isNode) ret.toFastProperties(process);
     try {
       throw new Error();
@@ -3543,7 +3534,7 @@ var require_schedule = __commonJS({
         nativePromise.then(fn);
       };
     } else if (typeof MutationObserver !== "undefined" && !(typeof window !== "undefined" && window.navigator && (window.navigator.standalone || window.cordova))) {
-      schedule = (function() {
+      schedule = function() {
         var div = document.createElement("div");
         var opts = { attributes: true };
         var toggleScheduled = false;
@@ -3566,7 +3557,7 @@ var require_schedule = __commonJS({
           o.observe(div, opts);
           scheduleToggle();
         };
-      })();
+      }();
     } else if (typeof setImmediate !== "undefined") {
       schedule = function(fn) {
         setImmediate(fn);
@@ -4370,7 +4361,7 @@ var require_debuggability = __commonJS({
       Promise2.hasLongStackTraces = function() {
         return config.longStackTraces && longStackTracesIsSupported();
       };
-      var fireDomEvent = (function() {
+      var fireDomEvent = function() {
         try {
           if (typeof CustomEvent === "function") {
             var event = new CustomEvent("CustomEvent");
@@ -4412,8 +4403,8 @@ var require_debuggability = __commonJS({
         return function() {
           return false;
         };
-      })();
-      var fireGlobalEvent = (function() {
+      }();
+      var fireGlobalEvent = function() {
         if (util.isNode) {
           return function() {
             return process.emit.apply(process, arguments);
@@ -4432,7 +4423,7 @@ var require_debuggability = __commonJS({
             return true;
           };
         }
-      })();
+      }();
       function generatePromiseLifecycleEventObject(name, promise) {
         return { promise };
       }
@@ -4962,7 +4953,7 @@ var require_debuggability = __commonJS({
         util.notEnumerableProp(error, "stack", reconstructStack(message, stacks));
         util.notEnumerableProp(error, "__stackCleaned__", true);
       };
-      var captureStackTrace = (function stackDetection() {
+      var captureStackTrace = function stackDetection() {
         var v8stackFramePattern = /^\s*at\s*/;
         var v8stackFormatter = function(stack, error) {
           if (typeof stack === "string") return stack;
@@ -5021,7 +5012,7 @@ var require_debuggability = __commonJS({
           return formatNonError(error);
         };
         return null;
-      })([]);
+      }([]);
       if (typeof console !== "undefined" && typeof console.warn !== "undefined") {
         printWarning = function(message) {
           console.warn(message);
@@ -6820,9 +6811,9 @@ var require_promisify = __commonJS({
         };
       }
       function makeNodePromisifiedClosure(callback, receiver, _3, fn, __, multiArgs) {
-        var defaultThis = /* @__PURE__ */ (function() {
+        var defaultThis = /* @__PURE__ */ function() {
           return this;
-        })();
+        }();
         var method = callback;
         if (typeof method === "string") {
           callback = fn;
@@ -6942,7 +6933,7 @@ var require_props = __commonJS({
       var es52 = require_es5();
       var Es6Map;
       if (typeof Map === "function") Es6Map = Map;
-      var mapToEntries = /* @__PURE__ */ (function() {
+      var mapToEntries = /* @__PURE__ */ function() {
         var index = 0;
         var size2 = 0;
         function extractEntry(value, key) {
@@ -6957,7 +6948,7 @@ var require_props = __commonJS({
           map2.forEach(extractEntry, ret2);
           return ret2;
         };
-      })();
+      }();
       var entriesToMap = function(entries) {
         var ret2 = new Es6Map();
         var length = entries.length / 2 | 0;
@@ -8614,14 +8605,14 @@ var require_base64_js = __commonJS({
 // node_modules/jszip/dist/jszip.min.js
 var require_jszip_min = __commonJS({
   "node_modules/jszip/dist/jszip.min.js"(exports2, module2) {
-    !(function(e) {
+    !function(e) {
       if ("object" == typeof exports2 && "undefined" != typeof module2) module2.exports = e();
       else if ("function" == typeof define && define.amd) define([], e);
       else {
         ("undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : this).JSZip = e();
       }
-    })(function() {
-      return (function s(a, o, h) {
+    }(function() {
+      return function s(a, o, h) {
         function u(r, e2) {
           if (!o[r]) {
             if (!a[r]) {
@@ -8641,7 +8632,7 @@ var require_jszip_min = __commonJS({
         }
         for (var l2 = "function" == typeof __require && __require, e = 0; e < h.length; e++) u(h[e]);
         return u;
-      })({ 1: [function(e, t, r) {
+      }({ 1: [function(e, t, r) {
         "use strict";
         var d = e("./utils"), c = e("./support"), p = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
         r.encode = function(e2) {
@@ -8682,26 +8673,26 @@ var require_jszip_min = __commonJS({
       }, { "./flate": 7, "./stream/GenericWorker": 28 }], 4: [function(e, t, r) {
         "use strict";
         var n = e("./utils");
-        var o = (function() {
+        var o = function() {
           for (var e2, t2 = [], r2 = 0; r2 < 256; r2++) {
             e2 = r2;
             for (var n2 = 0; n2 < 8; n2++) e2 = 1 & e2 ? 3988292384 ^ e2 >>> 1 : e2 >>> 1;
             t2[r2] = e2;
           }
           return t2;
-        })();
+        }();
         t.exports = function(e2, t2) {
-          return void 0 !== e2 && e2.length ? "string" !== n.getTypeOf(e2) ? (function(e3, t3, r2, n2) {
+          return void 0 !== e2 && e2.length ? "string" !== n.getTypeOf(e2) ? function(e3, t3, r2, n2) {
             var i = o, s = n2 + r2;
             e3 ^= -1;
             for (var a = n2; a < s; a++) e3 = e3 >>> 8 ^ i[255 & (e3 ^ t3[a])];
             return -1 ^ e3;
-          })(0 | t2, e2, e2.length, 0) : (function(e3, t3, r2, n2) {
+          }(0 | t2, e2, e2.length, 0) : function(e3, t3, r2, n2) {
             var i = o, s = n2 + r2;
             e3 ^= -1;
             for (var a = n2; a < s; a++) e3 = e3 >>> 8 ^ i[255 & (e3 ^ t3.charCodeAt(a))];
             return -1 ^ e3;
-          })(0 | t2, e2, e2.length, 0) : 0;
+          }(0 | t2, e2, e2.length, 0) : 0;
         };
       }, { "./utils": 32 }], 5: [function(e, t, r) {
         "use strict";
@@ -8746,12 +8737,12 @@ var require_jszip_min = __commonJS({
           var S = 0;
           t2 && (S |= 8), l2 || !_3 && !g || (S |= 2048);
           var z = 0, C = 0;
-          w && (z |= 16), "UNIX" === i2 ? (C = 798, z |= (function(e3, t3) {
+          w && (z |= 16), "UNIX" === i2 ? (C = 798, z |= function(e3, t3) {
             var r3 = e3;
             return e3 || (r3 = t3 ? 16893 : 33204), (65535 & r3) << 16;
-          })(h.unixPermissions, w)) : (C = 20, z |= (function(e3) {
+          }(h.unixPermissions, w)) : (C = 20, z |= function(e3) {
             return 63 & (e3 || 0);
-          })(h.dosPermissions)), a = k.getUTCHours(), a <<= 6, a |= k.getUTCMinutes(), a <<= 5, a |= k.getUTCSeconds() / 2, o = k.getUTCFullYear() - 1980, o <<= 4, o |= k.getUTCMonth() + 1, o <<= 5, o |= k.getUTCDate(), _3 && (v = A(1, 1) + A(B(f), 4) + c, b += "up" + A(v.length, 2) + v), g && (y = A(1, 1) + A(B(p), 4) + m, b += "uc" + A(y.length, 2) + y);
+          }(h.dosPermissions)), a = k.getUTCHours(), a <<= 6, a |= k.getUTCMinutes(), a <<= 5, a |= k.getUTCSeconds() / 2, o = k.getUTCFullYear() - 1980, o <<= 4, o |= k.getUTCMonth() + 1, o <<= 5, o |= k.getUTCDate(), _3 && (v = A(1, 1) + A(B(f), 4) + c, b += "up" + A(v.length, 2) + v), g && (y = A(1, 1) + A(B(p), 4) + m, b += "uc" + A(y.length, 2) + y);
           var E = "";
           return E += "\n\0", E += A(S, 2), E += u.magic, E += A(a, 2), E += A(o, 2), E += A(x.crc32, 4), E += A(x.compressedSize, 4), E += A(x.uncompressedSize, 4), E += A(f.length, 2), E += A(b.length, 2), { fileRecord: R.LOCAL_FILE_HEADER + E + f + b, dirRecord: R.CENTRAL_FILE_HEADER + A(C, 2) + E + A(p.length, 2) + "\0\0\0\0" + A(z, 4) + A(n2, 4) + f + b + p };
         }
@@ -8772,17 +8763,17 @@ var require_jszip_min = __commonJS({
         }, s.prototype.closedSource = function(e2) {
           this.accumulate = false;
           var t2 = this.streamFiles && !e2.file.dir, r2 = n(e2, t2, true, this.currentSourceOffset, this.zipPlatform, this.encodeFileName);
-          if (this.dirRecords.push(r2.dirRecord), t2) this.push({ data: (function(e3) {
+          if (this.dirRecords.push(r2.dirRecord), t2) this.push({ data: function(e3) {
             return R.DATA_DESCRIPTOR + A(e3.crc32, 4) + A(e3.compressedSize, 4) + A(e3.uncompressedSize, 4);
-          })(e2), meta: { percent: 100 } });
+          }(e2), meta: { percent: 100 } });
           else for (this.push({ data: r2.fileRecord, meta: { percent: 0 } }); this.contentBuffer.length; ) this.push(this.contentBuffer.shift());
           this.currentFile = null;
         }, s.prototype.flush = function() {
           for (var e2 = this.bytesWritten, t2 = 0; t2 < this.dirRecords.length; t2++) this.push({ data: this.dirRecords[t2], meta: { percent: 100 } });
-          var r2 = this.bytesWritten - e2, n2 = (function(e3, t3, r3, n3, i2) {
+          var r2 = this.bytesWritten - e2, n2 = function(e3, t3, r3, n3, i2) {
             var s2 = I.transformTo("string", i2(n3));
             return R.CENTRAL_DIRECTORY_END + "\0\0\0\0" + A(e3, 2) + A(e3, 2) + A(t3, 4) + A(r3, 4) + A(s2.length, 2) + s2;
-          })(this.dirRecords.length, r2, e2, this.zipComment, this.encodeFileName);
+          }(this.dirRecords.length, r2, e2, this.zipComment, this.encodeFileName);
           this.push({ data: n2, meta: { percent: 100 } });
         }, s.prototype.prepareNextSource = function() {
           this.previous = this._sources.shift(), this.openedSource(this.previous.streamInfo), this.isPaused ? this.previous.pause() : this.previous.resume();
@@ -8818,11 +8809,11 @@ var require_jszip_min = __commonJS({
           try {
             e2.forEach(function(e3, t3) {
               h++;
-              var r2 = (function(e4, t4) {
+              var r2 = function(e4, t4) {
                 var r3 = e4 || t4, n3 = u[r3];
                 if (!n3) throw new Error(r3 + " is not a valid compression method !");
                 return n3;
-              })(t3.options.compression, a.compression), n2 = t3.options.compressionOptions || a.compressionOptions || {}, i = t3.dir, s = t3.date;
+              }(t3.options.compression, a.compression), n2 = t3.options.compressionOptions || a.compressionOptions || {}, i = t3.dir, s = t3.date;
               t3._compressWorker(r2, n2).withStreamInfo("file", { name: e3, dir: i, date: s, comment: t3.comment || "", unixPermissions: t3.unixPermissions, dosPermissions: t3.dosPermissions }).pipe(o);
             }), o.entriesCount = h;
           } catch (e3) {
@@ -9243,7 +9234,7 @@ var require_jszip_min = __commonJS({
               n2 = [], r2(e3);
             }).on("end", function() {
               try {
-                var e3 = (function(e4, t3, r3) {
+                var e3 = function(e4, t3, r3) {
                   switch (e4) {
                     case "blob":
                       return h.newBlob(h.transformTo("arraybuffer", t3), r3);
@@ -9252,7 +9243,7 @@ var require_jszip_min = __commonJS({
                     default:
                       return h.transformTo(e4, t3);
                   }
-                })(s2, (function(e4, t3) {
+                }(s2, function(e4, t3) {
                   var r3, n3 = 0, i3 = null, s3 = 0;
                   for (r3 = 0; r3 < t3.length; r3++) s3 += t3[r3].length;
                   switch (e4) {
@@ -9268,7 +9259,7 @@ var require_jszip_min = __commonJS({
                     default:
                       throw new Error("concat : unsupported type '" + e4 + "'");
                   }
-                })(i2, n2), a2);
+                }(i2, n2), a2);
                 t2(e3);
               } catch (e4) {
                 r2(e4);
@@ -9342,14 +9333,14 @@ var require_jszip_min = __commonJS({
           n.call(this, "utf-8 encode");
         }
         s.utf8encode = function(e2) {
-          return h.nodebuffer ? r.newBufferFrom(e2, "utf-8") : (function(e3) {
+          return h.nodebuffer ? r.newBufferFrom(e2, "utf-8") : function(e3) {
             var t2, r2, n2, i2, s2, a2 = e3.length, o2 = 0;
             for (i2 = 0; i2 < a2; i2++) 55296 == (64512 & (r2 = e3.charCodeAt(i2))) && i2 + 1 < a2 && 56320 == (64512 & (n2 = e3.charCodeAt(i2 + 1))) && (r2 = 65536 + (r2 - 55296 << 10) + (n2 - 56320), i2++), o2 += r2 < 128 ? 1 : r2 < 2048 ? 2 : r2 < 65536 ? 3 : 4;
             for (t2 = h.uint8array ? new Uint8Array(o2) : new Array(o2), i2 = s2 = 0; s2 < o2; i2++) 55296 == (64512 & (r2 = e3.charCodeAt(i2))) && i2 + 1 < a2 && 56320 == (64512 & (n2 = e3.charCodeAt(i2 + 1))) && (r2 = 65536 + (r2 - 55296 << 10) + (n2 - 56320), i2++), r2 < 128 ? t2[s2++] = r2 : (r2 < 2048 ? t2[s2++] = 192 | r2 >>> 6 : (r2 < 65536 ? t2[s2++] = 224 | r2 >>> 12 : (t2[s2++] = 240 | r2 >>> 18, t2[s2++] = 128 | r2 >>> 12 & 63), t2[s2++] = 128 | r2 >>> 6 & 63), t2[s2++] = 128 | 63 & r2);
             return t2;
-          })(e2);
+          }(e2);
         }, s.utf8decode = function(e2) {
-          return h.nodebuffer ? o.transformTo("nodebuffer", e2).toString("utf-8") : (function(e3) {
+          return h.nodebuffer ? o.transformTo("nodebuffer", e2).toString("utf-8") : function(e3) {
             var t2, r2, n2, i2, s2 = e3.length, a2 = new Array(2 * s2);
             for (t2 = r2 = 0; t2 < s2; ) if ((n2 = e3[t2++]) < 128) a2[r2++] = n2;
             else if (4 < (i2 = u[n2])) a2[r2++] = 65533, t2 += i2 - 1;
@@ -9358,7 +9349,7 @@ var require_jszip_min = __commonJS({
               1 < i2 ? a2[r2++] = 65533 : n2 < 65536 ? a2[r2++] = n2 : (n2 -= 65536, a2[r2++] = 55296 | n2 >> 10 & 1023, a2[r2++] = 56320 | 1023 & n2);
             }
             return a2.length !== r2 && (a2.subarray ? a2 = a2.subarray(0, r2) : a2.length = r2), o.applyFromCharCode(a2);
-          })(e2 = o.transformTo(h.uint8array ? "uint8array" : "array", e2));
+          }(e2 = o.transformTo(h.uint8array ? "uint8array" : "array", e2));
         }, o.inherits(a, n), a.prototype.processChunk = function(e2) {
           var t2 = o.transformTo(h.uint8array ? "uint8array" : "array", e2.data);
           if (this.leftOver && this.leftOver.length) {
@@ -9368,11 +9359,11 @@ var require_jszip_min = __commonJS({
             } else t2 = this.leftOver.concat(t2);
             this.leftOver = null;
           }
-          var n2 = (function(e3, t3) {
+          var n2 = function(e3, t3) {
             var r3;
             for ((t3 = t3 || e3.length) > e3.length && (t3 = e3.length), r3 = t3 - 1; 0 <= r3 && 128 == (192 & e3[r3]); ) r3--;
             return r3 < 0 ? t3 : 0 === r3 ? t3 : r3 + u[e3[r3]] > t3 ? r3 : t3;
-          })(t2), i2 = t2;
+          }(t2), i2 = t2;
           n2 !== t2.length && (h.uint8array ? (i2 = t2.subarray(0, n2), this.leftOver = t2.subarray(n2, t2.length)) : (i2 = t2.slice(0, n2), this.leftOver = t2.slice(n2, t2.length))), this.push({ data: s.utf8decode(i2), meta: e2.meta });
         }, a.prototype.flush = function() {
           this.leftOver && this.leftOver.length && (this.push({ data: s.utf8decode(this.leftOver), meta: {} }), this.leftOver = null);
@@ -9410,19 +9401,19 @@ var require_jszip_min = __commonJS({
         }, stringifyByChar: function(e2) {
           for (var t2 = "", r2 = 0; r2 < e2.length; r2++) t2 += String.fromCharCode(e2[r2]);
           return t2;
-        }, applyCanBeUsed: { uint8array: (function() {
+        }, applyCanBeUsed: { uint8array: function() {
           try {
             return o.uint8array && 1 === String.fromCharCode.apply(null, new Uint8Array(1)).length;
           } catch (e2) {
             return false;
           }
-        })(), nodebuffer: (function() {
+        }(), nodebuffer: function() {
           try {
             return o.nodebuffer && 1 === String.fromCharCode.apply(null, r.allocBuffer(1)).length;
           } catch (e2) {
             return false;
           }
-        })() } };
+        }() } };
         function s(e2) {
           var t2 = 65536, r2 = a.getTypeOf(e2), n2 = true;
           if ("uint8array" === r2 ? n2 = i.applyCanBeUsed.uint8array : "nodebuffer" === r2 && (n2 = i.applyCanBeUsed.nodebuffer), n2) for (; 1 < t2; ) try {
@@ -9517,9 +9508,9 @@ var require_jszip_min = __commonJS({
             }) : u.Promise.reject(new Error(r2 + " is a Blob, but we have no way of reading it.")) : n3;
           }).then(function(e3) {
             var t2 = a.getTypeOf(e3);
-            return t2 ? ("arraybuffer" === t2 ? e3 = a.transformTo("uint8array", e3) : "string" === t2 && (s2 ? e3 = h.decode(e3) : n2 && true !== i2 && (e3 = (function(e4) {
+            return t2 ? ("arraybuffer" === t2 ? e3 = a.transformTo("uint8array", e3) : "string" === t2 && (s2 ? e3 = h.decode(e3) : n2 && true !== i2 && (e3 = function(e4) {
               return l2(e4, o.uint8array ? new Uint8Array(e4.length) : new Array(e4.length));
-            })(e3))), e3) : u.Promise.reject(new Error("Can't read the data of '" + r2 + "'. Is it in a supported JavaScript type (String, Blob, ArrayBuffer, etc) ?"));
+            }(e3))), e3) : u.Promise.reject(new Error("Can't read the data of '" + r2 + "'. Is it in a supported JavaScript type (String, Blob, ArrayBuffer, etc) ?"));
           });
         };
       }, { "./base64": 1, "./external": 6, "./nodejsUtils": 14, "./support": 30, setimmediate: 54 }], 33: [function(e, t, r) {
@@ -9588,10 +9579,10 @@ var require_jszip_min = __commonJS({
         }, readLocalPart: function(e2) {
           var t2, r2;
           if (e2.skip(22), this.fileNameLength = e2.readInt(2), r2 = e2.readInt(2), this.fileName = e2.readData(this.fileNameLength), e2.skip(r2), -1 === this.compressedSize || -1 === this.uncompressedSize) throw new Error("Bug or corrupted zip : didn't get enough information from the central directory (compressedSize === -1 || uncompressedSize === -1)");
-          if (null === (t2 = (function(e3) {
+          if (null === (t2 = function(e3) {
             for (var t3 in h) if (Object.prototype.hasOwnProperty.call(h, t3) && h[t3].magic === e3) return h[t3];
             return null;
-          })(this.compressionMethod))) throw new Error("Corrupted zip : compression " + s.pretty(this.compressionMethod) + " unknown (inner file : " + s.transformTo("string", this.fileName) + ")");
+          }(this.compressionMethod))) throw new Error("Corrupted zip : compression " + s.pretty(this.compressionMethod) + " unknown (inner file : " + s.transformTo("string", this.fileName) + ")");
           this.decompressed = new i(this.compressedSize, this.uncompressedSize, this.crc32, t2, e2.readData(this.compressedSize));
         }, readCentralPart: function(e2) {
           this.versionMadeBy = e2.readInt(2), e2.skip(2), this.bitFlag = e2.readInt(2), this.compressionMethod = e2.readString(2), this.date = e2.readDate(), this.crc32 = e2.readInt(4), this.compressedSize = e2.readInt(4), this.uncompressedSize = e2.readInt(4);
@@ -10005,14 +9996,14 @@ var require_jszip_min = __commonJS({
         t.exports = { Z_NO_FLUSH: 0, Z_PARTIAL_FLUSH: 1, Z_SYNC_FLUSH: 2, Z_FULL_FLUSH: 3, Z_FINISH: 4, Z_BLOCK: 5, Z_TREES: 6, Z_OK: 0, Z_STREAM_END: 1, Z_NEED_DICT: 2, Z_ERRNO: -1, Z_STREAM_ERROR: -2, Z_DATA_ERROR: -3, Z_BUF_ERROR: -5, Z_NO_COMPRESSION: 0, Z_BEST_SPEED: 1, Z_BEST_COMPRESSION: 9, Z_DEFAULT_COMPRESSION: -1, Z_FILTERED: 1, Z_HUFFMAN_ONLY: 2, Z_RLE: 3, Z_FIXED: 4, Z_DEFAULT_STRATEGY: 0, Z_BINARY: 0, Z_TEXT: 1, Z_UNKNOWN: 2, Z_DEFLATED: 8 };
       }, {}], 45: [function(e, t, r) {
         "use strict";
-        var o = (function() {
+        var o = function() {
           for (var e2, t2 = [], r2 = 0; r2 < 256; r2++) {
             e2 = r2;
             for (var n = 0; n < 8; n++) e2 = 1 & e2 ? 3988292384 ^ e2 >>> 1 : e2 >>> 1;
             t2[r2] = e2;
           }
           return t2;
-        })();
+        }();
         t.exports = function(e2, t2, r2, n) {
           var i = o, s = n + r2;
           e2 ^= -1;
@@ -10114,9 +10105,9 @@ var require_jszip_min = __commonJS({
         }
         function K(e2) {
           var t2 = G(e2);
-          return t2 === m && (function(e3) {
+          return t2 === m && function(e3) {
             e3.window_size = 2 * e3.w_size, D(e3.head), e3.max_lazy_match = h[e3.level].max_lazy, e3.good_match = h[e3.level].good_length, e3.nice_match = h[e3.level].nice_length, e3.max_chain_length = h[e3.level].max_chain, e3.strstart = 0, e3.block_start = 0, e3.lookahead = 0, e3.insert = 0, e3.match_length = e3.prev_length = x - 1, e3.match_available = 0, e3.ins_h = 0;
-          })(e2.state), t2;
+          }(e2.state), t2;
         }
         function Y(e2, t2, r2, n2, i2, s2) {
           if (!e2) return _3;
@@ -10183,7 +10174,7 @@ var require_jszip_min = __commonJS({
           } else if (0 === e2.avail_in && T(t2) <= T(r2) && t2 !== f) return R(e2, -5);
           if (666 === n2.status && 0 !== e2.avail_in) return R(e2, -5);
           if (0 !== e2.avail_in || 0 !== n2.lookahead || t2 !== l2 && 666 !== n2.status) {
-            var o2 = 2 === n2.strategy ? (function(e3, t3) {
+            var o2 = 2 === n2.strategy ? function(e3, t3) {
               for (var r3; ; ) {
                 if (0 === e3.lookahead && (j(e3), 0 === e3.lookahead)) {
                   if (t3 === l2) return A;
@@ -10192,7 +10183,7 @@ var require_jszip_min = __commonJS({
                 if (e3.match_length = 0, r3 = u._tr_tally(e3, 0, e3.window[e3.strstart]), e3.lookahead--, e3.strstart++, r3 && (N(e3, false), 0 === e3.strm.avail_out)) return A;
               }
               return e3.insert = 0, t3 === f ? (N(e3, true), 0 === e3.strm.avail_out ? O : B) : e3.last_lit && (N(e3, false), 0 === e3.strm.avail_out) ? A : I;
-            })(n2, t2) : 3 === n2.strategy ? (function(e3, t3) {
+            }(n2, t2) : 3 === n2.strategy ? function(e3, t3) {
               for (var r3, n3, i3, s3, a3 = e3.window; ; ) {
                 if (e3.lookahead <= S) {
                   if (j(e3), e3.lookahead <= S && t3 === l2) return A;
@@ -10207,7 +10198,7 @@ var require_jszip_min = __commonJS({
                 if (e3.match_length >= x ? (r3 = u._tr_tally(e3, 1, e3.match_length - x), e3.lookahead -= e3.match_length, e3.strstart += e3.match_length, e3.match_length = 0) : (r3 = u._tr_tally(e3, 0, e3.window[e3.strstart]), e3.lookahead--, e3.strstart++), r3 && (N(e3, false), 0 === e3.strm.avail_out)) return A;
               }
               return e3.insert = 0, t3 === f ? (N(e3, true), 0 === e3.strm.avail_out ? O : B) : e3.last_lit && (N(e3, false), 0 === e3.strm.avail_out) ? A : I;
-            })(n2, t2) : h[n2.level].func(n2, t2);
+            }(n2, t2) : h[n2.level].func(n2, t2);
             if (o2 !== O && o2 !== B || (n2.status = 666), o2 === A || o2 === O) return 0 === e2.avail_out && (n2.last_flush = -1), m;
             if (o2 === I && (1 === t2 ? u._tr_align(n2) : 5 !== t2 && (u._tr_stored_block(n2, 0, 0, false), 3 === t2 && (D(n2.head), 0 === n2.lookahead && (n2.strstart = 0, n2.block_start = 0, n2.insert = 0))), F(e2), 0 === e2.avail_out)) return n2.last_flush = -1, m;
           }
@@ -10822,7 +10813,7 @@ var require_jszip_min = __commonJS({
           for (; e2.heap_len < 2; ) s2[2 * (i2 = e2.heap[++e2.heap_len] = u2 < 2 ? ++u2 : 0)] = 1, e2.depth[i2] = 0, e2.opt_len--, o2 && (e2.static_len -= a2[2 * i2 + 1]);
           for (t2.max_code = u2, r2 = e2.heap_len >> 1; 1 <= r2; r2--) G(e2, s2, r2);
           for (i2 = h2; r2 = e2.heap[1], e2.heap[1] = e2.heap[e2.heap_len--], G(e2, s2, 1), n2 = e2.heap[1], e2.heap[--e2.heap_max] = r2, e2.heap[--e2.heap_max] = n2, s2[2 * i2] = s2[2 * r2] + s2[2 * n2], e2.depth[i2] = (e2.depth[r2] >= e2.depth[n2] ? e2.depth[r2] : e2.depth[n2]) + 1, s2[2 * r2 + 1] = s2[2 * n2 + 1] = i2, e2.heap[1] = i2++, G(e2, s2, 1), 2 <= e2.heap_len; ) ;
-          e2.heap[--e2.heap_max] = e2.heap[1], (function(e3, t3) {
+          e2.heap[--e2.heap_max] = e2.heap[1], function(e3, t3) {
             var r3, n3, i3, s3, a3, o3, h3 = t3.dyn_tree, u3 = t3.max_code, l3 = t3.stat_desc.static_tree, f2 = t3.stat_desc.has_stree, c2 = t3.stat_desc.extra_bits, d2 = t3.stat_desc.extra_base, p2 = t3.stat_desc.max_length, m2 = 0;
             for (s3 = 0; s3 <= g; s3++) e3.bl_count[s3] = 0;
             for (h3[2 * e3.heap[e3.heap_max] + 1] = 0, r3 = e3.heap_max + 1; r3 < _3; r3++) p2 < (s3 = h3[2 * h3[2 * (n3 = e3.heap[r3]) + 1] + 1] + 1) && (s3 = p2, m2++), h3[2 * n3 + 1] = s3, u3 < n3 || (e3.bl_count[s3]++, a3 = 0, d2 <= n3 && (a3 = c2[n3 - d2]), o3 = h3[2 * n3], e3.opt_len += o3 * (s3 + a3), f2 && (e3.static_len += o3 * (l3[2 * n3 + 1] + a3)));
@@ -10833,7 +10824,7 @@ var require_jszip_min = __commonJS({
               } while (0 < m2);
               for (s3 = p2; 0 !== s3; s3--) for (n3 = e3.bl_count[s3]; 0 !== n3; ) u3 < (i3 = e3.heap[--r3]) || (h3[2 * i3 + 1] !== s3 && (e3.opt_len += (s3 - h3[2 * i3 + 1]) * h3[2 * i3], h3[2 * i3 + 1] = s3), n3--);
             }
-          })(e2, t2), Z(s2, u2, e2.bl_count);
+          }(e2, t2), Z(s2, u2, e2.bl_count);
         }
         function X(e2, t2, r2) {
           var n2, i2, s2 = -1, a2 = t2[1], o2 = 0, h2 = 7, u2 = 4;
@@ -10850,12 +10841,12 @@ var require_jszip_min = __commonJS({
         n(T);
         var q = false;
         function J(e2, t2, r2, n2) {
-          P(e2, (s << 1) + (n2 ? 1 : 0), 3), (function(e3, t3, r3, n3) {
+          P(e2, (s << 1) + (n2 ? 1 : 0), 3), function(e3, t3, r3, n3) {
             M(e3), n3 && (U(e3, r3), U(e3, ~r3)), i.arraySet(e3.pending_buf, e3.window, t3, r3, e3.pending), e3.pending += r3;
-          })(e2, t2, r2, true);
+          }(e2, t2, r2, true);
         }
         r._tr_init = function(e2) {
-          q || ((function() {
+          q || (function() {
             var e3, t2, r2, n2, i2, s2 = new Array(g + 1);
             for (n2 = r2 = 0; n2 < a - 1; n2++) for (I[n2] = r2, e3 = 0; e3 < 1 << w[n2]; e3++) A[r2++] = n2;
             for (A[r2 - 1] = n2, n2 = i2 = 0; n2 < 16; n2++) for (T[n2] = i2, e3 = 0; e3 < 1 << k[n2]; e3++) E[i2++] = n2;
@@ -10867,30 +10858,30 @@ var require_jszip_min = __commonJS({
             for (; e3 <= 287; ) z[2 * e3 + 1] = 8, e3++, s2[8]++;
             for (Z(z, l2 + 1, s2), e3 = 0; e3 < f; e3++) C[2 * e3 + 1] = 5, C[2 * e3] = j(e3, 5);
             O = new D(z, w, u + 1, l2, g), B = new D(C, k, 0, f, g), R = new D(new Array(0), x, 0, c, p);
-          })(), q = true), e2.l_desc = new F(e2.dyn_ltree, O), e2.d_desc = new F(e2.dyn_dtree, B), e2.bl_desc = new F(e2.bl_tree, R), e2.bi_buf = 0, e2.bi_valid = 0, W(e2);
+          }(), q = true), e2.l_desc = new F(e2.dyn_ltree, O), e2.d_desc = new F(e2.dyn_dtree, B), e2.bl_desc = new F(e2.bl_tree, R), e2.bi_buf = 0, e2.bi_valid = 0, W(e2);
         }, r._tr_stored_block = J, r._tr_flush_block = function(e2, t2, r2, n2) {
           var i2, s2, a2 = 0;
-          0 < e2.level ? (2 === e2.strm.data_type && (e2.strm.data_type = (function(e3) {
+          0 < e2.level ? (2 === e2.strm.data_type && (e2.strm.data_type = function(e3) {
             var t3, r3 = 4093624447;
             for (t3 = 0; t3 <= 31; t3++, r3 >>>= 1) if (1 & r3 && 0 !== e3.dyn_ltree[2 * t3]) return o;
             if (0 !== e3.dyn_ltree[18] || 0 !== e3.dyn_ltree[20] || 0 !== e3.dyn_ltree[26]) return h;
             for (t3 = 32; t3 < u; t3++) if (0 !== e3.dyn_ltree[2 * t3]) return h;
             return o;
-          })(e2)), Y(e2, e2.l_desc), Y(e2, e2.d_desc), a2 = (function(e3) {
+          }(e2)), Y(e2, e2.l_desc), Y(e2, e2.d_desc), a2 = function(e3) {
             var t3;
             for (X(e3, e3.dyn_ltree, e3.l_desc.max_code), X(e3, e3.dyn_dtree, e3.d_desc.max_code), Y(e3, e3.bl_desc), t3 = c - 1; 3 <= t3 && 0 === e3.bl_tree[2 * S[t3] + 1]; t3--) ;
             return e3.opt_len += 3 * (t3 + 1) + 5 + 5 + 4, t3;
-          })(e2), i2 = e2.opt_len + 3 + 7 >>> 3, (s2 = e2.static_len + 3 + 7 >>> 3) <= i2 && (i2 = s2)) : i2 = s2 = r2 + 5, r2 + 4 <= i2 && -1 !== t2 ? J(e2, t2, r2, n2) : 4 === e2.strategy || s2 === i2 ? (P(e2, 2 + (n2 ? 1 : 0), 3), K(e2, z, C)) : (P(e2, 4 + (n2 ? 1 : 0), 3), (function(e3, t3, r3, n3) {
+          }(e2), i2 = e2.opt_len + 3 + 7 >>> 3, (s2 = e2.static_len + 3 + 7 >>> 3) <= i2 && (i2 = s2)) : i2 = s2 = r2 + 5, r2 + 4 <= i2 && -1 !== t2 ? J(e2, t2, r2, n2) : 4 === e2.strategy || s2 === i2 ? (P(e2, 2 + (n2 ? 1 : 0), 3), K(e2, z, C)) : (P(e2, 4 + (n2 ? 1 : 0), 3), function(e3, t3, r3, n3) {
             var i3;
             for (P(e3, t3 - 257, 5), P(e3, r3 - 1, 5), P(e3, n3 - 4, 4), i3 = 0; i3 < n3; i3++) P(e3, e3.bl_tree[2 * S[i3] + 1], 3);
             V(e3, e3.dyn_ltree, t3 - 1), V(e3, e3.dyn_dtree, r3 - 1);
-          })(e2, e2.l_desc.max_code + 1, e2.d_desc.max_code + 1, a2 + 1), K(e2, e2.dyn_ltree, e2.dyn_dtree)), W(e2), n2 && M(e2);
+          }(e2, e2.l_desc.max_code + 1, e2.d_desc.max_code + 1, a2 + 1), K(e2, e2.dyn_ltree, e2.dyn_dtree)), W(e2), n2 && M(e2);
         }, r._tr_tally = function(e2, t2, r2) {
           return e2.pending_buf[e2.d_buf + 2 * e2.last_lit] = t2 >>> 8 & 255, e2.pending_buf[e2.d_buf + 2 * e2.last_lit + 1] = 255 & t2, e2.pending_buf[e2.l_buf + e2.last_lit] = 255 & r2, e2.last_lit++, 0 === t2 ? e2.dyn_ltree[2 * r2]++ : (e2.matches++, t2--, e2.dyn_ltree[2 * (A[r2] + u + 1)]++, e2.dyn_dtree[2 * N(t2)]++), e2.last_lit === e2.lit_bufsize - 1;
         }, r._tr_align = function(e2) {
-          P(e2, 2, 3), L(e2, m, z), (function(e3) {
+          P(e2, 2, 3), L(e2, m, z), function(e3) {
             16 === e3.bi_valid ? (U(e3, e3.bi_buf), e3.bi_buf = 0, e3.bi_valid = 0) : 8 <= e3.bi_valid && (e3.pending_buf[e3.pending++] = 255 & e3.bi_buf, e3.bi_buf >>= 8, e3.bi_valid -= 8);
-          })(e2);
+          }(e2);
         };
       }, { "../utils/common": 41 }], 53: [function(e, t, r) {
         "use strict";
@@ -10899,7 +10890,7 @@ var require_jszip_min = __commonJS({
         };
       }, {}], 54: [function(e, t, r) {
         (function(e2) {
-          !(function(r2, n) {
+          !function(r2, n) {
             "use strict";
             if (!r2.setImmediate) {
               var i, s, t2, a, o = 1, h = {}, u = false, l2 = r2.document, e3 = Object.getPrototypeOf && Object.getPrototypeOf(r2);
@@ -10907,14 +10898,14 @@ var require_jszip_min = __commonJS({
                 process.nextTick(function() {
                   c(e4);
                 });
-              } : (function() {
+              } : function() {
                 if (r2.postMessage && !r2.importScripts) {
                   var e4 = true, t3 = r2.onmessage;
                   return r2.onmessage = function() {
                     e4 = false;
                   }, r2.postMessage("", "*"), r2.onmessage = t3, e4;
                 }
-              })() ? (a = "setImmediate$" + Math.random() + "$", r2.addEventListener ? r2.addEventListener("message", d, false) : r2.attachEvent("onmessage", d), function(e4) {
+              }() ? (a = "setImmediate$" + Math.random() + "$", r2.addEventListener ? r2.addEventListener("message", d, false) : r2.attachEvent("onmessage", d), function(e4) {
                 r2.postMessage(a + e4, "*");
               }) : r2.MessageChannel ? ((t2 = new MessageChannel()).port1.onmessage = function(e4) {
                 c(e4.data);
@@ -10944,7 +10935,7 @@ var require_jszip_min = __commonJS({
                 if (t3) {
                   u = true;
                   try {
-                    !(function(e5) {
+                    !function(e5) {
                       var t4 = e5.callback, r3 = e5.args;
                       switch (r3.length) {
                         case 0:
@@ -10962,7 +10953,7 @@ var require_jszip_min = __commonJS({
                         default:
                           t4.apply(n, r3);
                       }
-                    })(t3);
+                    }(t3);
                   } finally {
                     f(e4), u = false;
                   }
@@ -10972,7 +10963,7 @@ var require_jszip_min = __commonJS({
             function d(e4) {
               e4.source === r2 && "string" == typeof e4.data && 0 === e4.data.indexOf(a) && c(+e4.data.slice(a.length));
             }
-          })("undefined" == typeof self ? void 0 === e2 ? this : e2 : self);
+          }("undefined" == typeof self ? void 0 === e2 ? this : e2 : self);
         }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
       }, {}] }, {}, [10])(10);
     });
@@ -11824,7 +11815,7 @@ var require_dom = __commonJS({
         }
       }
     }
-    walkDOM.STOP = /* @__PURE__ */ Symbol("walkDOM.STOP");
+    walkDOM.STOP = Symbol("walkDOM.STOP");
     walkDOM.ENTER = 0;
     walkDOM.EXIT = 1;
     function Document() {
@@ -16009,7 +16000,7 @@ var require_XMLAttribute = __commonJS({
   "node_modules/xmlbuilder/lib/XMLAttribute.js"(exports2, module2) {
     (function() {
       var XMLAttribute;
-      module2.exports = XMLAttribute = (function() {
+      module2.exports = XMLAttribute = function() {
         function XMLAttribute2(parent, name, value) {
           this.options = parent.options;
           this.stringify = parent.stringify;
@@ -16038,7 +16029,7 @@ var require_XMLAttribute = __commonJS({
           }
         };
         return XMLAttribute2;
-      })();
+      }();
     }).call(exports2);
   }
 });
@@ -16062,7 +16053,7 @@ var require_XMLElement = __commonJS({
       ref = require_Utility(), isObject3 = ref.isObject, isFunction2 = ref.isFunction, getValue = ref.getValue;
       XMLNode = require_XMLNode();
       XMLAttribute = require_XMLAttribute();
-      module2.exports = XMLElement = (function(superClass) {
+      module2.exports = XMLElement = function(superClass) {
         extend(XMLElement2, superClass);
         function XMLElement2(parent, name, attributes) {
           XMLElement2.__super__.constructor.call(this, parent);
@@ -16149,7 +16140,7 @@ var require_XMLElement = __commonJS({
           return this.attribute(name, value);
         };
         return XMLElement2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16171,7 +16162,7 @@ var require_XMLCData = __commonJS({
         return child;
       }, hasProp = {}.hasOwnProperty;
       XMLNode = require_XMLNode();
-      module2.exports = XMLCData = (function(superClass) {
+      module2.exports = XMLCData = function(superClass) {
         extend(XMLCData2, superClass);
         function XMLCData2(parent, text) {
           XMLCData2.__super__.constructor.call(this, parent);
@@ -16187,7 +16178,7 @@ var require_XMLCData = __commonJS({
           return this.options.writer.set(options).cdata(this);
         };
         return XMLCData2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16209,7 +16200,7 @@ var require_XMLComment = __commonJS({
         return child;
       }, hasProp = {}.hasOwnProperty;
       XMLNode = require_XMLNode();
-      module2.exports = XMLComment = (function(superClass) {
+      module2.exports = XMLComment = function(superClass) {
         extend(XMLComment2, superClass);
         function XMLComment2(parent, text) {
           XMLComment2.__super__.constructor.call(this, parent);
@@ -16225,7 +16216,7 @@ var require_XMLComment = __commonJS({
           return this.options.writer.set(options).comment(this);
         };
         return XMLComment2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16248,7 +16239,7 @@ var require_XMLDeclaration = __commonJS({
       }, hasProp = {}.hasOwnProperty;
       isObject3 = require_Utility().isObject;
       XMLNode = require_XMLNode();
-      module2.exports = XMLDeclaration = (function(superClass) {
+      module2.exports = XMLDeclaration = function(superClass) {
         extend(XMLDeclaration2, superClass);
         function XMLDeclaration2(parent, version, encoding, standalone) {
           var ref;
@@ -16271,7 +16262,7 @@ var require_XMLDeclaration = __commonJS({
           return this.options.writer.set(options).declaration(this);
         };
         return XMLDeclaration2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16293,7 +16284,7 @@ var require_XMLDTDAttList = __commonJS({
         return child;
       }, hasProp = {}.hasOwnProperty;
       XMLNode = require_XMLNode();
-      module2.exports = XMLDTDAttList = (function(superClass) {
+      module2.exports = XMLDTDAttList = function(superClass) {
         extend(XMLDTDAttList2, superClass);
         function XMLDTDAttList2(parent, elementName, attributeName, attributeType, defaultValueType, defaultValue) {
           XMLDTDAttList2.__super__.constructor.call(this, parent);
@@ -16328,7 +16319,7 @@ var require_XMLDTDAttList = __commonJS({
           return this.options.writer.set(options).dtdAttList(this);
         };
         return XMLDTDAttList2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16351,7 +16342,7 @@ var require_XMLDTDEntity = __commonJS({
       }, hasProp = {}.hasOwnProperty;
       isObject3 = require_Utility().isObject;
       XMLNode = require_XMLNode();
-      module2.exports = XMLDTDEntity = (function(superClass) {
+      module2.exports = XMLDTDEntity = function(superClass) {
         extend(XMLDTDEntity2, superClass);
         function XMLDTDEntity2(parent, pe, name, value) {
           XMLDTDEntity2.__super__.constructor.call(this, parent);
@@ -16390,7 +16381,7 @@ var require_XMLDTDEntity = __commonJS({
           return this.options.writer.set(options).dtdEntity(this);
         };
         return XMLDTDEntity2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16412,7 +16403,7 @@ var require_XMLDTDElement = __commonJS({
         return child;
       }, hasProp = {}.hasOwnProperty;
       XMLNode = require_XMLNode();
-      module2.exports = XMLDTDElement = (function(superClass) {
+      module2.exports = XMLDTDElement = function(superClass) {
         extend(XMLDTDElement2, superClass);
         function XMLDTDElement2(parent, name, value) {
           XMLDTDElement2.__super__.constructor.call(this, parent);
@@ -16432,7 +16423,7 @@ var require_XMLDTDElement = __commonJS({
           return this.options.writer.set(options).dtdElement(this);
         };
         return XMLDTDElement2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16454,7 +16445,7 @@ var require_XMLDTDNotation = __commonJS({
         return child;
       }, hasProp = {}.hasOwnProperty;
       XMLNode = require_XMLNode();
-      module2.exports = XMLDTDNotation = (function(superClass) {
+      module2.exports = XMLDTDNotation = function(superClass) {
         extend(XMLDTDNotation2, superClass);
         function XMLDTDNotation2(parent, name, value) {
           XMLDTDNotation2.__super__.constructor.call(this, parent);
@@ -16476,7 +16467,7 @@ var require_XMLDTDNotation = __commonJS({
           return this.options.writer.set(options).dtdNotation(this);
         };
         return XMLDTDNotation2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16503,7 +16494,7 @@ var require_XMLDocType = __commonJS({
       XMLDTDEntity = require_XMLDTDEntity();
       XMLDTDElement = require_XMLDTDElement();
       XMLDTDNotation = require_XMLDTDNotation();
-      module2.exports = XMLDocType = (function(superClass) {
+      module2.exports = XMLDocType = function(superClass) {
         extend(XMLDocType2, superClass);
         function XMLDocType2(parent, pubID, sysID) {
           var ref, ref1;
@@ -16575,7 +16566,7 @@ var require_XMLDocType = __commonJS({
           return this.root() || this.documentObject;
         };
         return XMLDocType2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16597,7 +16588,7 @@ var require_XMLRaw = __commonJS({
         return child;
       }, hasProp = {}.hasOwnProperty;
       XMLNode = require_XMLNode();
-      module2.exports = XMLRaw = (function(superClass) {
+      module2.exports = XMLRaw = function(superClass) {
         extend(XMLRaw2, superClass);
         function XMLRaw2(parent, text) {
           XMLRaw2.__super__.constructor.call(this, parent);
@@ -16613,7 +16604,7 @@ var require_XMLRaw = __commonJS({
           return this.options.writer.set(options).raw(this);
         };
         return XMLRaw2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16635,7 +16626,7 @@ var require_XMLText = __commonJS({
         return child;
       }, hasProp = {}.hasOwnProperty;
       XMLNode = require_XMLNode();
-      module2.exports = XMLText = (function(superClass) {
+      module2.exports = XMLText = function(superClass) {
         extend(XMLText2, superClass);
         function XMLText2(parent, text) {
           XMLText2.__super__.constructor.call(this, parent);
@@ -16651,7 +16642,7 @@ var require_XMLText = __commonJS({
           return this.options.writer.set(options).text(this);
         };
         return XMLText2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16673,7 +16664,7 @@ var require_XMLProcessingInstruction = __commonJS({
         return child;
       }, hasProp = {}.hasOwnProperty;
       XMLNode = require_XMLNode();
-      module2.exports = XMLProcessingInstruction = (function(superClass) {
+      module2.exports = XMLProcessingInstruction = function(superClass) {
         extend(XMLProcessingInstruction2, superClass);
         function XMLProcessingInstruction2(parent, target, value) {
           XMLProcessingInstruction2.__super__.constructor.call(this, parent);
@@ -16692,7 +16683,7 @@ var require_XMLProcessingInstruction = __commonJS({
           return this.options.writer.set(options).processingInstruction(this);
         };
         return XMLProcessingInstruction2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16714,7 +16705,7 @@ var require_XMLDummy = __commonJS({
         return child;
       }, hasProp = {}.hasOwnProperty;
       XMLNode = require_XMLNode();
-      module2.exports = XMLDummy = (function(superClass) {
+      module2.exports = XMLDummy = function(superClass) {
         extend(XMLDummy2, superClass);
         function XMLDummy2(parent) {
           XMLDummy2.__super__.constructor.call(this, parent);
@@ -16727,7 +16718,7 @@ var require_XMLDummy = __commonJS({
           return "";
         };
         return XMLDummy2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -16747,7 +16738,7 @@ var require_XMLNode = __commonJS({
       XMLText = null;
       XMLProcessingInstruction = null;
       XMLDummy = null;
-      module2.exports = XMLNode = (function() {
+      module2.exports = XMLNode = function() {
         function XMLNode2(parent) {
           this.parent = parent;
           if (this.parent) {
@@ -17141,7 +17132,7 @@ var require_XMLNode = __commonJS({
           return this.importDocument(doc);
         };
         return XMLNode2;
-      })();
+      }();
     }).call(exports2);
   }
 });
@@ -17155,7 +17146,7 @@ var require_XMLStringifier = __commonJS({
           return fn.apply(me, arguments);
         };
       }, hasProp = {}.hasOwnProperty;
-      module2.exports = XMLStringifier = (function() {
+      module2.exports = XMLStringifier = function() {
         function XMLStringifier2(options) {
           this.assertLegalChar = bind(this.assertLegalChar, this);
           var key, ref, value;
@@ -17279,7 +17270,7 @@ var require_XMLStringifier = __commonJS({
           return str.replace(ampregex, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;").replace(/\t/g, "&#x9;").replace(/\n/g, "&#xA;").replace(/\r/g, "&#xD;");
         };
         return XMLStringifier2;
-      })();
+      }();
     }).call(exports2);
   }
 });
@@ -17289,7 +17280,7 @@ var require_XMLWriterBase = __commonJS({
   "node_modules/xmlbuilder/lib/XMLWriterBase.js"(exports2, module2) {
     (function() {
       var XMLWriterBase, hasProp = {}.hasOwnProperty;
-      module2.exports = XMLWriterBase = (function() {
+      module2.exports = XMLWriterBase = function() {
         function XMLWriterBase2(options) {
           var key, ref, ref1, ref2, ref3, ref4, ref5, ref6, value;
           options || (options = {});
@@ -17367,7 +17358,7 @@ var require_XMLWriterBase = __commonJS({
           }
         };
         return XMLWriterBase2;
-      })();
+      }();
     }).call(exports2);
   }
 });
@@ -17402,7 +17393,7 @@ var require_XMLStringWriter = __commonJS({
       XMLDTDEntity = require_XMLDTDEntity();
       XMLDTDNotation = require_XMLDTDNotation();
       XMLWriterBase = require_XMLWriterBase();
-      module2.exports = XMLStringWriter = (function(superClass) {
+      module2.exports = XMLStringWriter = function(superClass) {
         extend(XMLStringWriter2, superClass);
         function XMLStringWriter2(options) {
           XMLStringWriter2.__super__.constructor.call(this, options);
@@ -17417,7 +17408,7 @@ var require_XMLStringWriter = __commonJS({
             if (child instanceof XMLDummy) {
               continue;
             }
-            r += (function() {
+            r += function() {
               switch (false) {
                 case !(child instanceof XMLDeclaration):
                   return this.declaration(child);
@@ -17430,7 +17421,7 @@ var require_XMLStringWriter = __commonJS({
                 default:
                   return this.element(child, 0);
               }
-            }).call(this);
+            }.call(this);
           }
           if (this.pretty && r.slice(-this.newline.length) === this.newline) {
             r = r.slice(0, -this.newline.length);
@@ -17476,7 +17467,7 @@ var require_XMLStringWriter = __commonJS({
             ref = node.children;
             for (i = 0, len = ref.length; i < len; i++) {
               child = ref[i];
-              r += (function() {
+              r += function() {
                 switch (false) {
                   case !(child instanceof XMLDTDAttList):
                     return this.dtdAttList(child, level + 1);
@@ -17495,7 +17486,7 @@ var require_XMLStringWriter = __commonJS({
                   default:
                     throw new Error("Unknown DTD node type: " + child.constructor.name);
                 }
-              }).call(this);
+              }.call(this);
             }
             r += "]";
           }
@@ -17556,7 +17547,7 @@ var require_XMLStringWriter = __commonJS({
             ref2 = node.children;
             for (j = 0, len1 = ref2.length; j < len1; j++) {
               child = ref2[j];
-              r += (function() {
+              r += function() {
                 switch (false) {
                   case !(child instanceof XMLCData):
                     return this.cdata(child, level + 1);
@@ -17575,7 +17566,7 @@ var require_XMLStringWriter = __commonJS({
                   default:
                     throw new Error("Unknown XML node type: " + child.constructor.name);
                 }
-              }).call(this);
+              }.call(this);
             }
             if (textispresentwasset) {
               this.textispresent--;
@@ -17687,7 +17678,7 @@ var require_XMLStringWriter = __commonJS({
           }
         };
         return XMLStringWriter2;
-      })(XMLWriterBase);
+      }(XMLWriterBase);
     }).call(exports2);
   }
 });
@@ -17712,7 +17703,7 @@ var require_XMLDocument = __commonJS({
       XMLNode = require_XMLNode();
       XMLStringifier = require_XMLStringifier();
       XMLStringWriter = require_XMLStringWriter();
-      module2.exports = XMLDocument = (function(superClass) {
+      module2.exports = XMLDocument = function(superClass) {
         extend(XMLDocument2, superClass);
         function XMLDocument2(options) {
           XMLDocument2.__super__.constructor.call(this, null);
@@ -17739,7 +17730,7 @@ var require_XMLDocument = __commonJS({
           return this.options.writer.set(options).document(this);
         };
         return XMLDocument2;
-      })(XMLNode);
+      }(XMLNode);
     }).call(exports2);
   }
 });
@@ -17765,7 +17756,7 @@ var require_XMLDocumentCB = __commonJS({
       XMLAttribute = require_XMLAttribute();
       XMLStringifier = require_XMLStringifier();
       XMLStringWriter = require_XMLStringWriter();
-      module2.exports = XMLDocumentCB = (function() {
+      module2.exports = XMLDocumentCB = function() {
         function XMLDocumentCB2(options, onData, onEnd) {
           var writerOptions;
           this.name = "?xml";
@@ -18096,7 +18087,7 @@ var require_XMLDocumentCB = __commonJS({
           return this.notation(name, value);
         };
         return XMLDocumentCB2;
-      })();
+      }();
     }).call(exports2);
   }
 });
@@ -18131,7 +18122,7 @@ var require_XMLStreamWriter = __commonJS({
       XMLDTDEntity = require_XMLDTDEntity();
       XMLDTDNotation = require_XMLDTDNotation();
       XMLWriterBase = require_XMLWriterBase();
-      module2.exports = XMLStreamWriter = (function(superClass) {
+      module2.exports = XMLStreamWriter = function(superClass) {
         extend(XMLStreamWriter2, superClass);
         function XMLStreamWriter2(stream, options) {
           XMLStreamWriter2.__super__.constructor.call(this, options);
@@ -18363,7 +18354,7 @@ var require_XMLStreamWriter = __commonJS({
           }
         };
         return XMLStreamWriter2;
-      })(XMLWriterBase);
+      }(XMLWriterBase);
     }).call(exports2);
   }
 });
