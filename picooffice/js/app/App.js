@@ -80,14 +80,14 @@ export class App {
           <div class="brand" style="color:var(--brand)">PicoOffice <small>Lite</small></div>
           <h1>Read. Annotate. Understand. Privately.</h1>
           <p>Read Word, PowerPoint, Excel, and text files. Transform PDFs privately.</p>
-          <p class="home-caveat">PicoOffice Lite is a lightweight app for reading documents and editing PDFs in your browser. It is not a full Office suite—preview fidelity has limits—but your files stay on this device: no subscription, no upload, and no cloud processing.</p>
+          <p class="home-caveat">PicoOffice Lite is a lightweight app for reading documents and editing PDFs in your browser. It is not a full Office suite—has its limits—but your files stay on this device: no subscriptions, no adds, no upload, and no cloud processing.</p>
           <div class="drop" id="drop-zone">
             <strong>Drop a document here</strong><br><span class="muted">PDF, DOCX, PPTX, XLSX, text, or an image</span><br><br>
             <div class="home-actions">
               <button class="btn primary" id="open-file">Open file</button>
               <button class="btn" id="convert-pdf">Convert to PDF</button>
             </div>
-            <p class="muted home-convert-note">Convert uses Ream locally — Word, Excel, PowerPoint, legacy Office, or PDF in → PDF out.</p>
+            <p class="muted home-convert-note">Convert locally — Word, PowerPoint, Excel or legacy Office files in → PDF out.</p>
           </div>
           <button class="btn" id="show-tools">PDF Tools</button>
           <p class="home-credit">By <a href="https://picoai.org" target="_blank" rel="noopener noreferrer">PicoAI</a></p>
