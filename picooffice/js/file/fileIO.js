@@ -26,22 +26,21 @@ const PICK_TYPES = {
   },
 };
 
+import { pickFilesWithShim } from './pickerShim.js';
+
 export async function pickFiles({ multiple = false, kind = 'documents' } = {}) {
   const preset = PICK_TYPES[kind] || PICK_TYPES.documents;
-  if ('showOpenFilePicker' in window) {
-    const handles = await window.showOpenFilePicker({ multiple, excludeAcceptAllOption: false, types: preset.types });
-    return Promise.all(handles.map((handle) => handle.getFile()));
-  }
-  return new Promise((resolve) => {
-    const input = Object.assign(document.createElement('input'), { type: 'file', multiple, accept: preset.accept });
-    input.onchange = () => resolve([...input.files]);
-    input.click();
+  // Avoid showOpenFilePicker — broken by some browser extensions (upload_fileaccessapi.js).
+  return pickFilesWithShim({
+    multiple,
+    accept: preset.accept,
+    title: multiple ? 'Choose files' : 'Choose a file',
   });
 }
 
-export async function saveBytes(bytes, filename, mime = 'application/pdf') {
+export async function saveBytes(bytes, filename, mime = 'application/pdf', { preferDownload = false } = {}) {
   const blob = bytes instanceof Blob ? bytes : new Blob([bytes], { type: mime });
-  if ('showSaveFilePicker' in window) {
+  if (!preferDownload && 'showSaveFilePicker' in window) {
     try {
       const handle = await window.showSaveFilePicker({
         suggestedName: filename,
