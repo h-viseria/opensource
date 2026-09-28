@@ -1,4 +1,4 @@
-export const APP_BUILD = '2026-09-28-ream1';
+export const APP_BUILD = '2026-09-28-merge2';
 
 async function purgeCachedShell() {
   if (navigator.serviceWorker?.getRegistrations) {
