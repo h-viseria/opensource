@@ -9,6 +9,8 @@ import { compressInWorker, transformImagesInWorker } from '../workers/runPdfWork
 import { pdfToImages, transformPdf } from '../pdf/PdfTransform.js';
 import { OfficeViewer } from '../office/OfficeViewer.js';
 import { detectFormat } from '../office/format.js';
+import { canReamConvertToPdf } from '../convert/reamFormats.js';
+import { ReamConvertFlow } from '../convert/ReamConvertFlow.js';
 
 const MIN_VIEW_ZOOM = 0.35;
 const MAX_VIEW_ZOOM = 3;
@@ -54,6 +56,13 @@ export class App {
   }
 
   async start() {
+    this.reamConvert = new ReamConvertFlow({
+      setStatus: (message) => this.setStatus(message),
+      toast: (message) => this.toast(message),
+      formatBytes: (value) => this.formatBytes(value),
+      openPdfBytes: (name, bytes) => this.openPdfFromBytes(name, bytes),
+      askPassword: (label) => this.askOptionalPassword(label),
+    });
     this.renderHome();
     this.bindGlobalDrop();
     this.bindKeyboard();
@@ -74,13 +83,18 @@ export class App {
           <p class="home-caveat">PicoOffice Lite is a lightweight app for reading documents and editing PDFs in your browser. It is not a full Office suite—preview fidelity has limits—but your files stay on this device: no subscription, no upload, and no cloud processing.</p>
           <div class="drop" id="drop-zone">
             <strong>Drop a document here</strong><br><span class="muted">PDF, DOCX, PPTX, XLSX, text, or an image</span><br><br>
-            <button class="btn primary" id="open-file">Open file</button>
+            <div class="home-actions">
+              <button class="btn primary" id="open-file">Open file</button>
+              <button class="btn" id="convert-pdf">Convert to PDF</button>
+            </div>
+            <p class="muted home-convert-note">Convert uses Ream locally — Word, Excel, PowerPoint, legacy Office, or PDF in → PDF out.</p>
           </div>
           <button class="btn" id="show-tools">PDF Tools</button>
           <p class="home-credit">By <a href="https://picoai.org" target="_blank" rel="noopener noreferrer">PicoAI</a></p>
         </div>
       </section>`);
     this.root.querySelector('#open-file').onclick = () => this.openPicker();
+    this.root.querySelector('#convert-pdf').onclick = () => this.reamConvert.pickAndConvert();
     this.root.querySelector('#show-tools').onclick = () => this.renderTools();
   }
 
@@ -101,6 +115,11 @@ export class App {
     } catch (error) {
       if (error.name !== 'AbortError') this.toast(error.message);
     }
+  }
+
+  async openPdfFromBytes(name, bytes) {
+    const file = new File([bytes], name, { type: 'application/pdf' });
+    await this.openFile(file);
   }
 
   async openFile(file) {
@@ -203,7 +222,7 @@ export class App {
     this.shell(`
       <header class="topbar">
         <div class="brand">PicoOffice</div>
-        <div class="toolbar-group"><button class="btn ghost" data-action="open">Open</button><button class="btn ghost" data-action="home">Home</button><button class="btn ghost" data-action="tools">PDF Tools</button></div>
+        <div class="toolbar-group"><button class="btn ghost" data-action="open">Open</button>${canReamConvertToPdf(this.file) ? '<button class="btn ghost" data-action="convert-pdf">Convert to PDF</button>' : ''}<button class="btn ghost" data-action="home">Home</button><button class="btn ghost" data-action="tools">PDF Tools</button></div>
         ${items.length ? `<div class="toolbar-group secondary pages-toolbar"><button class="btn ghost icon-btn" data-action="prev">‹</button><span id="office-position">${this.office.index + 1} / ${items.length}</span><button class="btn ghost icon-btn" data-action="next">›</button></div>` : ''}
         ${this.zoomToolbarHtml({ fit: true, viewToggle: false })}
         ${markdown ? '<div class="toolbar-group"><button class="btn ghost" data-action="markdown-rendered">Rendered</button><button class="btn ghost" data-action="markdown-raw">Raw</button></div>' : ''}
@@ -216,6 +235,7 @@ export class App {
         <aside class="properties hidden" id="properties"></aside>
       </section>`);
     this.root.querySelector('[data-action="open"]').onclick = () => this.openPicker();
+    this.root.querySelector('[data-action="convert-pdf"]')?.addEventListener('click', () => this.convertOpenDocumentToPdf());
     this.root.querySelector('[data-action="home"]').onclick = () => this.renderHome();
     this.root.querySelector('[data-action="tools"]').onclick = () => this.renderTools();
     this.root.querySelector('[data-action="search"]').onclick = () => this.showSearch();
@@ -798,6 +818,22 @@ export class App {
 
   askPassword(reason) {
     return Promise.resolve(prompt(reason === 2 ? 'Incorrect password. Try again:' : 'This PDF is password protected:'));
+  }
+
+  askOptionalPassword(label) {
+    const value = prompt(label);
+    if (value === null) return null;
+    return value.trim();
+  }
+
+  async convertOpenDocumentToPdf() {
+    if (!this.file) return;
+    try {
+      await this.reamConvert.convertFile(this.file);
+    } catch (error) {
+      this.toast(error.message);
+      this.setBuildStatus();
+    }
   }
 
   setStatus(message) {
