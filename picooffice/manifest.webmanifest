@@ -1,0 +1,13 @@
+{
+  "name": "PicoOffice",
+  "short_name": "PicoOffice",
+  "description": "Read documents and transform PDFs privately.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f0ea",
+  "theme_color": "#0f3d3e",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
