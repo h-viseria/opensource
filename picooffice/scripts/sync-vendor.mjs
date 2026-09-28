@@ -1,6 +1,6 @@
 /**
  * Copy browser dependencies into vendor/ for static hosting (no bundler).
- * Run after npm install when upgrading pdf.js, pdf-lib, fflate, or mammoth.
+ * Run after npm install when upgrading pdf.js, pdf-lib, fflate, mammoth, or reamkit.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -33,6 +33,14 @@ cp(path.join(nm, 'fflate/esm/browser.js'), path.join(vendor, 'fflate.js'));
 await esbuild.build({
   entryPoints: [path.join(nm, 'mammoth/lib/index.js')],
   outfile: path.join(vendor, 'mammoth.esm.js'),
+  bundle: true,
+  format: 'esm',
+  platform: 'browser',
+});
+
+await esbuild.build({
+  entryPoints: [path.join(nm, 'reamkit/dist/esm/index.js')],
+  outfile: path.join(vendor, 'reamkit.esm.js'),
   bundle: true,
   format: 'esm',
   platform: 'browser',
