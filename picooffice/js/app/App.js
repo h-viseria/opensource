@@ -10,6 +10,10 @@ import { pdfToImages, transformPdf } from '../pdf/PdfTransform.js';
 import { OfficeViewer } from '../office/OfficeViewer.js';
 import { detectFormat } from '../office/format.js';
 
+const MIN_VIEW_ZOOM = 0.35;
+const MAX_VIEW_ZOOM = 3;
+const VIEW_ZOOM_STEP = 0.15;
+
 const TOOL_CARDS = [
   ['merge', 'Merge PDFs', 'Combine files locally'],
   ['split', 'Split / extract', 'Export selected pages'],
@@ -124,6 +128,7 @@ export class App {
 
   async openOfficeFile(file) {
     await this.engine.close();
+    this.scale = 1;
     this.file = file;
     this.bytes = await fileBytes(file);
     this.office ||= new OfficeViewer();
@@ -137,6 +142,61 @@ export class App {
     if (this.build) this.setStatus(`Ready · ${this.build}`);
   }
 
+  zoomToolbarHtml({ fit = true, viewToggle = false } = {}) {
+    const viewButton = viewToggle
+      ? `<button class="btn ghost" data-action="view">${this.viewMode === 'continuous' ? 'Single' : 'Continuous'}</button>`
+      : '';
+    const fitButton = fit ? '<button class="btn ghost" data-action="fit">Fit</button>' : '<button class="btn ghost" data-action="fit">Fit width</button>';
+    return `<div class="toolbar-group zoom-toolbar"><button class="btn ghost" data-action="zoom-out" title="Zoom out">−</button><span id="zoom-label">${Math.round(this.scale * 100)}%</span><button class="btn ghost" data-action="zoom-in" title="Zoom in">+</button>${fitButton}${viewButton}</div>`;
+  }
+
+  bindViewerZoomActions() {
+    this.root.querySelectorAll('[data-action="zoom-in"], [data-action="zoom-out"], [data-action="fit"]').forEach((button) => {
+      button.onclick = () => {
+        if (button.dataset.action === 'zoom-in') return this.changeViewZoom(VIEW_ZOOM_STEP);
+        if (button.dataset.action === 'zoom-out') return this.changeViewZoom(-VIEW_ZOOM_STEP);
+        return this.fitViewer();
+      };
+    });
+  }
+
+  updateZoomLabel() {
+    const label = this.root.querySelector('#zoom-label');
+    if (label) label.textContent = `${Math.round(this.scale * 100)}%`;
+  }
+
+  applyOfficeZoom() {
+    const host = this.root.querySelector('#viewer-zoom');
+    if (!host) return;
+    host.style.transform = `scale(${this.scale})`;
+    host.style.transformOrigin = 'top center';
+  }
+
+  async changeViewZoom(change) {
+    this.scale = Math.max(MIN_VIEW_ZOOM, Math.min(MAX_VIEW_ZOOM, this.scale + change));
+    this.updateZoomLabel();
+    if (this.engine.document) await this.renderReader();
+    else this.applyOfficeZoom();
+  }
+
+  async fitViewer() {
+    if (this.engine.document) {
+      await this.fitWidth();
+      return;
+    }
+    const view = this.root.querySelector('#office-view');
+    const viewer = this.root.querySelector('#viewer');
+    const content = view?.firstElementChild;
+    if (!viewer || !content) return;
+    const available = Math.max(240, viewer.clientWidth - 44);
+    const contentWidth = content.getBoundingClientRect().width / Math.max(this.scale, 0.01);
+    if (contentWidth > 0) {
+      this.scale = Math.max(MIN_VIEW_ZOOM, Math.min(MAX_VIEW_ZOOM, available / contentWidth));
+      this.updateZoomLabel();
+      this.applyOfficeZoom();
+    }
+  }
+
   renderOffice() {
     const markdown = this.office.kind === 'markdown';
     const items = this.office.items;
@@ -144,14 +204,15 @@ export class App {
       <header class="topbar">
         <div class="brand">PicoOffice</div>
         <div class="toolbar-group"><button class="btn ghost" data-action="open">Open</button><button class="btn ghost" data-action="home">Home</button><button class="btn ghost" data-action="tools">PDF Tools</button></div>
-        ${items.length ? `<div class="toolbar-group secondary"><button class="btn ghost icon-btn" data-action="prev">‹</button><span id="office-position">${this.office.index + 1} / ${items.length}</span><button class="btn ghost icon-btn" data-action="next">›</button></div>` : ''}
+        ${items.length ? `<div class="toolbar-group secondary pages-toolbar"><button class="btn ghost icon-btn" data-action="prev">‹</button><span id="office-position">${this.office.index + 1} / ${items.length}</span><button class="btn ghost icon-btn" data-action="next">›</button></div>` : ''}
+        ${this.zoomToolbarHtml({ fit: true, viewToggle: false })}
         ${markdown ? '<div class="toolbar-group"><button class="btn ghost" data-action="markdown-rendered">Rendered</button><button class="btn ghost" data-action="markdown-raw">Raw</button></div>' : ''}
         <div class="toolbar-group"><button class="btn ghost" data-action="search">Search</button></div>
         <span class="privacy">🔒 Read only · local</span>
       </header>
       <section class="workspace office-workspace ${items.length ? '' : 'office-workspace--solo'}">
         <aside class="sidebar ${items.length ? '' : 'hidden'}"><div class="sidebar-head">${this.office.kind === 'xlsx' ? 'Sheets' : 'Slides'}</div><div class="thumb-list" id="office-items"></div></aside>
-        <div class="viewer-wrap office-view" id="viewer"><div id="office-view"></div></div>
+        <div class="viewer-wrap office-view" id="viewer"><div class="viewer-zoom" id="viewer-zoom"><div id="office-view"></div></div></div>
         <aside class="properties hidden" id="properties"></aside>
       </section>`);
     this.root.querySelector('[data-action="open"]').onclick = () => this.openPicker();
@@ -170,6 +231,7 @@ export class App {
       button.onclick = () => this.moveOffice(index, true);
       list.append(button);
     });
+    this.bindViewerZoomActions();
     this.refreshOfficeView();
   }
 
@@ -180,6 +242,7 @@ export class App {
     const position = this.root.querySelector('#office-position');
     if (position) position.textContent = `${this.office.index + 1} / ${this.office.items.length}`;
     this.root.querySelectorAll('#office-items .thumb').forEach((button, index) => button.classList.toggle('active', index === this.office.index));
+    this.applyOfficeZoom();
   }
 
   moveOffice(step, absolute = false) {
@@ -192,6 +255,7 @@ export class App {
   setMarkdown(mode) {
     this.office.markdownMode = mode;
     this.office.render(this.root.querySelector('#office-view'));
+    this.applyOfficeZoom();
   }
 
   renderReaderShell() {
@@ -200,8 +264,8 @@ export class App {
       <header class="topbar">
         <div class="brand">PicoOffice</div>
         <div class="toolbar-group"><button class="btn ghost" data-action="open">Open</button><button class="btn primary" data-action="save">Save copy</button><button class="btn ghost" data-action="tools">Tools</button></div>
-        <div class="toolbar-group secondary"><button class="btn ghost icon-btn" data-action="prev">‹</button><input class="page-input" id="page-number" type="number" min="1" max="${pageCount}" value="${this.currentPage}"><span>/ ${pageCount}</span><button class="btn ghost icon-btn" data-action="next">›</button></div>
-        <div class="toolbar-group secondary"><button class="btn ghost" data-action="zoom-out">−</button><span id="zoom-label">${Math.round(this.scale * 100)}%</span><button class="btn ghost" data-action="zoom-in">+</button><button class="btn ghost" data-action="fit">Fit</button><button class="btn ghost" data-action="view">${this.viewMode === 'continuous' ? 'Single' : 'Continuous'}</button></div>
+        <div class="toolbar-group secondary pages-toolbar"><button class="btn ghost icon-btn" data-action="prev">‹</button><input class="page-input" id="page-number" type="number" min="1" max="${pageCount}" value="${this.currentPage}"><span>/ ${pageCount}</span><button class="btn ghost icon-btn" data-action="next">›</button></div>
+        ${this.zoomToolbarHtml({ fit: true, viewToggle: true })}
         <div class="toolbar-group"><button class="btn ghost" data-action="search">Search</button><button class="btn ghost" data-action="annotate">Annotate</button></div>
         <span class="privacy">🔒 Local</span>
       </header>
@@ -276,15 +340,16 @@ export class App {
         if (action === 'tools') return this.renderTools();
         if (action === 'prev') return this.goToPage(this.currentPage - 1);
         if (action === 'next') return this.goToPage(this.currentPage + 1);
-        if (action === 'zoom-in') return this.changeScale(0.15);
-        if (action === 'zoom-out') return this.changeScale(-0.15);
-        if (action === 'fit') return this.fitWidth();
+        if (action === 'zoom-in') return this.changeViewZoom(VIEW_ZOOM_STEP);
+        if (action === 'zoom-out') return this.changeViewZoom(-VIEW_ZOOM_STEP);
+        if (action === 'fit') return this.fitViewer();
         if (action === 'view') return this.toggleView();
         if (action === 'search') return this.showSearch();
         if (action === 'annotate') return this.showAnnotations();
       };
     });
     this.root.querySelector('#page-number').onchange = (event) => this.goToPage(Number(event.target.value));
+    this.bindViewerZoomActions();
   }
 
   observePages() {
@@ -310,15 +375,11 @@ export class App {
     this.root.querySelectorAll('.thumb').forEach((thumb) => thumb.classList.toggle('active', Number(thumb.dataset.page) === pageNumber));
   }
 
-  async changeScale(change) {
-    this.scale = Math.max(0.35, Math.min(3, this.scale + change));
-    await this.renderReader();
-  }
-
   async fitWidth() {
     const page = await this.engine.document.getPage(this.currentPage);
     const base = page.getViewport({ scale: 1 });
-    this.scale = Math.max(0.35, (this.root.querySelector('#viewer').clientWidth - 52) / base.width);
+    this.scale = Math.max(MIN_VIEW_ZOOM, Math.min(MAX_VIEW_ZOOM, (this.root.querySelector('#viewer').clientWidth - 52) / base.width));
+    this.updateZoomLabel();
     await this.renderReader();
   }
 
@@ -725,10 +786,12 @@ export class App {
       } else if (!typing && this.engine.document && ['PageUp', 'ArrowLeft'].includes(event.key)) {
         event.preventDefault();
         this.goToPage(this.currentPage - 1);
-      } else if (!typing && this.engine.document && ['+', '='].includes(event.key)) {
-        this.changeScale(0.15);
-      } else if (!typing && this.engine.document && event.key === '-') {
-        this.changeScale(-0.15);
+      } else if (!typing && (this.engine.document || this.office) && ['+', '='].includes(event.key)) {
+        event.preventDefault();
+        this.changeViewZoom(VIEW_ZOOM_STEP);
+      } else if (!typing && (this.engine.document || this.office) && event.key === '-') {
+        event.preventDefault();
+        this.changeViewZoom(-VIEW_ZOOM_STEP);
       }
     });
   }
