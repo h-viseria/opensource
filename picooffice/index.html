@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0f3d3e" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+    <meta name="description" content="PicoOffice — read documents and transform PDFs privately." />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <title>PicoOffice — Private PDF toolkit</title>
+  </head>
+  <body>
+    <div id="app"><main class="app"><section class="empty"><p class="muted" style="padding:24px;text-align:center">Loading PicoOffice…</p></section></main></div>
+    <div id="toast-root" class="toast-root" aria-live="polite"></div>
+    <script src="./js/purge-cache.js?v=20260928-static4"></script>
+    <script type="module" src="./js/app.js?v=20260928-static4"></script>
+  </body>
+</html>
