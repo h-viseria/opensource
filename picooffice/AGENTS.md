@@ -6,7 +6,7 @@ Privacy-first document reader and PDF toolkit. Vanilla JavaScript ES modules ser
 
 ```
 index.html, sw.js, css/, js/, vendor/
-  js/app.js → js/app/, js/pdf/, js/office/, js/file/, js/workers/
+  js/app.js → js/app/, js/pdf/, js/office/, js/file/, js/workers/, js/pwa/
 ```
 
 - PDF.js is the rendering/search/password layer (`vendor/pdfjs`).
