@@ -2,6 +2,7 @@
   "name": "PicoOffice",
   "short_name": "PicoOffice",
   "description": "Read documents and transform PDFs privately.",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -9,5 +10,66 @@
   "theme_color": "#0f3d3e",
   "icons": [
     { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
-  ]
+  ],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "file_handlers": [
+    {
+      "action": "./",
+      "accept": {
+        "application/pdf": [".pdf"],
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+        "application/vnd.ms-word.document.macroEnabled.12": [".docm"],
+        "application/vnd.ms-powerpoint.presentation.macroEnabled.12": [".pptm"],
+        "application/vnd.ms-excel.sheet.macroEnabled.12": [".xlsm"],
+        "application/msword": [".doc"],
+        "application/vnd.ms-powerpoint": [".ppt"],
+        "application/vnd.ms-excel": [".xls"],
+        "text/plain": [".txt", ".csv", ".md", ".markdown"],
+        "application/rtf": [".rtf"],
+        "text/rtf": [".rtf"],
+        "image/png": [".png"],
+        "image/jpeg": [".jpg", ".jpeg"],
+        "image/webp": [".webp"]
+      },
+      "icons": [
+        { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml" }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "./share-target/",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "files",
+          "accept": [
+            "application/pdf",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/msword",
+            "application/vnd.ms-powerpoint",
+            "application/vnd.ms-excel",
+            "text/plain",
+            "text/csv",
+            "text/markdown",
+            "application/rtf",
+            "text/rtf",
+            "image/png",
+            "image/jpeg",
+            "image/webp"
+          ]
+        }
+      ]
+    }
+  }
 }
