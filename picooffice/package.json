@@ -15,7 +15,8 @@
     "fflate": "0.8.3",
     "mammoth": "1.11.0",
     "pdf-lib": "1.17.1",
-    "pdfjs-dist": "5.4.296"
+    "pdfjs-dist": "5.4.296",
+    "reamkit": "^1.29.0"
   },
   "devDependencies": {
     "esbuild": "0.25.0",
