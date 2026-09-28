@@ -1,4 +1,4 @@
-export const APP_BUILD = '2026-09-28-static4';
+export const APP_BUILD = '2026-09-28-zoom1';
 
 async function purgeCachedShell() {
   if (navigator.serviceWorker?.getRegistrations) {
