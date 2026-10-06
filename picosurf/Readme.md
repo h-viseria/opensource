@@ -31,3 +31,15 @@ Part of the **PicoAI** philosophy: *Small software. Local intelligence. Private 
 
 ## Build
 powershell -ExecutionPolicy Bypass -File .\scripts\build.ps1
+
+
+## For android
+
+cd picosurf\apps\picosurf-android
+
+npm run android:build-apk-llama
+
+npm run android:sign-apk -- "src-tauri\gen\android\app\build\outputs\apk\arm64\release\app-arm64-release-unsigned.apk"
+
+& "$env:ANDROID_HOME\platform-tools\adb.exe" install -r "C:\projects\picosurf\apps\picosurf-android\src-tauri\gen\android\app\build\outputs\apk\arm64\release\app-arm64-release-signed.apk"
+
