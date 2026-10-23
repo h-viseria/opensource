@@ -3,63 +3,46 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Treasury Facility Utilisation — Requirements Document</title>
+<title>Treasury Facility &amp; Cash Platform — Requirements Document</title>
 <style>
   :root {
-    --ink: #222;
-    --muted: #555;
-    --line: #ccc;
-    --bg: #f5f5f5;
-    --surface: #fff;
-    --accent: #1a4a6b;
-    --wire: #333;
-    --wire-bg: #fafafa;
-    --wire-fill: #e8eef2;
+    --ink: #222; --muted: #555; --line: #ccc; --bg: #f5f5f5; --surface: #fff;
+    --accent: #1a4a6b; --wire: #333; --wire-bg: #fafafa; --wire-fill: #e8eef2;
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0;
-    font-family: "Segoe UI", Calibri, Arial, sans-serif;
-    font-size: 14.5px;
-    line-height: 1.5;
-    color: var(--ink);
-    background: var(--bg);
+    margin: 0; font-family: "Segoe UI", Calibri, Arial, sans-serif;
+    font-size: 14.5px; line-height: 1.5; color: var(--ink); background: var(--bg);
   }
   .wrap { max-width: 960px; margin: 0 auto; padding: 28px 20px 64px; }
   .doc-header {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    padding: 24px 28px;
-    margin-bottom: 20px;
+    background: var(--surface); border: 1px solid var(--line);
+    padding: 24px 28px; margin-bottom: 20px;
   }
   .doc-header h1 { margin: 0 0 6px; font-size: 1.55rem; color: var(--accent); }
   .doc-header .meta { color: var(--muted); font-size: 0.92rem; }
   .doc-header table.meta-tbl { margin-top: 14px; font-size: 0.9rem; border-collapse: collapse; }
   .doc-header table.meta-tbl td { padding: 3px 16px 3px 0; vertical-align: top; }
-  .doc-header table.meta-tbl td:first-child { color: var(--muted); width: 120px; }
+  .doc-header table.meta-tbl td:first-child { color: var(--muted); width: 140px; }
 
   nav.toc {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    padding: 14px 20px;
-    margin-bottom: 20px;
+    background: var(--surface); border: 1px solid var(--line);
+    padding: 14px 20px; margin-bottom: 20px;
   }
-  nav.toc strong { display: block; margin-bottom: 6px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+  nav.toc strong {
+    display: block; margin-bottom: 6px; font-size: 0.8rem;
+    text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted);
+  }
   nav.toc a { color: var(--accent); text-decoration: none; margin-right: 12px; font-size: 0.9rem; }
   nav.toc a:hover { text-decoration: underline; }
 
   section {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    padding: 22px 26px;
-    margin-bottom: 16px;
+    background: var(--surface); border: 1px solid var(--line);
+    padding: 22px 26px; margin-bottom: 16px;
   }
   h2 {
-    margin: 0 0 12px;
-    font-size: 1.2rem;
-    color: var(--accent);
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 6px;
+    margin: 0 0 12px; font-size: 1.2rem; color: var(--accent);
+    border-bottom: 1px solid var(--line); padding-bottom: 6px;
   }
   h3 { margin: 18px 0 8px; font-size: 1.02rem; }
   h4 { margin: 14px 0 6px; font-size: 0.95rem; }
@@ -68,25 +51,13 @@
   ul, ol { margin: 6px 0 12px; padding-left: 22px; }
   li { margin: 3px 0; }
 
-  table.req {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-    margin: 10px 0 14px;
-  }
+  table.req { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 10px 0 14px; }
   table.req th, table.req td {
-    border: 1px solid var(--line);
-    padding: 7px 9px;
-    text-align: left;
-    vertical-align: top;
+    border: 1px solid var(--line); padding: 7px 9px; text-align: left; vertical-align: top;
   }
   table.req th {
-    background: #eee;
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    color: var(--muted);
+    background: #eee; font-weight: 600; font-size: 0.8rem;
+    text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted);
   }
   table.req tr:nth-child(even) td { background: #fafafa; }
   .id { font-family: Consolas, monospace; font-size: 0.85em; white-space: nowrap; }
@@ -96,115 +67,73 @@
   .p-could { color: #555; }
 
   .note {
-    border-left: 3px solid var(--accent);
-    background: #f0f5f8;
-    padding: 10px 12px;
-    margin: 12px 0;
-    font-size: 0.92rem;
+    border-left: 3px solid var(--accent); background: #f0f5f8;
+    padding: 10px 12px; margin: 12px 0; font-size: 0.92rem;
+  }
+  .note.warn { border-left-color: #8a4b08; background: #f8efe4; }
+  .note.ok { border-left-color: #1b5e3b; background: #e6f2eb; }
+
+  pre.schema {
+    background: #1e2430; color: #d8dee9; padding: 14px 16px; border-radius: 6px;
+    overflow-x: auto; font-size: 0.72rem; line-height: 1.4; font-family: Consolas, monospace;
   }
 
-  /* Wireframe mockups */
   .mock {
-    border: 2px solid var(--wire);
-    background: var(--wire-bg);
-    margin: 12px 0 18px;
-    font-family: Consolas, "Courier New", monospace;
-    font-size: 12px;
-    line-height: 1.35;
+    border: 2px solid var(--wire); background: var(--wire-bg); margin: 12px 0 18px;
+    font-family: Consolas, "Courier New", monospace; font-size: 12px; line-height: 1.35;
   }
-  .mock .bar {
-    background: var(--wire);
-    color: #fff;
-    padding: 6px 10px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-  }
+  .mock .bar { background: var(--wire); color: #fff; padding: 6px 10px; font-weight: 700; }
   .mock .bar .right { float: right; font-weight: 400; opacity: 0.85; }
   .mock .body { padding: 10px 12px; }
   .mock .row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
   .mock .nav {
     display: flex; gap: 4px; flex-wrap: wrap;
-    border-bottom: 1px dashed var(--line);
-    padding-bottom: 8px; margin-bottom: 10px;
+    border-bottom: 1px dashed var(--line); padding-bottom: 8px; margin-bottom: 10px;
   }
-  .mock .nav span {
-    border: 1px solid var(--wire);
-    padding: 3px 8px;
-    background: #fff;
-  }
+  .mock .nav span { border: 1px solid var(--wire); padding: 3px 8px; background: #fff; }
   .mock .nav span.on { background: var(--wire-fill); font-weight: 700; }
   .mock .field {
-    border: 1px solid #999;
-    background: #fff;
-    padding: 4px 6px;
-    min-width: 100px;
-    flex: 1;
+    border: 1px solid #999; background: #fff; padding: 4px 6px; min-width: 100px; flex: 1;
   }
-  .mock .field label {
-    display: block;
-    font-size: 10px;
-    color: #666;
-    margin-bottom: 2px;
-  }
+  .mock .field label { display: block; font-size: 10px; color: #666; margin-bottom: 2px; }
   .mock .field .val { color: #111; min-height: 14px; }
   .mock .field.ro { background: #ececec; }
   .mock .btn {
-    display: inline-block;
-    border: 1px solid var(--wire);
-    padding: 4px 10px;
-    background: #fff;
-    margin-right: 4px;
+    display: inline-block; border: 1px solid var(--wire);
+    padding: 4px 10px; background: #fff; margin-right: 4px;
   }
   .mock .btn.primary { background: var(--wire-fill); font-weight: 700; }
-  .mock table.grid {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 6px;
-  }
+  .mock table.grid { width: 100%; border-collapse: collapse; margin-top: 6px; }
   .mock table.grid th, .mock table.grid td {
-    border: 1px solid #999;
-    padding: 4px 6px;
-    text-align: left;
+    border: 1px solid #999; padding: 4px 6px; text-align: left;
   }
   .mock table.grid th { background: var(--wire-fill); }
   .mock .sidebar-layout { display: flex; gap: 10px; }
   .mock .side {
-    width: 160px;
-    border: 1px solid #999;
-    background: #fff;
-    padding: 6px;
-    flex-shrink: 0;
+    width: 150px; border: 1px solid #999; background: #fff; padding: 6px; flex-shrink: 0;
   }
-  .mock .side div { padding: 4px 4px; border-bottom: 1px dotted #ccc; }
+  .mock .side div { padding: 4px; border-bottom: 1px dotted #ccc; }
   .mock .side div.on { background: var(--wire-fill); font-weight: 700; }
   .mock .main { flex: 1; min-width: 0; }
   .mock .kpi {
-    border: 1px solid #999;
-    background: #fff;
-    padding: 8px;
-    flex: 1;
-    min-width: 120px;
-    text-align: center;
+    border: 1px solid #999; background: #fff; padding: 8px;
+    flex: 1; min-width: 110px; text-align: center;
   }
   .mock .kpi .n { font-size: 16px; font-weight: 700; margin-top: 4px; }
+  .mock .panel {
+    border: 1px solid #999; background: #fff; padding: 8px; flex: 1; min-width: 200px;
+  }
+  .mock .panel h5 {
+    margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
+  }
   .mock-caption {
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin: -8px 0 16px;
-    font-style: italic;
+    font-size: 0.85rem; color: var(--muted); margin: -8px 0 16px; font-style: italic;
   }
 
-  footer {
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.82rem;
-    margin-top: 20px;
-  }
-
+  footer { text-align: center; color: var(--muted); font-size: 0.82rem; margin-top: 20px; }
   @media print {
     body { background: #fff; }
-    section, .doc-header, nav.toc { break-inside: avoid; }
-    .mock { break-inside: avoid; }
+    section, .doc-header, nav.toc, .mock { break-inside: avoid; }
   }
 </style>
 </head>
@@ -212,15 +141,19 @@
 <div class="wrap">
 
 <div class="doc-header">
-  <h1>Treasury Facility Utilisation System</h1>
+  <h1>Treasury Facility &amp; Cash Platform</h1>
   <p style="margin:0 0 4px;font-size:1.05rem;"><strong>Requirements Document</strong></p>
-  <p class="meta">Generic multi-bank, multi-instrument platform for facility limits, utilisation tracking, lifecycle events, interest/fees, and reporting.</p>
+  <p class="meta">
+    Single application for facility utilisation <em>and</em> cash management: masters, instruments,
+    bank statements, forecast vs actual matching, limits, and reports — on one shared data schema
+    (no duplicate Excel entry).
+  </p>
   <table class="meta-tbl">
     <tr><td>Document type</td><td>Business &amp; Functional Requirements</td></tr>
-    <tr><td>Version</td><td>0.1 — Draft</td></tr>
+    <tr><td>Version</td><td>0.2 — Draft (adds Cash / Statements / Matching)</td></tr>
     <tr><td>Status</td><td>For review</td></tr>
-    <tr><td>Audience</td><td>Treasury ops, TRM / Tech, Product, Bank relationship owners</td></tr>
-    <tr><td>Related analysis</td><td>Reverse-engineering of current Excel utilisation workbook (reference only; system must not hard-code that layout)</td></tr>
+    <tr><td>Audience</td><td>Treasury ops, TRM / Tech, Product</td></tr>
+    <tr><td>Excel references</td><td>Facility utilisation workbook · Weekly Cashflow · Cash Flow Template (as-is analysis only; app must not clone their silos)</td></tr>
   </table>
 </div>
 
@@ -229,6 +162,7 @@
   <a href="#1">1. Purpose</a>
   <a href="#2">2. Scope</a>
   <a href="#3">3. Concepts</a>
+  <a href="#3b">3b. Unified schema</a>
   <a href="#4">4. Actors</a>
   <a href="#5">5. Functional reqs</a>
   <a href="#6">6. Screens &amp; mock-ups</a>
@@ -241,14 +175,21 @@
 <!-- 1 -->
 <section id="1">
   <h2>1. Purpose</h2>
-  <p>Replace spreadsheet-based treasury facility tracking with a system that:</p>
+  <p>Replace the current multi-Excel treasury estate with <strong>one platform</strong> that:</p>
   <ul>
-    <li>Maintains <strong>master data</strong> (banks, facilities/limits, products, rate rules, fee rules)</li>
-    <li>Captures <strong>instrument transactions</strong> and their <strong>lifecycle events</strong> (issuance, partial drawdown, collection, commitment, repayment, amendment, cancellation)</li>
-    <li>Computes <strong>utilisation, outstanding, interest, fees, and maturity</strong> using configurable formulas</li>
-    <li>Produces <strong>operational and management reports</strong> (limit utilisation, bank-wise position, maturity ladder, forecasts)</li>
+    <li>Maintains <strong>shared master data</strong> (banks, bank accounts, facilities/limits, products, rate/fee rules, cash categories)</li>
+    <li>Captures <strong>instruments</strong> and <strong>lifecycle events</strong> (LC, LC Bill, TR, BG, … — extensible)</li>
+    <li>Imports / records <strong>bank statements</strong> and supports <strong>matching</strong> to forecast lines (and optionally invoices)</li>
+    <li>Maintains <strong>cash forecast</strong> with explicit <strong>Projected vs Actual</strong> and variance</li>
+    <li>Computes <strong>utilisation, outstanding, interest/fees, maturity, free cash</strong></li>
+    <li>Produces operational and management <strong>reports</strong> without re-keying the same deal into a second workbook</li>
   </ul>
-  <p>The design must be <strong>generic</strong>: new banks, facilities, and instrument types can be added via configuration without rewriting core logic.</p>
+  <div class="note warn">
+    <strong>Excel today vs app tomorrow:</strong> Facility utilisation and Weekly Cashflow are only loosely coupled
+    (manual paste / shared reference numbers). The application <strong>must</strong> store instruments, cash movements,
+    and statements in one schema so booking an LC due date can seed a projected cash line, and a matched bank
+    credit can mark Actual — without users maintaining parallel Utilisation / Lines copies.
+  </div>
 </section>
 
 <!-- 2 -->
@@ -256,28 +197,30 @@
   <h2>2. Scope</h2>
   <h3>2.1 In scope</h3>
   <ul>
-    <li>Master data administration</li>
-    <li>Transaction capture for multiple instrument types (initially LC, LC Bill/Collection, TR, BG/SBLC; extensible)</li>
-    <li>Partial movements (partial collection, partial repayment, partial commitment utilisation)</li>
+    <li>Master data administration (including bank accounts and cash-line categories)</li>
+    <li>Instrument capture + lifecycle events (partial draw / collect / repay / commit)</li>
     <li>Configurable interest and fee calculation rules</li>
-    <li>Limit / sub-limit utilisation against sanctioned facilities</li>
-    <li>Standard reports and dashboards listed in §7</li>
-    <li>Audit trail of who changed what and when</li>
+    <li>Limit / sub-limit utilisation</li>
+    <li><strong>Cash forecast</strong> (by week and/or by bank account)</li>
+    <li><strong>Bank statement</strong> import and classification</li>
+    <li><strong>Matching</strong> forecast ↔ statement (↔ optional invoice/document)</li>
+    <li><strong>Projected vs Actual</strong> with variance explanations</li>
+    <li>Free-cash / earmark view driven from live data</li>
+    <li>Standard reports (§7) and audit trail</li>
   </ul>
-  <h3>2.2 Out of scope (initial release unless agreed)</h3>
+  <h3>2.2 Out of scope (initial unless agreed)</h3>
   <ul>
-    <li>Core banking / payment initiation (SWIFT send)</li>
-    <li>Full accounting GL posting (may export journals later)</li>
-    <li>Customer-facing portal</li>
-    <li>Hedging / derivatives valuation engines</li>
-    <li>Document management for full LC document sets (store references/links only)</li>
+    <li>Core banking payment initiation (SWIFT send)</li>
+    <li>Full GL posting (export journals later)</li>
+    <li>Customer portal; derivatives valuation; full LC document DMS</li>
   </ul>
   <h3>2.3 Design principles</h3>
   <ol>
-    <li><strong>Config over hard-code</strong> — banks, instruments, limit structures, rate formulas are data.</li>
-    <li><strong>Event-sourced balances</strong> — outstanding is derived from events (issue, draw, collect, repay), not a single overwritten balance cell.</li>
-    <li><strong>One source of truth</strong> — reports never require pasted copies of the same deal.</li>
-    <li><strong>Typed vs computed</strong> — screens clearly separate user-entered fields from system-calculated fields.</li>
+    <li><strong>One schema, many views</strong> — facility screens and cash screens read/write the same entities.</li>
+    <li><strong>Config over hard-code</strong> — banks, accounts, instruments, match rules, formulas are data.</li>
+    <li><strong>Event-sourced balances</strong> — outstanding and cash Actuals come from events/matches, not overwritten cells.</li>
+    <li><strong>No duplicate masters</strong> — LC / TR / BG exist once; cash forecast lines reference them.</li>
+    <li><strong>Typed vs computed</strong> — UI separates user input from system-calculated fields.</li>
   </ol>
 </section>
 
@@ -287,50 +230,89 @@
   <table class="req">
     <thead><tr><th>Concept</th><th>Meaning</th><th>Examples</th></tr></thead>
     <tbody>
+      <tr><td><strong>Bank</strong></td><td>Financial counterparty</td><td>Any commercial bank / FI</td></tr>
+      <tr><td><strong>Bank account</strong></td><td>Operative account under a bank (CCY + account id)</td><td>Citi USD, Citi BIM USD, Citi AED, StanC USD</td></tr>
+      <tr><td><strong>Facility</strong></td><td>Sanctioned limit (+ optional sub-limits)</td><td>WC 260m; regional sub-limit 85m</td></tr>
+      <tr><td><strong>Instrument type</strong></td><td>Configurable product with lifecycle + calc profile</td><td>LC, LC Bill, TR, BG, TT, TL, FD, …</td></tr>
+      <tr><td><strong>Instrument</strong></td><td>One deal under bank + facility + type</td><td>One LC No / TR Ref / BG No</td></tr>
+      <tr><td><strong>Lifecycle event</strong></td><td>Atomic change to commitment / outstanding</td><td>Issue, bill, partial collect, draw, partial repay</td></tr>
+      <tr><td><strong>Expected cash movement</strong></td><td>Derived or manual projected cash (in/out) on a date</td><td>TR due repay; LC bill due; trade receivable</td></tr>
+      <tr><td><strong>Bank statement line</strong></td><td>One posted bank transaction</td><td>Inward/outward with bank reference</td></tr>
+      <tr><td><strong>Match</strong></td><td>Link between statement line(s) and expected/forecast line(s)</td><td>1:1, 1:N, N:1, partial</td></tr>
+      <tr><td><strong>Cash forecast cell</strong></td><td>Projected and/or Actual amount for a line × period × account</td><td>Week bucket Actual | Projected</td></tr>
+      <tr><td><strong>Calculation rule</strong></td><td>Interest / fee formula template</td><td>SOFR+margin/360; quarterly commission</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 3b -->
+<section id="3b">
+  <h2>3b. Unified schema (anti-duplication)</h2>
+  <p>
+    Today’s Excels force users to maintain facility deals in one file and re-paste similar lines into
+    Weekly Cashflow (Utilisation / Lines) plus re-type Actuals from statements into CF.
+    The app shall use a <strong>common schema</strong> so each fact is entered once.
+  </p>
+  <pre class="schema">
+┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
+│ Bank        │1───N│ BankAccount  │     │ Facility        │
+└─────────────┘     └──────┬───────┘     │  (+ SubLimit)   │
+                           │             └────────┬────────┘
+                           │                      │
+┌──────────────┐           │             ┌────────▼────────┐     ┌──────────────────┐
+│ Instrument   │N──────────┼─────────────│ Instrument      │1───N│ LifecycleEvent   │
+│ Type         │           │             │ (LC/TR/BG/…)    │     │ (draw/collect/…) │
+└──────────────┘           │             └────────┬────────┘     └────────┬─────────┘
+                           │                      │                       │
+                           │                      │  auto / confirm       │
+                           │                      ▼                       ▼
+                           │             ┌─────────────────────────────────────────┐
+                           │             │ ExpectedCashMovement                    │
+                           │             │ (Projected: date, amt, account, link)   │
+                           │             └───────────────────┬─────────────────────┘
+                           │                                 │
+                           │                                 │ Match (partial OK)
+                           ▼                                 ▼
+                  ┌─────────────────┐              ┌─────────────────────┐
+                  │ StatementLine   │◄──── Match ──│ (status: unmatched /│
+                  │ (import/manual) │              │  partial / matched) │
+                  └─────────────────┘              └─────────┬───────────┘
+                                                             │
+                                                             ▼
+                                                  Actual amount on movement
+                                                  + variance vs Projected
+                                                  + FreeCash / reports
+  </pre>
+  <table class="req">
+    <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
+    <tbody>
       <tr>
-        <td><strong>Bank</strong></td>
-        <td>Financial counterparty that grants facilities and books instruments</td>
-        <td>Any commercial bank / FI</td>
+        <td class="id">FR-U01</td>
+        <td>Instruments, facilities, banks, and accounts shall be stored once and reusable by limit screens and cash screens.</td>
+        <td class="prio p-must">Must</td>
       </tr>
       <tr>
-        <td><strong>Facility</strong></td>
-        <td>Sanctioned limit line (optionally with sub-limits by product, geography, or use)</td>
-        <td>Working capital USD 260m; Zambian sub-limit 85m</td>
+        <td class="id">FR-U02</td>
+        <td>Creating/updating a lifecycle event that implies cash (due date, repay, collection) shall be able to <strong>create or refresh</strong> ExpectedCashMovement(s) without re-keying in a separate cash workbook.</td>
+        <td class="prio p-must">Must</td>
       </tr>
       <tr>
-        <td><strong>Instrument type</strong></td>
-        <td>Configurable product category with its own lifecycle and calculation profile</td>
-        <td>LC, LC Bill, TR, BG, SBLC, TT, Term Loan, FD, ICD, …</td>
+        <td class="id">FR-U03</td>
+        <td>Limit utilisation and cash earmarks shall calculate from the same Live outstanding / open movements — not from a pasted “Utilisation” sheet.</td>
+        <td class="prio p-must">Must</td>
       </tr>
       <tr>
-        <td><strong>Instrument (deal)</strong></td>
-        <td>A single contract/reference under a bank + facility + instrument type</td>
-        <td>One LC number; one BG number; one TR reference</td>
+        <td class="id">FR-U04</td>
+        <td>Users may still add <strong>manual</strong> forecast lines (trade receivables, ad-hoc) that are not tied to an instrument; these use the same ExpectedCashMovement entity.</td>
+        <td class="prio p-must">Must</td>
       </tr>
       <tr>
-        <td><strong>Lifecycle event</strong></td>
-        <td>Atomic movement that changes commitment or outstanding</td>
-        <td>Issue, amend, bill present, partial collect, draw TR, partial repay, cancel</td>
-      </tr>
-      <tr>
-        <td><strong>Calculation rule</strong></td>
-        <td>Named formula for interest or fees, with parameters</td>
-        <td>SOFR + markup / 360; Fixed % p.a. × quarters; flat fee + VAT%</td>
-      </tr>
-      <tr>
-        <td><strong>Utilisation snapshot</strong></td>
-        <td>Point-in-time outstanding by facility / bank / instrument type / status</td>
-        <td>Month-end MoM history; as-of report</td>
+        <td class="id">FR-U05</td>
+        <td>UI shall warn when the same bank reference or instrument reference is linked twice in conflicting matches.</td>
+        <td class="prio p-should">Should</td>
       </tr>
     </tbody>
   </table>
-
-  <div class="note">
-    <strong>Relationship (simplified):</strong>
-    Bank 1—N Facility 1—N Instrument 1—N Lifecycle Event.
-    Instrument Type defines allowed events and default calculation rules.
-    Facility defines sanctioned amount; utilisation = sum of Live outstanding events/instruments booked to that facility.
-  </div>
 </section>
 
 <!-- 4 -->
@@ -339,11 +321,11 @@
   <table class="req">
     <thead><tr><th>Actor</th><th>Responsibilities</th></tr></thead>
     <tbody>
-      <tr><td>Treasury Operator</td><td>Create/update instruments and lifecycle events; run day-to-day reports</td></tr>
-      <tr><td>Treasury Lead / Controller</td><td>Approve amendments if required; review utilisation, variances, month-end</td></tr>
-      <tr><td>Master Data Admin</td><td>Maintain banks, facilities, instrument types, calculation rules</td></tr>
-      <tr><td>Read-only Viewer</td><td>Dashboards and reports only</td></tr>
-      <tr><td>System / Scheduler</td><td>As-of recalculation, month-end snapshots, status refresh (Live/Expired)</td></tr>
+      <tr><td>Treasury Operator</td><td>Instruments, events, forecast edits, statement import, matching, day reports</td></tr>
+      <tr><td>Treasury Lead / Controller</td><td>Review utilisation, cash variance, unmatched items, month-end</td></tr>
+      <tr><td>Master Data Admin</td><td>Banks, accounts, facilities, instrument types, calc &amp; match rules</td></tr>
+      <tr><td>Read-only Viewer</td><td>Dashboards and reports</td></tr>
+      <tr><td>System / Scheduler</td><td>Status refresh, snapshot jobs, optional auto-match suggestions</td></tr>
     </tbody>
   </table>
 </section>
@@ -356,36 +338,13 @@
   <table class="req">
     <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
     <tbody>
-      <tr>
-        <td class="id">FR-M01</td>
-        <td>System shall allow create/update/deactivate of <strong>Banks</strong> (code, name, country, SWIFT, status).</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-M02</td>
-        <td>System shall allow <strong>Facilities</strong> with sanctioned amount, currency, bank, start/end date, and optional <strong>sub-limits</strong> (by product, region, or custom dimension).</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-M03</td>
-        <td>System shall allow configuration of <strong>Instrument Types</strong> (code, name, whether they consume NFB/FB limit, allowed event types, default status rules).</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-M04</td>
-        <td>System shall allow configuration of <strong>Calculation Rules</strong> for interest and fees (see §5.4), attachable at instrument type, facility, bank, or deal override level.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-M05</td>
-        <td>System shall support reference lists: currencies, commodities/products, entities/companies, status codes, charge types.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-M06</td>
-        <td>Deactivating a master must not delete historical deals; new bookings to inactive masters shall be blocked.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
+      <tr><td class="id">FR-M01</td><td>CRUD/deactivate <strong>Banks</strong> (code, name, country, SWIFT, status).</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-M02</td><td><strong>Facilities</strong> with sanctioned amount, CCY, bank, dates, optional <strong>sub-limits</strong>.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-M03</td><td><strong>Instrument Types</strong> (code, NFB/FB consumption, allowed events, status rules).</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-M04</td><td><strong>Calculation Rules</strong> for interest/fees; attachable at type / facility / bank / deal.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-M05</td><td>Reference lists: currencies, commodities/products, entities, status codes, charge types, <strong>cash categories / desks</strong>.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-M06</td><td><strong>Bank accounts</strong>: bank, account number/IBAN mask, CCY, label, entity, active flag. Statement import and forecast columns bind to accounts.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-M07</td><td>Deactivating masters blocks new bookings; history retained.</td><td class="prio p-must">Must</td></tr>
     </tbody>
   </table>
 
@@ -393,46 +352,14 @@
   <table class="req">
     <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
     <tbody>
-      <tr>
-        <td class="id">FR-T01</td>
-        <td>User shall create an <strong>Instrument</strong> by selecting Bank, Facility (or sub-limit), Instrument Type, and entering type-specific attributes (dates, counterparties, reference numbers, amounts, tenor, etc.).</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-T02</td>
-        <td>System shall support <strong>multiple instrument types</strong> without separate hard-coded applications. Screens may show type-specific field groups driven by configuration.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-T03</td>
-        <td>User shall post <strong>Lifecycle Events</strong> against an instrument: e.g. Issue / Amend / Bill Present / Partial Collection / Full Collection / Draw / Partial Repayment / Full Repayment / Commitment set / Cancel / Expire.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-T04</td>
-        <td>Each event shall record: event type, effective date, amount (and currency), optional linked reference (e.g. bill ref → LC), narrative, and who entered it.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-T05</td>
-        <td><strong>Partial movements</strong> shall be first-class: outstanding = sum(signed event amounts) per configured balance type (Commitment, Utilised, Outstanding Principal, etc.). Over-repayment shall be prevented or flagged per rule.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-T06</td>
-        <td>Instruments may be <strong>linked</strong> (e.g. LC Bill → parent LC; TR → Bill Ref / LC). Links are used for enrichment and utilisation roll-up, not duplicate data entry of shared attributes where avoidable.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-T07</td>
-        <td>System shall compute <strong>Status</strong> (e.g. Live / Expired / Cancelled / Settled) from rules: due/claim date vs as-of date and/or outstanding ≠ 0. Rules configurable per instrument type.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-T08</td>
-        <td>Amendments to master deal fields shall be versioned or audited; financial amount changes should normally be via events, not silent overwrite.</td>
-        <td class="prio p-should">Should</td>
-      </tr>
+      <tr><td class="id">FR-T01</td><td>Create Instrument: Bank, Facility/sub-limit, Type, type-specific attributes.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-T02</td><td>Multiple instrument types via configuration (not separate hard-coded apps).</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-T03</td><td>Post Lifecycle Events (Issue, Amend, Bill, Partial/Full Collection, Draw, Partial/Full Repay, Cancel, …).</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-T04</td><td>Event fields: type, effective date, amount/CCY, optional links, narrative, user.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-T05</td><td><strong>Partial movements</strong> first-class; outstanding = sum(signed events); prevent/flag over-repay per rule.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-T06</td><td>Instrument links (Bill→LC, TR→Bill/LC) for enrichment and roll-up.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-T07</td><td>Status (Live/Expired/…) from configurable rules.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-T08</td><td>Financial amount changes normally via events; field amendments audited.</td><td class="prio p-should">Should</td></tr>
     </tbody>
   </table>
 
@@ -440,97 +367,174 @@
   <table class="req">
     <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
     <tbody>
-      <tr>
-        <td class="id">FR-L01</td>
-        <td>For any as-of date, system shall calculate <strong>Utilised</strong> and <strong>Available</strong> per Facility / Sub-limit = Sanctioned − sum(Live outstanding of instruments that consume that limit).</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-L02</td>
-        <td>Instrument types shall declare whether they consume facility limit and which balance (e.g. LC O/s incl. tolerance, TR O/s, BG amount).</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-L03</td>
-        <td>System shall support warning or hard-block when a new event would breach sanctioned limit (configurable per facility).</td>
-        <td class="prio p-should">Should</td>
-      </tr>
-      <tr>
-        <td class="id">FR-L04</td>
-        <td>Utilisation shall be sliceable by Bank, Facility, Instrument Type, Commodity/Product, Status, Entity.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
+      <tr><td class="id">FR-L01</td><td>As-of Utilised / Available per Facility = Sanctioned − Live outstanding consuming that limit.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-L02</td><td>Instrument types declare limit consumption and which balance.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-L03</td><td>Warn or hard-block on breach (configurable).</td><td class="prio p-should">Should</td></tr>
+      <tr><td class="id">FR-L04</td><td>Slice by Bank, Facility, Type, Product, Status, Entity.</td><td class="prio p-must">Must</td></tr>
     </tbody>
   </table>
 
-  <h3>5.4 Interest &amp; fee calculation (configurable)</h3>
+  <h3>5.4 Interest &amp; fee calculation</h3>
   <table class="req">
     <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
     <tbody>
       <tr>
         <td class="id">FR-C01</td>
-        <td>System shall support multiple <strong>interest calculation methods</strong>, selectable per deal or type, including at least:
-          <ul style="margin:6px 0 0">
-            <li>Base rate + margin, day count 360 or 365/Actual</li>
-            <li>Fixed rate × principal × days / day-count basis</li>
-            <li>Quarterly (or N-period) commission on amount × rate × periods</li>
-            <li>Flat fee / manual amount (user-entered) with optional VAT%</li>
-          </ul>
-        </td>
+        <td>Multiple interest/fee methods: base+margin (360/365), fixed × days, amount×rate×periods, flat/manual + VAT%.</td>
         <td class="prio p-must">Must</td>
       </tr>
-      <tr>
-        <td class="id">FR-C02</td>
-        <td>Day-count and accrual period (from/to dates) shall be explicit on the calculation; partial periods from partial repayments shall accrue only on remaining principal for the relevant days.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-C03</td>
-        <td>User may enter <strong>actual bank-debited charges</strong>; system computes expected charges and shows <strong>Variance</strong>.</td>
-        <td class="prio p-must">Must</td>
-      </tr>
-      <tr>
-        <td class="id">FR-C04</td>
-        <td>New calculation formulas shall be addable by configuration (parameters + formula template), not only by code change, for common treasury patterns.</td>
-        <td class="prio p-should">Should</td>
-      </tr>
-      <tr>
-        <td class="id">FR-C05</td>
-        <td>FX conversion for reporting (e.g. to USD or INR) shall use deal FX, daily rate table, or manual rate — selectable and auditable.</td>
-        <td class="prio p-should">Should</td>
-      </tr>
+      <tr><td class="id">FR-C02</td><td>Partial periods after partial repay accrue on remaining principal only.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-C03</td><td>Actual bank-debited charges vs expected → Variance.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-C04</td><td>New common formulas addable by configuration where practical.</td><td class="prio p-should">Should</td></tr>
+      <tr><td class="id">FR-C05</td><td>FX for reporting: deal / table / manual — auditable.</td><td class="prio p-should">Should</td></tr>
     </tbody>
   </table>
 
-  <h3>5.5 Maturity &amp; forecasting</h3>
+  <h3>5.5 Cash forecast (Projected)</h3>
   <table class="req">
     <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
     <tbody>
       <tr>
-        <td class="id">FR-F01</td>
-        <td>System shall produce a <strong>maturity ladder</strong> of Live instruments by maturity/due/claim date, bank, facility, type, amount.</td>
+        <td class="id">FR-CF01</td>
+        <td>System shall maintain a <strong>cash forecast</strong> of ExpectedCashMovements with: direction (in/out), amount, CCY, value date, bank account (optional), category/desk, counterparty, link to instrument/event (optional), Projected amount, Actual amount, status.</td>
         <td class="prio p-must">Must</td>
       </tr>
       <tr>
-        <td class="id">FR-F02</td>
-        <td>System shall support a <strong>limit forecast</strong> view (e.g. weekly buckets) combining known maturities / expected utilisations with optional manual pipeline amounts.</td>
-        <td class="prio p-should">Should</td>
+        <td class="id">FR-CF02</td>
+        <td>Views: (a) <strong>by week</strong> (grid of lines × week buckets), (b) <strong>by bank account</strong> (multi-account columns). Both are views of the same movements.</td>
+        <td class="prio p-must">Must</td>
       </tr>
       <tr>
-        <td class="id">FR-F03</td>
-        <td>System shall store <strong>period-end snapshots</strong> for month-on-month history without requiring users to paste data.</td>
-        <td class="prio p-should">Should</td>
+        <td class="id">FR-CF03</td>
+        <td>Projected amounts may be system-suggested from instruments (due/claim/repay) and/or manually entered/overridden (override flagged).</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+      <tr>
+        <td class="id">FR-CF04</td>
+        <td>Opening balances per bank account as-of a date shall be maintainable (manual or from statement closing bal).</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+      <tr>
+        <td class="id">FR-CF05</td>
+        <td>User can add ad-hoc projected lines (e.g. trade receipt not yet on an instrument) without leaving the cash module.</td>
+        <td class="prio p-must">Must</td>
       </tr>
     </tbody>
   </table>
 
-  <h3>5.6 Audit &amp; controls</h3>
+  <h3>5.6 Bank statements</h3>
   <table class="req">
     <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
     <tbody>
-      <tr><td class="id">FR-A01</td><td>All create/update/delete of masters, instruments, and events shall be audit-logged (user, timestamp, before/after).</td><td class="prio p-must">Must</td></tr>
-      <tr><td class="id">FR-A02</td><td>Role-based access: Operator / Lead / Admin / Viewer as in §4.</td><td class="prio p-must">Must</td></tr>
-      <tr><td class="id">FR-A03</td><td>As-of date parameter on all financial reports (default = today).</td><td class="prio p-must">Must</td></tr>
+      <tr>
+        <td class="id">FR-BS01</td>
+        <td>Import or paste bank statement lines into a Bank Account: date, value date, description, bank ref, channel ref, debit, credit, balance (optional), raw payload retained.</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+      <tr>
+        <td class="id">FR-BS02</td>
+        <td>Deduplicate on import using bank account + bank reference (+ date/amount) where possible; flag duplicates.</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+      <tr>
+        <td class="id">FR-BS03</td>
+        <td>User can classify lines: category, commodity/product, nature, linked instrument, beneficiary — stored on the line, not only in Excel side columns.</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+      <tr>
+        <td class="id">FR-BS04</td>
+        <td>Running balance display: opening + sum(credits − debits); optional compare to bank-provided balance.</td>
+        <td class="prio p-should">Should</td>
+      </tr>
+      <tr>
+        <td class="id">FR-BS05</td>
+        <td>Support multiple accounts/CCYs (USD, AED, EUR, …) under the same UX.</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>5.7 Matching &amp; Forecast vs Actual</h3>
+  <table class="req">
+    <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="id">FR-MT01</td>
+        <td>User (or auto-suggest) can <strong>match</strong> one or more StatementLines to one or more ExpectedCashMovements (1:1, 1:N, N:1, partial amount).</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+      <tr>
+        <td class="id">FR-MT02</td>
+        <td>On match confirm: set/increase <strong>Actual</strong> on the movement; statement line status → matched/partial; record match audit.</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+      <tr>
+        <td class="id">FR-MT03</td>
+        <td><strong>Variance</strong> = Actual − Projected (sign rules by direction); user may enter variance reason.</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+      <tr>
+        <td class="id">FR-MT04</td>
+        <td>Unmatched statement lines and unmatched past-due Projected movements shall be listable as work queues.</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+      <tr>
+        <td class="id">FR-MT05</td>
+        <td>Auto-suggest matches using: amount±tolerance, date±window, bank reference, counterparty name similarity, linked instrument ref — configurable rules; user confirms.</td>
+        <td class="prio p-should">Should</td>
+      </tr>
+      <tr>
+        <td class="id">FR-MT06</td>
+        <td>Optional third leg: link match to an <strong>invoice / document reference</strong> (supports BIM-style invoice ↔ bank ↔ cash recon).</td>
+        <td class="prio p-should">Should</td>
+      </tr>
+      <tr>
+        <td class="id">FR-MT07</td>
+        <td>Unmatch / rematch allowed with audit; Actual rolled back accordingly.</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+      <tr>
+        <td class="id">FR-MT08</td>
+        <td>Forecast grid shall show Projected and Actual side-by-side for each period (parity with Weekly CF Actual|Projected columns), sourced from movements — not a second pasted grid.</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>5.8 Free cash &amp; earmarks</h3>
+  <table class="req">
+    <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="id">FR-FC01</td>
+        <td>Free-cash view: account balances (from statements or opening+movements) minus earmarks.</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+      <tr>
+        <td class="id">FR-FC02</td>
+        <td>Earmarks may be: open instrument outflows (from ExpectedCashMovement), manual holds, margin, prepay usage — all referencing shared entities where applicable.</td>
+        <td class="prio p-must">Must</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>5.9 Maturity &amp; limit forecast</h3>
+  <table class="req">
+    <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td class="id">FR-F01</td><td>Maturity ladder of Live instruments by due/claim date.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-F02</td><td>Limit forecast (week/month) from maturities + optional pipeline.</td><td class="prio p-should">Should</td></tr>
+      <tr><td class="id">FR-F03</td><td>Period-end snapshots for MoM history (utilisation and optionally cash).</td><td class="prio p-should">Should</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5.10 Audit &amp; controls</h3>
+  <table class="req">
+    <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td class="id">FR-A01</td><td>Audit log for masters, instruments, events, statement imports, matches.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-A02</td><td>RBAC: Operator / Lead / Admin / Viewer.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">FR-A03</td><td>As-of date on financial reports (default = today).</td><td class="prio p-must">Must</td></tr>
     </tbody>
   </table>
 </section>
@@ -538,235 +542,229 @@
 <!-- 6 -->
 <section id="6">
   <h2>6. Screens &amp; mock-ups</h2>
-  <p class="muted">Wireframes are schematic only — layout may change; fields illustrate intent. Labels like “LC / TR / BG” are examples of instrument types, not a fixed closed list.</p>
+  <p class="muted">Wireframes are schematic. Facility mock-ups A–I retained; cash mock-ups J–N added.</p>
 
   <h3>6.0 Application shell</h3>
   <div class="mock">
-    <div class="bar">Treasury Utilisation <span class="right">User · As-of: [ 23-Oct-2026 ▾ ]</span></div>
+    <div class="bar">Treasury Platform <span class="right">User · As-of: [ 23-Oct-2026 ▾ ]</span></div>
     <div class="body">
       <div class="nav">
         <span class="on">Home</span>
         <span>Masters</span>
         <span>Instruments</span>
-        <span>Events</span>
+        <span>Cash</span>
+        <span>Statements</span>
+        <span>Matching</span>
         <span>Limits</span>
         <span>Reports</span>
         <span>Admin</span>
       </div>
       <div class="row">
         <div class="kpi"><div>Facility shortfall</div><div class="n">…</div></div>
-        <div class="kpi"><div>Total Live util.</div><div class="n">…</div></div>
-        <div class="kpi"><div>Maturing 7d</div><div class="n">…</div></div>
-        <div class="kpi"><div>Open variances</div><div class="n">…</div></div>
+        <div class="kpi"><div>Cash next 7d (net)</div><div class="n">…</div></div>
+        <div class="kpi"><div>Unmatched stmts</div><div class="n">…</div></div>
+        <div class="kpi"><div>F vs A variance</div><div class="n">…</div></div>
       </div>
     </div>
   </div>
-  <p class="mock-caption">Mock-up A — Shell / Home: global as-of date, top nav, KPI tiles.</p>
+  <p class="mock-caption">Mock-up A — Shell / Home with facility + cash KPIs.</p>
 
-  <!-- Masters -->
-  <h3>6.1 Master data screens</h3>
-  <p><strong>Screens:</strong> Banks · Facilities &amp; Sub-limits · Instrument Types · Calculation Rules · Reference lists.</p>
-
+  <h3>6.1 Masters (excerpt — bank accounts)</h3>
   <div class="mock">
-    <div class="bar">Masters › Facilities</div>
+    <div class="bar">Masters › Bank Accounts</div>
     <div class="body">
       <div class="sidebar-layout">
         <div class="side">
           <div>Banks</div>
-          <div class="on">Facilities</div>
+          <div class="on">Bank Accounts</div>
+          <div>Facilities</div>
           <div>Instrument Types</div>
           <div>Calc Rules</div>
-          <div>Products</div>
-          <div>Currencies</div>
+          <div>Cash Categories</div>
         </div>
         <div class="main">
-          <div class="row">
-            <span class="btn primary">+ New Facility</span>
-            <span class="btn">Export</span>
-          </div>
+          <span class="btn primary">+ New Account</span>
           <table class="grid">
-            <tr><th>Code</th><th>Bank</th><th>Name</th><th>CCY</th><th>Sanctioned</th><th>Start</th><th>End</th><th>Status</th></tr>
-            <tr><td>FAC-001</td><td>Bank A</td><td>General WC</td><td>USD</td><td>260,000,000</td><td>…</td><td>…</td><td>Active</td></tr>
-            <tr><td>FAC-001-Z</td><td>Bank A</td><td>Sub: Region Z</td><td>USD</td><td>85,000,000</td><td>…</td><td>…</td><td>Active</td></tr>
-            <tr><td>FAC-002</td><td>Bank B</td><td>WC Line</td><td>USD</td><td>500,000,000</td><td>…</td><td>…</td><td>Active</td></tr>
+            <tr><th>Label</th><th>Bank</th><th>CCY</th><th>Account</th><th>Entity</th><th>Status</th></tr>
+            <tr><td>Citi USD Main</td><td>Citi</td><td>USD</td><td>…830002</td><td>MyCompany</td><td>Active</td></tr>
+            <tr><td>Citi BIM USD</td><td>Citi</td><td>USD</td><td>…830003</td><td>MyCompany</td><td>Active</td></tr>
+            <tr><td>Citi AED</td><td>Citi</td><td>AED</td><td>…</td><td>MyCompany</td><td>Active</td></tr>
+            <tr><td>StanC USD</td><td>StanC</td><td>USD</td><td>…7292</td><td>MyCompany</td><td>Active</td></tr>
           </table>
-          <p style="margin:10px 0 4px;color:#666;">Detail panel (selected row):</p>
-          <div class="row">
-            <div class="field"><label>Facility code</label><div class="val">FAC-001</div></div>
-            <div class="field"><label>Bank</label><div class="val">Bank A ▾</div></div>
-            <div class="field"><label>Sanctioned amt</label><div class="val">260,000,000</div></div>
-            <div class="field"><label>Breach rule</label><div class="val">Warn ▾</div></div>
-          </div>
-          <div class="row">
-            <div class="field" style="flex:2"><label>Sub-limits</label><div class="val">Region Z = 85m · Product X = … &nbsp; [ + Add sub-limit ]</div></div>
-          </div>
-          <span class="btn primary">Save</span>
         </div>
       </div>
     </div>
   </div>
-  <p class="mock-caption">Mock-up B — Facilities master: list + detail; sub-limits nested under parent facility.</p>
+  <p class="mock-caption">Mock-up B2 — Bank accounts master (feeds statements + forecast columns).</p>
+
+  <h3>6.2 Instruments (unchanged intent)</h3>
+  <p>List + detail with INPUT vs calculated split; event ledger for partial repay/collect — see prior mock-ups D–G. Booking events can auto-create Expected Cash Movements (toggle on save).</p>
 
   <div class="mock">
-    <div class="bar">Masters › Calculation Rules</div>
+    <div class="bar">Instruments › TR-12345 › Save event</div>
     <div class="body">
       <div class="row">
-        <div class="field"><label>Rule code</label><div class="val">INT-SOFR-360</div></div>
-        <div class="field"><label>Category</label><div class="val">Interest ▾</div></div>
-        <div class="field"><label>Method</label><div class="val">Base + Margin ▾</div></div>
+        <div class="field"><label>Event</label><div class="val">Partial repay</div></div>
+        <div class="field"><label>Date</label><div class="val">15-Nov-2026</div></div>
+        <div class="field"><label>Amount</label><div class="val">250,000 USD</div></div>
       </div>
       <div class="row">
-        <div class="field"><label>Day count</label><div class="val">Actual/360 ▾</div></div>
-        <div class="field"><label>Base rate source</label><div class="val">SOFR (manual/deal) ▾</div></div>
-        <div class="field"><label>Default margin</label><div class="val">1.36%</div></div>
-        <div class="field"><label>VAT %</label><div class="val">0</div></div>
-      </div>
-      <div class="row">
-        <div class="field" style="flex:2"><label>Formula (display)</label><div class="val">Interest = Principal × (Base + Margin) × Days / 360</div></div>
-      </div>
-      <div class="row">
-        <div class="field"><label>Rule code</label><div class="val">FEE-COMM-QTR</div></div>
-        <div class="field"><label>Method</label><div class="val">Amount × Rate × Periods ▾</div></div>
-        <div class="field"><label>Period unit</label><div class="val">Quarter ▾</div></div>
-        <div class="field"><label>VAT %</label><div class="val">5%</div></div>
-      </div>
-      <span class="btn primary">Save rule</span>
-    </div>
-  </div>
-  <p class="mock-caption">Mock-up C — Calculation rules: different methods for interest vs commission/fees.</p>
-
-  <!-- Instruments -->
-  <h3>6.2 Instrument input screens</h3>
-  <p>One <strong>Instruments</strong> workspace with a type filter (not four permanently separate apps). Optional type-specific tabs/layouts for heavy products (e.g. LC vs BG) are allowed if configuration-driven.</p>
-
-  <div class="mock">
-    <div class="bar">Instruments › List</div>
-    <div class="body">
-      <div class="row">
-        <div class="field"><label>Instrument type</label><div class="val">All ▾ &nbsp; LC · LC Bill · TR · BG · …</div></div>
-        <div class="field"><label>Bank</label><div class="val">All ▾</div></div>
-        <div class="field"><label>Facility</label><div class="val">All ▾</div></div>
-        <div class="field"><label>Status</label><div class="val">Live ▾</div></div>
-        <div class="field"><label>Search</label><div class="val">ref / supplier…</div></div>
-      </div>
-      <span class="btn primary">+ New Instrument</span>
-      <table class="grid">
-        <tr><th>Type</th><th>Bank</th><th>Facility</th><th>Reference</th><th>Counterparty</th><th>CCY</th><th>Outstanding</th><th>Due / Expiry</th><th>Status</th></tr>
-        <tr><td>LC</td><td>Bank A</td><td>FAC-001</td><td>LC-…</td><td>Supplier X</td><td>USD</td><td>1,200,000</td><td>…</td><td>Live</td></tr>
-        <tr><td>LC Bill</td><td>Bank A</td><td>FAC-001</td><td>BILL-…</td><td>Supplier X</td><td>USD</td><td>800,000</td><td>…</td><td>Live</td></tr>
-        <tr><td>TR</td><td>Bank A</td><td>FAC-001-Z</td><td>TR-…</td><td>—</td><td>USD</td><td>500,000</td><td>…</td><td>Live</td></tr>
-        <tr><td>BG</td><td>Bank B</td><td>FAC-002</td><td>BG-…</td><td>Beneficiary Y</td><td>USD</td><td>13,266,680</td><td>…</td><td>Live</td></tr>
-      </table>
-    </div>
-  </div>
-  <p class="mock-caption">Mock-up D — Instrument list with type/bank/facility filters.</p>
-
-  <div class="mock">
-    <div class="bar">Instruments › New / Edit — Type: LC (example)</div>
-    <div class="body">
-      <div class="row">
-        <div class="field"><label>Instrument type *</label><div class="val">LC ▾</div></div>
-        <div class="field"><label>Bank *</label><div class="val">Bank A ▾</div></div>
-        <div class="field"><label>Facility / sub-limit *</label><div class="val">FAC-001 ▾</div></div>
-        <div class="field"><label>Entity</label><div class="val">Entity 1 ▾</div></div>
-      </div>
-      <p style="margin:4px 0;color:#666;">— Header (user entered) —</p>
-      <div class="row">
-        <div class="field"><label>LC No *</label><div class="val"></div></div>
-        <div class="field"><label>LC Date *</label><div class="val"></div></div>
-        <div class="field"><label>Supplier</label><div class="val"></div></div>
-        <div class="field"><label>Commodity</label><div class="val"></div></div>
-      </div>
-      <div class="row">
-        <div class="field"><label>Amount *</label><div class="val"></div></div>
-        <div class="field"><label>CCY *</label><div class="val">USD ▾</div></div>
-        <div class="field"><label>Tolerance %</label><div class="val">0</div></div>
-        <div class="field"><label>Usance (days)</label><div class="val"></div></div>
-      </div>
-      <div class="row">
-        <div class="field"><label>Expiry</label><div class="val"></div></div>
-        <div class="field"><label>Interest / fee rule</label><div class="val">FEE-COMM-… ▾</div></div>
-        <div class="field"><label>FX rate</label><div class="val"></div></div>
-      </div>
-      <p style="margin:8px 0 4px;color:#666;">— System calculated (read-only) —</p>
-      <div class="row">
-        <div class="field ro"><label>Amount incl. tolerance</label><div class="val">(auto)</div></div>
-        <div class="field ro"><label>Utilised (from events)</label><div class="val">(auto)</div></div>
-        <div class="field ro"><label>Outstanding</label><div class="val">(auto)</div></div>
-        <div class="field ro"><label>Status</label><div class="val">(auto)</div></div>
-      </div>
-      <span class="btn primary">Save</span>
-      <span class="btn">Save &amp; add event</span>
-      <span class="btn">Cancel</span>
-    </div>
-  </div>
-  <p class="mock-caption">Mock-up E — Instrument detail: clear split between entered fields and calculated fields. Other types (TR, BG, Bill) change the middle field group via configuration.</p>
-
-  <!-- Events -->
-  <h3>6.3 Lifecycle events (partial collections / payments)</h3>
-  <div class="mock">
-    <div class="bar">Instrument TR-12345 › Events</div>
-    <div class="body">
-      <div class="row">
-        <div class="field ro"><label>Outstanding now</label><div class="val">1,000,000 USD</div></div>
-        <div class="field ro"><label>Status</label><div class="val">Live</div></div>
-        <div class="field ro"><label>Facility</label><div class="val">FAC-001-Z</div></div>
-      </div>
-      <span class="btn primary">+ Post event</span>
-      <table class="grid">
-        <tr><th>Date</th><th>Event type</th><th>Amount</th><th>Running O/s</th><th>Narrative</th><th>User</th></tr>
-        <tr><td>01-Sep</td><td>Draw / Avail</td><td>+1,672,658</td><td>1,672,658</td><td>Fresh TR</td><td>ops1</td></tr>
-        <tr><td>15-Sep</td><td>Partial repay</td><td>−500,000</td><td>1,172,658</td><td>Part settlement</td><td>ops1</td></tr>
-        <tr><td>02-Oct</td><td>Partial repay</td><td>−172,658</td><td>1,000,000</td><td>Part settlement</td><td>ops2</td></tr>
-      </table>
-      <p style="margin:12px 0 4px;color:#666;">Post event dialog:</p>
-      <div class="row">
-        <div class="field"><label>Event type *</label><div class="val">Partial repay ▾</div></div>
-        <div class="field"><label>Effective date *</label><div class="val">23-Oct-2026</div></div>
-        <div class="field"><label>Amount *</label><div class="val">250,000</div></div>
-        <div class="field"><label>CCY</label><div class="val">USD</div></div>
-      </div>
-      <div class="row">
-        <div class="field" style="flex:2"><label>Narrative</label><div class="val"></div></div>
-        <div class="field ro"><label>O/s after post</label><div class="val">750,000</div></div>
+        <div class="field" style="flex:2">
+          <label>Create / update cash forecast</label>
+          <div class="val">☑ Expected outflow on 15-Nov · Account: Citi USD Main · Link: this event</div>
+        </div>
       </div>
       <span class="btn primary">Confirm</span>
     </div>
   </div>
-  <p class="mock-caption">Mock-up F — Event ledger: partial repayments/collections as separate rows; outstanding derived.</p>
+  <p class="mock-caption">Mock-up G2 — Event save optionally seeds Expected Cash (no second Excel).</p>
 
-  <div class="mock">
-    <div class="bar">Instrument LC-7788 › Linked bills &amp; collections</div>
-    <div class="body">
-      <table class="grid">
-        <tr><th>Bill Ref</th><th>Lodged</th><th>Due</th><th>Bill amt</th><th>Collected</th><th>O/s on bill</th><th>Status</th></tr>
-        <tr><td>BILL-01</td><td>…</td><td>…</td><td>1,000,000</td><td>400,000</td><td>600,000</td><td>Live</td></tr>
-        <tr><td>BILL-02</td><td>…</td><td>…</td><td>500,000</td><td>500,000</td><td>0</td><td>Settled</td></tr>
-      </table>
-      <p style="margin:8px 0;color:#666;">Parent LC utilised = sum(bill collections/presentments per rule); LC O/s = LC amt incl. tol − utilised.</p>
-    </div>
-  </div>
-  <p class="mock-caption">Mock-up G — Linked instruments: LC ↔ bills with partial collection.</p>
+  <h3>6.3 Limit utilisation</h3>
+  <p>Matrix by facility × instrument type (mock-up H) — sourced from Live instruments, not a cash-file paste.</p>
 
-  <!-- Limits -->
-  <h3>6.4 Limit utilisation screen</h3>
+  <!-- CASH FORECAST -->
+  <h3>6.4 Cash forecast — week view (Projected vs Actual)</h3>
   <div class="mock">
-    <div class="bar">Limits › Utilisation &nbsp; As-of: 23-Oct-2026</div>
+    <div class="bar">Cash › Forecast (Week view) <span class="right">Account filter: All ▾ · Desk: All ▾</span></div>
     <div class="body">
       <div class="row">
-        <div class="field"><label>Bank</label><div class="val">All ▾</div></div>
-        <div class="field"><label>View</label><div class="val">By facility ▾</div></div>
+        <span class="btn primary">+ Manual line</span>
+        <span class="btn">Refresh from instruments</span>
+        <span class="btn">Export</span>
       </div>
       <table class="grid">
-        <tr><th>Facility</th><th>Sanctioned</th><th>LC O/s</th><th>LC Bill O/s</th><th>TR O/s</th><th>BG O/s</th><th>Other</th><th>Total util.</th><th>Available</th></tr>
-        <tr><td>FAC-001</td><td>260.0</td><td>40.0</td><td>55.0</td><td>30.0</td><td>10.0</td><td>0</td><td>135.0</td><td>125.0</td></tr>
-        <tr><td>FAC-001-Z</td><td>85.0</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
-        <tr><td>FAC-002</td><td>500.0</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+        <tr>
+          <th>Particulars</th><th>Source</th>
+          <th>13-Oct P</th><th>13-Oct A</th>
+          <th>20-Oct P</th><th>20-Oct A</th>
+          <th>Var (20-Oct)</th>
+        </tr>
+        <tr>
+          <td>Opening (Citi USD)</td><td>Balance</td>
+          <td class="ro">12.4m</td><td>12.4m</td><td>10.1m</td><td>10.0m</td><td>−0.1m</td>
+        </tr>
+        <tr>
+          <td>Mopani cathodes (in)</td><td>Manual</td>
+          <td>8.0m</td><td>8.0m</td><td>0</td><td>0</td><td>0</td>
+        </tr>
+        <tr>
+          <td>TR-12345 repay (out)</td><td>Instrument</td>
+          <td>0</td><td>0</td><td>−1.0m</td><td>−0.75m</td><td>+0.25m</td>
+        </tr>
+        <tr>
+          <td>Essar receipt (in)</td><td>Instrument</td>
+          <td>0</td><td>0</td><td>25.0m</td><td>—</td><td>unmatched</td>
+        </tr>
       </table>
-      <p style="margin:8px 0 0;color:#666;">Click cell → drill to instrument list contributing to that total. Columns for instrument types are dynamic from configuration.</p>
+      <p style="margin:8px 0 0;color:#666;">P = Projected · A = Actual (from matches). Click cell → movement detail / match.</p>
     </div>
   </div>
-  <p class="mock-caption">Mock-up H — Limit utilisation matrix (amounts in reporting unit, e.g. USD m).</p>
+  <p class="mock-caption">Mock-up J — Week grid with Actual | Projected pairs (replaces Weekly CF paste pattern).</p>
+
+  <h3>6.5 Cash forecast — by bank account</h3>
+  <div class="mock">
+    <div class="bar">Cash › Forecast (Account view) · Week of 20-Oct</div>
+    <div class="body">
+      <table class="grid">
+        <tr>
+          <th>Particulars</th><th>Nature</th>
+          <th>Citi USD</th><th>Citi BIM</th><th>Citi AED</th><th>Sant USD</th><th>Total</th>
+        </tr>
+        <tr><td>Opening</td><td>—</td><td>10.0m</td><td>0.03m</td><td>1.4m AED</td><td>2.0m</td><td>…</td></tr>
+        <tr><td>Copper / Mopani sale</td><td>In</td><td>5.0m</td><td>—</td><td>—</td><td>—</td><td>5.0m</td></tr>
+        <tr><td>TR repay BIM</td><td>Out</td><td>—</td><td>−5.1m</td><td>—</td><td>—</td><td>−5.1m</td></tr>
+      </table>
+    </div>
+  </div>
+  <p class="mock-caption">Mock-up K — Multi-account columns (aligned with CF Template intent).</p>
+
+  <!-- STATEMENTS -->
+  <h3>6.6 Bank statements</h3>
+  <div class="mock">
+    <div class="bar">Statements › Citi USD Main <span class="right">Import CSV/Excel · Paste</span></div>
+    <div class="body">
+      <div class="row">
+        <div class="field"><label>Status</label><div class="val">Unmatched ▾</div></div>
+        <div class="field"><label>Date from</label><div class="val">01-Oct</div></div>
+        <div class="field"><label>Date to</label><div class="val">23-Oct</div></div>
+        <div class="field"><label>Search</label><div class="val">ref / narrative…</div></div>
+      </div>
+      <table class="grid">
+        <tr><th>Date</th><th>Description</th><th>Bank Ref</th><th>In</th><th>Out</th><th>Category</th><th>Match</th></tr>
+        <tr><td>20-Oct</td><td>SWIFT Receipt …</td><td>S066…</td><td>750,000</td><td>0</td><td>TR repay ▾</td><td><span class="btn">Match</span></td></tr>
+        <tr><td>20-Oct</td><td>Bank Charges</td><td>FT…</td><td>0</td><td>51.46</td><td>Charges ▾</td><td>Matched</td></tr>
+        <tr><td>21-Oct</td><td>Transfer HO</td><td>C77…</td><td>100,000</td><td>0</td><td>Contra ▾</td><td>Unmatched</td></tr>
+      </table>
+    </div>
+  </div>
+  <p class="mock-caption">Mock-up L — Statement register with classification + match action.</p>
+
+  <!-- MATCHING -->
+  <h3>6.7 Matching workspace</h3>
+  <div class="mock">
+    <div class="bar">Matching › Workspace <span class="right">Suggestions: 12 · Unmatched stmts: 34 · Open projected: 18</span></div>
+    <div class="body">
+      <div class="row">
+        <div class="panel">
+          <h5>Bank statement lines</h5>
+          <table class="grid">
+            <tr><th>☐</th><th>Date</th><th>Ref</th><th>Amt</th></tr>
+            <tr><td>☑</td><td>20-Oct</td><td>S066…</td><td>+750,000</td></tr>
+            <tr><td>☐</td><td>21-Oct</td><td>C77…</td><td>+100,000</td></tr>
+          </table>
+        </div>
+        <div class="panel">
+          <h5>Expected / Projected cash</h5>
+          <table class="grid">
+            <tr><th>☐</th><th>Date</th><th>Line</th><th>Projected</th><th>Actual</th></tr>
+            <tr><td>☑</td><td>20-Oct</td><td>TR-12345 repay</td><td>−1,000,000</td><td>−0</td></tr>
+            <tr><td>☐</td><td>20-Oct</td><td>Essar receipt</td><td>+25,000,000</td><td>—</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Match amount</label><div class="val">750,000</div></div>
+        <div class="field"><label>Variance vs Projected</label><div class="val ro">+250,000 (partial)</div></div>
+        <div class="field"><label>Reason</label><div class="val">Partial settlement</div></div>
+        <div class="field"><label>Invoice / doc (opt.)</label><div class="val">—</div></div>
+      </div>
+      <span class="btn primary">Confirm match</span>
+      <span class="btn">Suggest auto-matches</span>
+      <span class="btn">Clear</span>
+    </div>
+  </div>
+  <p class="mock-caption">Mock-up M — Two-pane matching (supports partial); optional invoice leg for recon use-cases.</p>
+
+  <!-- FREE CASH -->
+  <h3>6.8 Free cash</h3>
+  <div class="mock">
+    <div class="bar">Cash › Free Cash · As-of 23-Oct-2026</div>
+    <div class="body">
+      <table class="grid">
+        <tr><th>Item</th><th>USD</th><th>Due</th><th>Source</th></tr>
+        <tr><td>Cash available (accounts)</td><td>48.2m</td><td>—</td><td>Statements / balances</td></tr>
+        <tr><td>Fixed deposits</td><td>10.0m</td><td>—</td><td>FD instruments</td></tr>
+        <tr><td>Earmark: Mopani payments</td><td>−28.5m</td><td>21-Nov</td><td>Expected cash (instruments)</td></tr>
+        <tr><td>Earmark: BIM TR</td><td>−35.0m</td><td>16-Oct</td><td>Expected cash</td></tr>
+        <tr><td><strong>Net free cash (indicative)</strong></td><td><strong>…</strong></td><td></td><td>Calculated</td></tr>
+      </table>
+    </div>
+  </div>
+  <p class="mock-caption">Mock-up N — Free cash from shared balances + earmarks (no separate Lines paste).</p>
+
+  <h3>6.9 Invoice ↔ bank recon (optional specialised view)</h3>
+  <div class="mock">
+    <div class="bar">Matching › Document recon (e.g. BIM-style)</div>
+    <div class="body">
+      <div class="row">
+        <div class="panel"><h5>Invoices / docs</h5><div class="val">Inv 018-2026 · Amt … · Open</div></div>
+        <div class="panel"><h5>Statement lines</h5><div class="val">FT26023… · Debit …</div></div>
+        <div class="panel"><h5>Cash movement</h5><div class="val">Projected … · Actual … · Bal</div></div>
+      </div>
+      <span class="btn primary">Link three-way</span>
+    </div>
+  </div>
+  <p class="mock-caption">Mock-up O — Three-way recon pattern (generalised from BIM CFS Recon).</p>
 </section>
 
 <!-- 7 -->
@@ -775,29 +773,21 @@
   <table class="req">
     <thead><tr><th>Report</th><th>Description</th><th>Priority</th></tr></thead>
     <tbody>
-      <tr><td>Limit Utilisation</td><td>Sanctioned vs utilised vs available by facility / sub-limit / instrument type (§6.4)</td><td class="prio p-must">Must</td></tr>
-      <tr><td>Bank-wise Utilisation</td><td>Same metrics pivoted by bank (and optionally entity)</td><td class="prio p-must">Must</td></tr>
-      <tr><td>Maturity Ladder</td><td>Live exposures by due/claim date band</td><td class="prio p-must">Must</td></tr>
-      <tr><td>Instrument Register</td><td>Filterable deal list with O/s and status (exportable)</td><td class="prio p-must">Must</td></tr>
-      <tr><td>Interest &amp; Charges</td><td>Expected vs actual charges, variance by deal / bank</td><td class="prio p-should">Should</td></tr>
-      <tr><td>Limit Forecast</td><td>Forward view by week/month using maturities + optional pipeline</td><td class="prio p-should">Should</td></tr>
-      <tr><td>Executive Dash</td><td>KPIs: shortfall, total util, maturing soon, open variances</td><td class="prio p-should">Should</td></tr>
-      <tr><td>Period Snapshot / MoM</td><td>Stored historical utilisation for trend</td><td class="prio p-could">Could</td></tr>
+      <tr><td>Limit Utilisation</td><td>Sanctioned vs utilised vs available by facility / type</td><td class="prio p-must">Must</td></tr>
+      <tr><td>Bank-wise Utilisation</td><td>Utilisation pivoted by bank</td><td class="prio p-must">Must</td></tr>
+      <tr><td>Maturity Ladder</td><td>Live exposures by due/claim date</td><td class="prio p-must">Must</td></tr>
+      <tr><td>Instrument Register</td><td>Filterable deals with O/s (export)</td><td class="prio p-must">Must</td></tr>
+      <tr><td>Cash Forecast vs Actual</td><td>Period grid + variance by line / account / desk</td><td class="prio p-must">Must</td></tr>
+      <tr><td>Unmatched Statements</td><td>Work queue of statement lines without match</td><td class="prio p-must">Must</td></tr>
+      <tr><td>Unmatched / overdue Projected</td><td>Projected cash past due with Actual = 0</td><td class="prio p-must">Must</td></tr>
+      <tr><td>Free Cash</td><td>Balances − earmarks</td><td class="prio p-must">Must</td></tr>
+      <tr><td>Interest &amp; Charges</td><td>Expected vs actual bank charges</td><td class="prio p-should">Should</td></tr>
+      <tr><td>Limit Forecast</td><td>Forward facility headroom</td><td class="prio p-should">Should</td></tr>
+      <tr><td>Executive Dash</td><td>Facility + cash KPIs</td><td class="prio p-should">Should</td></tr>
+      <tr><td>Document / invoice recon</td><td>Three-way match status (where used)</td><td class="prio p-could">Could</td></tr>
+      <tr><td>Period Snapshot / MoM</td><td>Stored history</td><td class="prio p-could">Could</td></tr>
     </tbody>
   </table>
-
-  <div class="mock">
-    <div class="bar">Reports › Maturity Ladder &nbsp; As-of: 23-Oct-2026 &nbsp; Horizon: 90 days</div>
-    <div class="body">
-      <table class="grid">
-        <tr><th>Maturity date</th><th>Bank</th><th>Facility</th><th>Type</th><th>Reference</th><th>Amount</th></tr>
-        <tr><td>30-Oct</td><td>Bank A</td><td>FAC-001</td><td>LC Bill</td><td>BILL-…</td><td>…</td></tr>
-        <tr><td>12-Nov</td><td>Bank A</td><td>FAC-001-Z</td><td>TR</td><td>TR-…</td><td>…</td></tr>
-        <tr><td>15-Apr-27</td><td>Bank B</td><td>FAC-002</td><td>BG</td><td>BG-…</td><td>…</td></tr>
-      </table>
-    </div>
-  </div>
-  <p class="mock-caption">Mock-up I — Maturity ladder report.</p>
 </section>
 
 <!-- 8 -->
@@ -806,12 +796,13 @@
   <table class="req">
     <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
     <tbody>
-      <tr><td class="id">NFR-01</td><td>Web application usable on desktop browsers (Chrome / Edge current versions).</td><td class="prio p-must">Must</td></tr>
-      <tr><td class="id">NFR-02</td><td>Concurrent multi-user access with optimistic concurrency or lock messaging on deal edit.</td><td class="prio p-must">Must</td></tr>
-      <tr><td class="id">NFR-03</td><td>Export of major grids/reports to Excel/CSV.</td><td class="prio p-must">Must</td></tr>
-      <tr><td class="id">NFR-04</td><td>Response: interactive screens &lt; 3s for normal filters; large reports may be async.</td><td class="prio p-should">Should</td></tr>
-      <tr><td class="id">NFR-05</td><td>Data residency / access control per company security policy; no shared single spreadsheet file as system of record.</td><td class="prio p-must">Must</td></tr>
-      <tr><td class="id">NFR-06</td><td>Extensibility: adding a bank or instrument type is configuration (+ optional field layout), not a new codebase fork.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">NFR-01</td><td>Desktop web (Chrome / Edge current).</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">NFR-02</td><td>Multi-user; concurrency messaging on deal/match edit.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">NFR-03</td><td>Export grids/reports to Excel/CSV; statement import from Excel/CSV.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">NFR-04</td><td>Interactive screens &lt; 3s typical; large imports/reports async.</td><td class="prio p-should">Should</td></tr>
+      <tr><td class="id">NFR-05</td><td>Security / residency per company policy; spreadsheets not system of record.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">NFR-06</td><td>Extensibility: new bank, account, instrument type, match rule via config.</td><td class="prio p-must">Must</td></tr>
+      <tr><td class="id">NFR-07</td><td>Idempotent statement import; retain raw file for audit.</td><td class="prio p-must">Must</td></tr>
     </tbody>
   </table>
 </section>
@@ -823,40 +814,43 @@
     <thead><tr><th>Phase</th><th>Deliverables</th></tr></thead>
     <tbody>
       <tr>
-        <td><strong>Phase 1 — Core</strong></td>
-        <td>Masters (Bank, Facility, Instrument Type, basic Calc Rules) · Instruments + Events for LC, LC Bill, TR, BG · Limit Utilisation · Bank-wise · Maturity Ladder · Audit &amp; roles</td>
+        <td><strong>Phase 1 — Facility core</strong></td>
+        <td>Masters (Bank, Account, Facility, Instrument Type, basic Calc Rules) · Instruments + Events (LC, LC Bill, TR, BG) · Limit Utilisation · Bank-wise · Maturity · Audit/roles · <em>Expected cash auto-create from events (foundation)</em></td>
       </tr>
       <tr>
-        <td><strong>Phase 2 — Pricing &amp; forecast</strong></td>
-        <td>Full interest/fee engine + variance · Limit Forecast · Executive Dash · Period snapshots</td>
+        <td><strong>Phase 2 — Cash &amp; matching</strong></td>
+        <td>Statement import · classification · Matching workspace · Forecast week + account views (P vs A) · Free cash · unmatched queues · replace Excel dual-maintenance for util/cash</td>
       </tr>
       <tr>
-        <td><strong>Phase 3 — Extended instruments</strong></td>
-        <td>Additional types as needed (e.g. TT/Open Credit, Term Loan, FD, ICD, Export) using same framework · Liquidity board if required</td>
+        <td><strong>Phase 3 — Enrich</strong></td>
+        <td>Full interest/fee + charge variance · Limit Forecast · Dash · Snapshots · Auto-match suggestions · Document three-way recon · extended instrument types (TT, TL, FD, …)</td>
       </tr>
     </tbody>
   </table>
-  <div class="note">
-    This matches the earlier product understanding: <strong>(1) masters → (2) instrument inputs (starting with four types) → (3) reports</strong>, while keeping the model open for more banks and instruments later.
+  <div class="note ok">
+    Product shape: <strong>(1) shared masters → (2) instruments + cash/statements → (3) matching &amp; reports</strong>,
+    with one schema so facility and cash never diverge.
   </div>
 </section>
 
 <!-- 10 -->
 <section id="10">
-  <h2>10. Open questions (to confirm in workshops)</h2>
+  <h2>10. Open questions</h2>
   <ol>
     <li>Hard-block vs warn-only on limit breach?</li>
-    <li>Which FX source is authoritative for group reporting?</li>
-    <li>Is multi-entity / multi-company required from day one?</li>
-    <li>Approval workflow needed before Live booking, or ops-only with audit?</li>
-    <li>Which Phase 3 instrument types are mandatory for go-live vs later?</li>
-    <li>Integration: any upstream ERP / bank portal import in Phase 1?</li>
+    <li>Authoritative FX source for group reporting?</li>
+    <li>Multi-entity from day one?</li>
+    <li>Approval before Live booking, or ops + audit?</li>
+    <li>Statement sources in Phase 2: manual paste only, or bank file formats / SFTP?</li>
+    <li>Auto-match: amount tolerance and date window defaults?</li>
+    <li>Which desks/categories must exist at go-live for cash forecast?</li>
+    <li>Is invoice three-way recon required at go-live or Phase 3?</li>
   </ol>
 </section>
 
 <footer>
-  Treasury Facility Utilisation System — Requirements Document v0.1 Draft ·
-  Open in browser · Print to PDF if needed · Not a UI design specification
+  Treasury Facility &amp; Cash Platform — Requirements Document v0.2 Draft ·
+  Open in browser · Print to PDF · Not a visual UI spec
 </footer>
 
 </div>
