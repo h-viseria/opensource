@@ -34,7 +34,7 @@ function findOnOrBefore(series, targetDate) {
     return null;
 }
 
-async function fetchHistoryWithRetry(schemeCode, retries = 2) {
+async function fetchHistoryWithRetry(schemeCode, retries = 3) {
     let attempt = 0;
     let lastError = null;
 
@@ -47,7 +47,7 @@ async function fetchHistoryWithRetry(schemeCode, retries = 2) {
             if (attempt > retries) {
                 break;
             }
-            await new Promise((resolve) => setTimeout(resolve, 250 * attempt));
+            await new Promise((resolve) => setTimeout(resolve, 800 * attempt));
         }
     }
 
@@ -96,23 +96,34 @@ function toSnapshot(series) {
     };
 }
 
-export async function refreshNavSnapshots() {
-    const holdings = await getAllHoldings();
-    const codeMappings = await getAllSchemeCodes();
+function collectMappedSchemeCodes(holdings, codeMappings) {
     const codeByName = new Map(codeMappings.map((item) => [item.schemeNameNormalized, item.schemeCode]));
-
     const uniqueCodes = new Set();
+
     holdings.forEach((holding) => {
         const code = codeByName.get(normalizeSchemeName(holding.schemeName));
         if (code) {
-            uniqueCodes.add(code);
+            uniqueCodes.add(String(code));
         }
     });
+
+    return uniqueCodes;
+}
+
+export async function refreshNavSnapshots({ schemeCodes = null, onProgress } = {}) {
+    const holdings = await getAllHoldings();
+    const codeMappings = await getAllSchemeCodes();
+    const mappedCodes = collectMappedSchemeCodes(holdings, codeMappings);
+    const codes = schemeCodes?.length
+        ? [...new Set(schemeCodes.map((code) => String(code)))]
+        : [...mappedCodes];
 
     let successCount = 0;
     const failures = [];
 
-    for (const schemeCode of uniqueCodes) {
+    for (let index = 0; index < codes.length; index += 1) {
+        const schemeCode = codes[index];
+        onProgress?.(`Fetching NAV from MFAPI (${index + 1}/${codes.length}): ${schemeCode}`);
         try {
             const history = await fetchHistoryWithRetry(schemeCode);
             const snapshot = toSnapshot(buildNavSeries(history.data));
@@ -128,12 +139,16 @@ export async function refreshNavSnapshots() {
             });
             successCount += 1;
         } catch (error) {
-            failures.push({ schemeCode, reason: error.message });
+            failures.push({ schemeCode, reason: error.message || 'NAV fetch failed.' });
+        }
+
+        if (index < codes.length - 1) {
+            await new Promise((resolve) => setTimeout(resolve, 250));
         }
     }
 
     return {
-        requested: uniqueCodes.size,
+        requested: codes.length,
         successCount,
         failures,
     };
