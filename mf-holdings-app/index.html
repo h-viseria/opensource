@@ -71,6 +71,7 @@
                     <button id="import-btn" class="button-primary" type="button">Load Holdings to IndexedDB</button>
                     <button id="sync-codes-btn" type="button">Map Scheme Codes</button>
                     <button id="fetch-nav-btn" class="button-primary" type="button">Fetch NAV Snapshots</button>
+                    <button id="retry-failed-nav-btn" type="button" hidden>Retry failed NAV</button>
                     <button id="clear-db-btn" type="button">Clear All IndexedDB Data</button>
                 </div>
 
@@ -83,6 +84,7 @@
 
                 <div id="import-status" class="status" aria-live="polite"></div>
                 <div id="import-error" class="error" aria-live="polite"></div>
+                <div id="nav-failure-list" class="nav-failure-list" hidden></div>
 
                 <div class="meta-grid">
                     <div><strong>Holdings:</strong> <span id="metric-holdings">0</span></div>
@@ -338,7 +340,7 @@
                             <p>Download NAV history for each mapped scheme to compute current valuations and return percentages.</p>
                             <ul>
                                 <li>Select <strong>NAV source</strong> on the Import tab</li>
-                                <li><strong>MFAPI</strong> — click <strong>Fetch NAV Snapshots</strong> for full history (1D / 1M / 3M / 6M / YTD / 1Y)</li>
+                                <li><strong>MFAPI</strong> — click <strong>Fetch NAV Snapshots</strong> for full history (1D / 1M / 3M / 6M / YTD / 1Y). If some schemes fail randomly, use <strong>Retry failed NAV</strong> — only those codes are fetched again, then reports refresh</li>
                                 <li><strong>AMFI</strong> — download the last 1 week file, then <strong>Load AMFI last-week file</strong>. That only fills dates missing from IndexedDB (typically the latest few sessions MFAPI has not caught up on)</li>
                                 <li>The <em>NAV Snapshots</em> counter updates when complete</li>
                             </ul>
