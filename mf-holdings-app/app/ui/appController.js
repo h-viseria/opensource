@@ -44,6 +44,7 @@ let amcSortState = { key: 'currentValue', direction: 'desc' };
 const amcFilters = { query: '', returnMode: 'all', topN: 0 };
 const PIE_COLORS = ['#45a6ff', '#8ed0ff', '#4bd37b', '#ffc857', '#ff8fab', '#b794f4', '#2dd4bf', '#f97316'];
 const NAV_SOURCE_STORAGE_KEY = 'mf-holdings-nav-source';
+const NAV_FAILURES_STORAGE_KEY = 'mf-holdings-nav-failures';
 
 function byId(id) {
     return document.getElementById(id);
@@ -52,6 +53,99 @@ function byId(id) {
 function getSelectedNavSource() {
     const selected = document.querySelector('input[name="nav-source"]:checked');
     return selected?.value === 'amfi' ? 'amfi' : 'mfapi';
+}
+
+function readStoredNavFailures() {
+    try {
+        const raw = sessionStorage.getItem(NAV_FAILURES_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed.filter((item) => item?.schemeCode) : [];
+    } catch {
+        return [];
+    }
+}
+
+function persistNavFailures(failures) {
+    try {
+        sessionStorage.setItem(NAV_FAILURES_STORAGE_KEY, JSON.stringify(failures || []));
+    } catch {
+        // Ignore storage failures (private mode).
+    }
+}
+
+function renderNavFailures(failures) {
+    const retryButton = byId('retry-failed-nav-btn');
+    const list = byId('nav-failure-list');
+    const items = failures || [];
+
+    if (retryButton) {
+        retryButton.hidden = items.length === 0;
+        retryButton.textContent = items.length ? `Retry failed NAV (${items.length})` : 'Retry failed NAV';
+    }
+
+    if (!list) {
+        return;
+    }
+
+    if (!items.length) {
+        list.hidden = true;
+        list.innerHTML = '';
+        return;
+    }
+
+    const links = items
+        .slice(0, 20)
+        .map((item) => {
+            const code = encodeURIComponent(item.schemeCode);
+            const reason = escapeHtml(item.reason || 'failed');
+            return `<a href="https://api.mfapi.in/mf/${code}" target="_blank" rel="noopener">${escapeHtml(String(item.schemeCode))}</a> <span>(${reason})</span>`;
+        })
+        .join('<br />');
+    const extra = items.length > 20 ? `<br />…and ${items.length - 20} more` : '';
+    list.hidden = false;
+    list.innerHTML = `<strong>${items.length} scheme(s) failed.</strong> Retry those only, or open a code to verify MFAPI:<br />${links}${extra}`;
+}
+
+async function runMfapiNavFetch({ schemeCodes = null, progressLabel } = {}) {
+    const fetchNavButton = byId('fetch-nav-btn');
+    const retryButton = byId('retry-failed-nav-btn');
+    if (fetchNavButton) {
+        fetchNavButton.disabled = true;
+    }
+    if (retryButton) {
+        retryButton.disabled = true;
+    }
+
+    try {
+        setText('import-status', progressLabel || 'Fetching NAV snapshots from MFAPI...');
+        const result = await refreshNavSnapshots({
+            schemeCodes,
+            onProgress: (message) => setText('import-status', message),
+        });
+
+        persistNavFailures(result.failures);
+        renderNavFailures(result.failures);
+
+        const verb = schemeCodes?.length ? 'retried' : 'updated';
+        setText('import-status', `NAV snapshots ${verb} from MFAPI for ${result.successCount}/${result.requested} scheme(s).`);
+        if (result.failures.length) {
+            const sample = result.failures.slice(0, 5).map((item) => `${item.schemeCode}: ${item.reason}`).join(' | ');
+            setText('import-error', `NAV failures for ${result.failures.length} scheme(s). ${sample}`);
+        } else {
+            setText('import-error', '');
+        }
+
+        await refreshMetrics();
+        await refreshReport();
+        return result;
+    } finally {
+        if (fetchNavButton) {
+            fetchNavButton.disabled = false;
+        }
+        if (retryButton) {
+            retryButton.disabled = false;
+        }
+    }
 }
 
 function persistNavSource(source) {
@@ -1144,6 +1238,7 @@ export function initAppController() {
 
     restoreNavSourceSelection();
     updateAmfiSourceUi();
+    renderNavFailures(readStoredNavFailures());
     document.querySelectorAll('input[name="nav-source"]').forEach((radio) => {
         radio.addEventListener('change', () => {
             persistNavSource(getSelectedNavSource());
@@ -1268,23 +1363,36 @@ export function initAppController() {
             return;
         }
 
-        fetchNavButton.disabled = true;
         try {
-            setText('import-status', 'Fetching NAV snapshots from MFAPI...');
-            const result = await refreshNavSnapshots();
-            setText('import-status', `NAV snapshots updated from MFAPI for ${result.successCount}/${result.requested} scheme(s).`);
-            if (result.failures.length) {
-                const sample = result.failures.slice(0, 5).map((item) => `${item.schemeCode}: ${item.reason}`).join(' | ');
-                setText('import-error', `NAV failures for ${result.failures.length} scheme(s). ${sample}`);
-            }
-            await refreshMetrics();
-            await refreshReport();
+            await runMfapiNavFetch({
+                progressLabel: 'Fetching NAV snapshots from MFAPI...',
+            });
         } catch (error) {
             setText('import-error', error.message);
-        } finally {
-            fetchNavButton.disabled = false;
         }
     });
+
+    const retryFailedNavButton = byId('retry-failed-nav-btn');
+    if (retryFailedNavButton) {
+        retryFailedNavButton.addEventListener('click', async () => {
+            setText('import-error', '');
+            const failures = readStoredNavFailures();
+            if (!failures.length) {
+                setText('import-error', 'No failed NAV fetches to retry. Run Fetch NAV Snapshots first.');
+                renderNavFailures([]);
+                return;
+            }
+
+            try {
+                await runMfapiNavFetch({
+                    schemeCodes: failures.map((item) => item.schemeCode),
+                    progressLabel: `Retrying ${failures.length} failed NAV fetch(es) from MFAPI...`,
+                });
+            } catch (error) {
+                setText('import-error', error.message);
+            }
+        });
+    }
 
     clearDbButton.addEventListener('click', async () => {
         setText('import-error', '');
@@ -1296,6 +1404,8 @@ export function initAppController() {
         try {
             await clearAllData();
             await clearTransactionsData();
+            persistNavFailures([]);
+            renderNavFailures([]);
             setText('import-status', 'IndexedDB cleared. You can now do a clean import.');
             await refreshMetrics();
             await refreshReport();
