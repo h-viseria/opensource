@@ -3,7 +3,7 @@
  * Enables offline support and caching strategies
  */
 
-const CACHE_NAME = 'mf-holdings-v9';
+const CACHE_NAME = 'mf-holdings-v10';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -56,34 +56,20 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch event: Network-first strategy for API calls, Cache-first for assets
+// Fetch event: Cache-first for same-origin assets. Do not intercept MFAPI or
+// other cross-origin calls — that commonly shows up as a CORS error in the page
+// even though the same URL opens fine in a new tab.
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-  const url = new URL(request.url);
-
-  // Network-first for API calls and external resources
-  if (url.hostname !== self.location.hostname || url.pathname.includes('/api/')) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          // Cache successful API responses
-          if (response.ok && request.method === 'GET') {
-            const cache = caches.open(CACHE_NAME);
-            cache.then((c) => c.put(request, response.clone()));
-          }
-          return response;
-        })
-        .catch(() => {
-          // Fall back to cache if network fails
-          return caches.match(request).then((cached) => {
-            return cached || new Response('Offline - resource not available', { status: 503 });
-          });
-        })
-    );
+  if (request.method !== 'GET') {
     return;
   }
 
-  // Cache-first for local assets
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
   event.respondWith(
     caches.match(request).then((cached) => {
       if (cached) {
