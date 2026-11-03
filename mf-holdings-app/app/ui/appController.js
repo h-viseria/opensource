@@ -103,7 +103,7 @@ function renderNavFailures(failures) {
         .join('<br />');
     const extra = items.length > 20 ? `<br />…and ${items.length - 20} more` : '';
     list.hidden = false;
-    list.innerHTML = `<strong>${items.length} scheme(s) failed.</strong> Retry those only, or open a code to verify MFAPI:<br />${links}${extra}`;
+    list.innerHTML = `<strong>${items.length} scheme(s) failed.</strong> Retry those only. A tab can show JSON even when the app fetch is CORS-blocked — retry uses a direct MFAPI request, not the tab.<br />${links}${extra}`;
 }
 
 async function runMfapiNavFetch({ schemeCodes = null, progressLabel } = {}) {
