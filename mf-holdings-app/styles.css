@@ -166,6 +166,20 @@ label.nav-source-option input {
     accent-color: var(--accent);
 }
 
+.nav-failure-list {
+    margin: 8px 0 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #121c2c;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.nav-failure-list a {
+    color: var(--accent);
+}
+
 .amfi-cors-help {
     border: 1px solid var(--border);
     border-radius: 8px;
